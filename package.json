@@ -1,17 +1,46 @@
 {
   "name": "runtime-mcp",
   "version": "1.0.0",
+  "description": "Production-grade MCP-compatible edge runtime for Cloudflare Workers with KV-backed state and tool execution.",
+  "private": true,
   "type": "module",
+  "main": "src/index.ts",
+  "author": "Adrian",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "cloudflare",
+    "workers",
+    "kv",
+    "runtime",
+    "edge",
+    "gpt",
+    "ai",
+    "serverless",
+    "typescript"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "deploy": "wrangler deploy"
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "cf-typegen": "wrangler types",
+    "lint": "tsc --noEmit",
+    "start": "wrangler dev",
+    "tail": "wrangler tail",
+    "clean": "rm -rf dist .wrangler node_modules"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250501.0",
     "typescript": "^5.8.3",
-    "wrangler": "^4.15.2",
-    "@cloudflare/workers-types": "^4.20250501.0"
-  }
+    "wrangler": "^4.15.2"
+  },
+  "packageManager": "npm@10.8.2"
 }
