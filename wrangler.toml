@@ -1,0 +1,7 @@
+name = "runtime-mcp"
+main = "src/index.ts"
+compatibility_date = "2026-05-24"
+
+kv_namespaces = [
+  { binding = "STATE_KV", id = "KV_ID" }
+]
