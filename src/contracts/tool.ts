@@ -1,26 +1,66 @@
 export type JsonSchema =
   | {
       type: "object";
-      properties?: Record<string, JsonSchema | any>;
-      required?: string[];
+
+      properties?: Record<
+        string,
+        JsonSchema
+      >;
+
+      required?: readonly string[];
+
       additionalProperties?: boolean;
     }
   | {
-      type: "string" | "number" | "integer" | "boolean" | "array" | "null";
+      type:
+        | "string"
+        | "number"
+        | "integer"
+        | "boolean"
+        | "array"
+        | "null";
+
       items?: JsonSchema;
     }
-  | Record<string, any>;
+  | Record<string, unknown>;
 
-export type ToolContext<Env> = {
-  env: Env;
-  requestId: string;
+export type ToolContext<
+  Env
+> = {
+  readonly env: Env;
+
+  readonly requestId:
+    string;
 };
 
-export type ToolDefinition<Env> = {
-  description: string;
-  inputSchema: JsonSchema;
-  validate: (args: unknown) => any;
-  execute: (args: any, ctx: ToolContext<Env>) => Promise<unknown>;
+export type ToolDefinition<
+  Env,
+  TArgs = unknown,
+  TResult = unknown
+> = {
+  readonly description:
+    string;
+
+  readonly inputSchema:
+    JsonSchema;
+
+  readonly validate: (
+    args: unknown
+  ) => TArgs;
+
+  readonly execute: (
+    args: TArgs,
+    ctx: ToolContext<Env>
+  ) => Promise<TResult>;
 };
 
-export type ToolRegistry<Env> = Record<string, ToolDefinition<Env>>;
+export type ToolRegistry<
+  Env
+> = Record<
+  string,
+  ToolDefinition<
+    Env,
+    unknown,
+    unknown
+  >
+>;
