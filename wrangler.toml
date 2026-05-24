@@ -3,5 +3,5 @@ main = "src/index.ts"
 compatibility_date = "2026-05-24"
 
 kv_namespaces = [
-  { binding = "STATE_KV", id = "KV_ID" }
+{ binding="STATE_KV",id="06b99591564d43cfa1c86b56184e22aa" }
 ]
