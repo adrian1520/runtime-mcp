@@ -1,18 +1,28 @@
 name = "runtime-mcp"
+
 main = "src/index.ts"
+
 compatibility_date = "2026-05-24"
 
-# Jeśli używasz nowych runtime-ów, możesz to zostawić:
+# Jeśli używasz nowych runtime-ów:
 # compatibility_flags = ["nodejs_compat"]
 
 kv_namespaces = [
-  { binding = "STATE_KV", id = "06b99591564d43cfa1c86b56184e22aa" }
+  {
+    binding = "STATE_KV",
+    id = "06b99591564d43cfa1c86b56184e22aa"
+  }
 ]
 
 [vars]
-# NIE wpisuj tu API_KEY jeśli to produkcja.
-# Ustaw API_KEY jako Secret w Cloudflare Dashboard: Settings → Variables → Secrets
-# API_KEY = "..."
+# NIE wpisuj tu API_KEY dla produkcji.
+# Ustaw jako Secret:
+#
+# wrangler secret put API_KEY
+#
+# albo:
+# Cloudflare Dashboard
+# Workers → Settings → Variables → Secrets
 
 [observability]
 enabled = true
