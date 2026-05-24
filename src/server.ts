@@ -1,57 +1,54 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 
-export const server = new McpServer({
-  name: "runtime-mcp",
-  version: "1.0.0"
-});
+export const server = {
 
-server.tool(
-  "memory_put",
-  {
-    key: z.string(),
-    value: z.any()
-  },
-  async ({ key, value }, extra) => {
+  tools: {
 
-    const env = extra.env as any;
+    memory_put: {
 
-    await env.STATE_KV.put(
-      `memory:${key}`,
-      JSON.stringify(value)
-    );
+      description: "Store memory in KV",
 
-    return {
-      content: [
-        {
-          type: "text",
-          text: "stored"
-        }
-      ]
-    };
+      schema: {
+        key: z.string(),
+        value: z.any()
+      },
+
+      async execute(args: any, env: any) {
+
+        await env.STATE_KV.put(
+          `memory:${args.key}`,
+          JSON.stringify({
+            value: args.value,
+            ts: Date.now()
+          })
+        );
+
+        return {
+          ok: true
+        };
+      }
+    },
+
+    memory_get: {
+
+      description: "Get memory from KV",
+
+      schema: {
+        key: z.string()
+      },
+
+      async execute(args: any, env: any) {
+
+        const value = await env.STATE_KV.get(
+          `memory:${args.key}`
+        );
+
+        return {
+          value: value
+            ? JSON.parse(value)
+            : null
+        };
+      }
+    }
   }
-);
-
-server.tool(
-  "memory_get",
-  {
-    key: z.string()
-  },
-  async ({ key }, extra) => {
-
-    const env = extra.env as any;
-
-    const value = await env.STATE_KV.get(
-      `memory:${key}`
-    );
-
-    return {
-      content: [
-        {
-          type: "text",
-          text: value ?? "null"
-        }
-      ]
-    };
-  }
-);
+};
