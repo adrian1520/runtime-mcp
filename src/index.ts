@@ -2,11 +2,19 @@ import { server } from "./server";
 
 type Env = {
   STATE_KV: KVNamespace;
+  API_KEY?: string;
 };
 
 type ToolCallBody = {
   name: string;
   arguments?: unknown;
+};
+
+type JsonRpcRequest = {
+  jsonrpc: "2.0";
+  id?: string | number | null;
+  method: string;
+  params?: any;
 };
 
 function json(
@@ -30,7 +38,10 @@ function json(
           "GET, POST, OPTIONS",
 
         "access-control-allow-headers":
-          "content-type"
+          "content-type, authorization",
+
+        "x-runtime":
+          "runtime-mcp"
       },
 
       ...init
@@ -53,6 +64,77 @@ function createToolManifest() {
   );
 }
 
+function unauthorized(
+  requestId: string
+): Response {
+
+  return json(
+    {
+      ok: false,
+      error: {
+        code: "UNAUTHORIZED",
+        message:
+          "Invalid or missing API key"
+      },
+      requestId,
+      ts: Date.now()
+    },
+    {
+      status: 401
+    }
+  );
+}
+
+function verifyAuth(
+  request: Request,
+  env: Env
+): boolean {
+
+  if (!env.API_KEY) {
+    return true;
+  }
+
+  const auth =
+    request.headers.get(
+      "authorization"
+    );
+
+  if (!auth) {
+    return false;
+  }
+
+  return auth ===
+    `Bearer ${env.API_KEY}`;
+}
+
+function jsonRpcResponse(
+  id: string | number | null | undefined,
+  result: unknown
+) {
+
+  return {
+    jsonrpc: "2.0",
+    id: id ?? null,
+    result
+  };
+}
+
+function jsonRpcError(
+  id: string | number | null | undefined,
+  code: number,
+  message: string
+) {
+
+  return {
+    jsonrpc: "2.0",
+    id: id ?? null,
+    error: {
+      code,
+      message
+    }
+  };
+}
+
 export default {
 
   async fetch(
@@ -61,23 +143,39 @@ export default {
     ctx: ExecutionContext
   ): Promise<Response> {
 
-    const requestId = createRequestId();
+    const requestId =
+      createRequestId();
 
-    const url = new URL(request.url);
+    const url =
+      new URL(request.url);
 
     try {
 
-      if (request.method === "OPTIONS") {
-        return new Response(null, {
-          status: 204,
-          headers: {
-            "access-control-allow-origin": "*",
-            "access-control-allow-methods":
-              "GET, POST, OPTIONS",
-            "access-control-allow-headers":
-              "content-type"
+      /*
+       * CORS
+       */
+
+      if (
+        request.method ===
+        "OPTIONS"
+      ) {
+
+        return new Response(
+          null,
+          {
+            status: 204,
+            headers: {
+              "access-control-allow-origin":
+                "*",
+
+              "access-control-allow-methods":
+                "GET, POST, OPTIONS",
+
+              "access-control-allow-headers":
+                "content-type, authorization"
+            }
           }
-        });
+        );
       }
 
       /*
@@ -85,15 +183,110 @@ export default {
        */
 
       if (
-        url.pathname === "/health"
+        url.pathname ===
+        "/health"
       ) {
 
         return json({
           ok: true,
           service: "runtime-mcp",
           version: "1.0.0",
+          runtime: "cloudflare-workers",
           ts: Date.now(),
           requestId
+        });
+      }
+
+      /*
+       * OPENAPI
+       */
+
+      if (
+        url.pathname ===
+          "/openapi.json" &&
+        request.method ===
+          "GET"
+      ) {
+
+        return json({
+          openapi: "3.1.0",
+
+          info: {
+            title:
+              "runtime-mcp",
+
+            version: "1.0.0",
+
+            description:
+              "Production MCP-compatible edge runtime"
+          },
+
+          servers: [
+            {
+              url:
+                `${url.protocol}//${url.host}`
+            }
+          ],
+
+          paths: {
+
+            "/mcp/call": {
+
+              post: {
+
+                operationId:
+                  "callTool",
+
+                summary:
+                  "Execute runtime tool",
+
+                requestBody: {
+
+                  required: true,
+
+                  content: {
+
+                    "application/json": {
+
+                      schema: {
+
+                        type:
+                          "object",
+
+                        properties: {
+
+                          name: {
+                            type:
+                              "string"
+                          },
+
+                          arguments:
+                            {
+                              type:
+                                "object"
+                            }
+                        },
+
+                        required:
+                          [
+                            "name"
+                          ]
+                      }
+                    }
+                  }
+                },
+
+                responses: {
+
+                  "200": {
+
+                    description:
+                      "Tool execution result"
+                  }
+                }
+              }
+            }
+          }
         });
       }
 
@@ -102,13 +295,21 @@ export default {
        */
 
       if (
-        url.pathname === "/mcp" &&
-        request.method === "GET"
+        url.pathname ===
+          "/mcp" &&
+        request.method ===
+          "GET"
       ) {
 
         return json({
-          name: "runtime-mcp",
-          version: "1.0.0",
+          name:
+            "runtime-mcp",
+
+          version:
+            "1.0.0",
+
+          protocol:
+            "mcp-compatible",
 
           capabilities: {
             tools: true,
@@ -116,7 +317,8 @@ export default {
             provenance: true
           },
 
-          tools: createToolManifest(),
+          tools:
+            createToolManifest(),
 
           ts: Date.now(),
           requestId
@@ -128,26 +330,196 @@ export default {
        */
 
       if (
-        url.pathname === "/mcp/tools" &&
-        request.method === "GET"
+        url.pathname ===
+          "/mcp/tools" &&
+        request.method ===
+          "GET"
       ) {
 
         return json({
-          tools: createToolManifest(),
-          requestId
+          tools:
+            createToolManifest(),
+
+          count:
+            createToolManifest()
+              .length,
+
+          requestId,
+          ts: Date.now()
         });
       }
 
       /*
-       * TOOL CALL
+       * JSON-RPC MCP
        */
 
       if (
-        url.pathname === "/mcp/call" &&
-        request.method === "POST"
+        url.pathname ===
+          "/mcp/rpc" &&
+        request.method ===
+          "POST"
       ) {
 
-        let body: ToolCallBody;
+        if (
+          !verifyAuth(
+            request,
+            env
+          )
+        ) {
+
+          return unauthorized(
+            requestId
+          );
+        }
+
+        let rpcBody:
+          JsonRpcRequest;
+
+        try {
+
+          rpcBody =
+            await request.json();
+
+        } catch {
+
+          return json(
+            jsonRpcError(
+              null,
+              -32700,
+              "Parse error"
+            ),
+            {
+              status: 400
+            }
+          );
+        }
+
+        if (
+          rpcBody.method ===
+          "tools/list"
+        ) {
+
+          return json(
+            jsonRpcResponse(
+              rpcBody.id,
+              {
+                tools:
+                  createToolManifest()
+              }
+            )
+          );
+        }
+
+        if (
+          rpcBody.method ===
+          "tools/call"
+        ) {
+
+          const toolName =
+            rpcBody.params
+              ?.name;
+
+          const args =
+            rpcBody.params
+              ?.arguments ?? {};
+
+          const tool =
+            server.tools[
+              toolName
+            ];
+
+          if (!tool) {
+
+            return json(
+              jsonRpcError(
+                rpcBody.id,
+                -32601,
+                `Unknown tool: ${toolName}`
+              ),
+              {
+                status: 404
+              }
+            );
+          }
+
+          try {
+
+            const validated =
+              tool.validate(
+                args
+              );
+
+            const result =
+              await tool.execute(
+                validated,
+                {
+                  env,
+                  requestId
+                }
+              );
+
+            return json(
+              jsonRpcResponse(
+                rpcBody.id,
+                result
+              )
+            );
+
+          } catch (
+            error: any
+          ) {
+
+            return json(
+              jsonRpcError(
+                rpcBody.id,
+                -32000,
+                error?.message ??
+                  "Tool execution failed"
+              ),
+              {
+                status: 500
+              }
+            );
+          }
+        }
+
+        return json(
+          jsonRpcError(
+            rpcBody.id,
+            -32601,
+            "Method not found"
+          ),
+          {
+            status: 404
+          }
+        );
+      }
+
+      /*
+       * SIMPLE TOOL CALL
+       */
+
+      if (
+        url.pathname ===
+          "/mcp/call" &&
+        request.method ===
+          "POST"
+      ) {
+
+        if (
+          !verifyAuth(
+            request,
+            env
+          )
+        ) {
+
+          return unauthorized(
+            requestId
+          );
+        }
+
+        let body:
+          ToolCallBody;
 
         try {
 
@@ -160,10 +532,13 @@ export default {
             {
               ok: false,
               error: {
-                code: "INVALID_JSON",
+                code:
+                  "INVALID_JSON",
+
                 message:
                   "Request body must be valid JSON"
               },
+
               requestId
             },
             {
@@ -174,17 +549,21 @@ export default {
 
         if (
           !body ||
-          typeof body.name !== "string"
+          typeof body.name !==
+            "string"
         ) {
 
           return json(
             {
               ok: false,
               error: {
-                code: "INVALID_TOOL_NAME",
+                code:
+                  "INVALID_TOOL_NAME",
+
                 message:
                   "Tool name is required"
               },
+
               requestId
             },
             {
@@ -194,7 +573,9 @@ export default {
         }
 
         const tool =
-          server.tools[body.name];
+          server.tools[
+            body.name
+          ];
 
         if (!tool) {
 
@@ -202,10 +583,13 @@ export default {
             {
               ok: false,
               error: {
-                code: "TOOL_NOT_FOUND",
+                code:
+                  "TOOL_NOT_FOUND",
+
                 message:
                   `Unknown tool: ${body.name}`
               },
+
               requestId
             },
             {
@@ -218,7 +602,8 @@ export default {
 
           const validated =
             tool.validate(
-              body.arguments ?? {}
+              body.arguments ??
+                {}
             );
 
           const result =
@@ -238,11 +623,14 @@ export default {
             ts: Date.now()
           });
 
-        } catch (error: any) {
+        } catch (
+          error: any
+        ) {
 
           return json(
             {
               ok: false,
+
               error: {
                 code:
                   "TOOL_EXECUTION_FAILED",
@@ -252,7 +640,9 @@ export default {
                   "Unknown execution error"
               },
 
-              tool: body.name,
+              tool:
+                body.name,
+
               requestId,
               ts: Date.now()
             },
@@ -270,23 +660,31 @@ export default {
       return json(
         {
           ok: false,
+
           error: {
-            code: "NOT_FOUND",
+            code:
+              "NOT_FOUND",
+
             message:
               "Endpoint not found"
           },
-          requestId
+
+          requestId,
+          ts: Date.now()
         },
         {
           status: 404
         }
       );
 
-    } catch (error: any) {
+    } catch (
+      error: any
+    ) {
 
       return json(
         {
           ok: false,
+
           error: {
             code:
               "INTERNAL_SERVER_ERROR",
