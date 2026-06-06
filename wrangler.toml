@@ -18,9 +18,9 @@ kv_namespaces = [{binding = "STATE_KV",id = "06b99591564d43cfa1c86b56184e22aa"}]
 # Workers → Settings → Variables → Secrets
 #
 # Repository-backed raw memory tools:
-# GITHUB_OWNER = "your-github-owner"
-# GITHUB_REPO = "your-repository"
-# GITHUB_BRANCH = "main"
+GITHUB_OWNER = "adrian1520"
+GITHUB_REPO = "runtime-mcp"
+GITHUB_BRANCH = "main"
 # Configure the write token as a Worker secret:
 # wrangler secret put GITHUB_TOKEN
 
