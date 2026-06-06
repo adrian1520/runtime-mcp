@@ -13,6 +13,9 @@ import { handleRpcRoute }
 import { handleResourcesRoute }
   from "./routes/resources";
 
+import { handleMcpRoute }
+  from "./mcp/adapter";
+
 function requestId():
   string {
 
@@ -72,6 +75,21 @@ export default {
       );
 
     try {
+
+      /*
+       * STREAMABLE HTTP MCP
+       */
+
+      const mcp =
+        await handleMcpRoute(
+          request,
+          env,
+          rid
+        );
+
+      if (mcp) {
+        return mcp;
+      }
 
       /*
        * Global CORS preflight
