@@ -314,7 +314,9 @@ export function registerProvenanceTools(
           res.list_complete,
 
         cursor:
-          res.cursor
+          "cursor" in res
+            ? res.cursor
+            : undefined
       };
     }
   };

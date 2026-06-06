@@ -14,11 +14,7 @@ function json(
       2
     ),
     {
-      status:
-        init?.status,
-
-      statusText:
-        init?.statusText,
+      ...init,
 
       headers: {
         "content-type":
