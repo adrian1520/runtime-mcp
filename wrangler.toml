@@ -22,7 +22,7 @@ GITHUB_OWNER = "adrian1520"
 GITHUB_REPO = "runtime-mcp"
 GITHUB_BRANCH = "main"
 #Configure the write token as a Worker secret:
-wrangler secret put GITHUB_TOKEN
+#wrangler secret put GITHUB_TOKEN
 
 [observability]
 enabled = true
