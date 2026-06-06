@@ -15,7 +15,15 @@ export async function handleRpcRoute(
     return Response.json({ ok: false, error: auth, requestId }, { status: auth.status });
   }
 
-  const body = await request.json().catch(() => null);
+  const body = await request.json().catch(() => null) as {
+    id?: unknown;
+    jsonrpc?: unknown;
+    method?: unknown;
+    params?: {
+      name?: string;
+      arguments?: unknown;
+    };
+  } | null;
   if (!body || body.jsonrpc !== "2.0" || typeof body.method !== "string") {
     return Response.json({ jsonrpc: "2.0", id: body?.id ?? null, error: { code: -32600, message: "Invalid Request" } }, { status: 400 });
   }
@@ -32,7 +40,9 @@ export async function handleRpcRoute(
   if (body.method === "tools/call") {
     const name = body.params?.name;
     const args = body.params?.arguments ?? {};
-    const tool = server.tools[name];
+    const tool = typeof name === "string"
+      ? server.tools[name]
+      : undefined;
     if (!tool) {
       return Response.json({ jsonrpc: "2.0", id: body.id ?? null, error: { code: -32601, message: `Unknown tool: ${name}` } }, { status: 404 });
     }

@@ -60,7 +60,7 @@ export type ToolRegistry<
   string,
   ToolDefinition<
     Env,
-    unknown,
-    unknown
+    any,
+    any
   >
 >;

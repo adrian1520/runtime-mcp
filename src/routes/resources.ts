@@ -186,7 +186,9 @@ export async function handleResourcesRoute(
           res.list_complete,
 
         cursor:
-          res.cursor,
+          "cursor" in res
+            ? res.cursor
+            : undefined,
 
         requestId,
 
@@ -265,7 +267,9 @@ export async function handleResourcesRoute(
           res.list_complete,
 
         cursor:
-          res.cursor,
+          "cursor" in res
+            ? res.cursor
+            : undefined,
 
         requestId,
 

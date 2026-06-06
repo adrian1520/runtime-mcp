@@ -10,12 +10,28 @@ import {
   registerProvenanceTools
 } from "./tools/provenance";
 
+import {
+  registerRepositoryTools
+} from "./tools/repository";
+
 export type Env = {
 
   STATE_KV:
     KVNamespace;
 
   API_KEY?:
+    string;
+
+  GITHUB_OWNER?:
+    string;
+
+  GITHUB_REPO?:
+    string;
+
+  GITHUB_BRANCH?:
+    string;
+
+  GITHUB_TOKEN?:
     string;
 };
 
@@ -36,5 +52,9 @@ registerMemoryTools(
 );
 
 registerProvenanceTools(
+  server.tools
+);
+
+registerRepositoryTools(
   server.tools
 );
