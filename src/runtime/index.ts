@@ -4,4 +4,7 @@ export * from "./state-machine";
 export * from "./planner";
 export * from "./workflow";
 export * from "./executor";
+export * from "./memory-store";
+export * from "./provenance-recorder";
+export * from "./workflow-engine";
 export * from "./agent";
