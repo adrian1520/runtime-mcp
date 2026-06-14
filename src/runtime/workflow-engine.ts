@@ -1,4 +1,5 @@
 import { Workflow } from "./workflow";
+import { TaskGraph } from "./task-graph";
 import { Executor } from "./executor";
 import { MemoryStore } from "./memory-store";
 import { ProvenanceRecorder } from "./provenance-recorder";
@@ -6,7 +7,8 @@ import { ProvenanceRecorder } from "./provenance-recorder";
 import type {
   Goal,
   Checkpoint,
-  TaskResult
+  TaskResult,
+  WorkflowDefinition
 } from "./types";
 
 import type { Env } from "../server";
@@ -22,9 +24,29 @@ export class WorkflowEngine {
     env: Env,
     requestId: string
   ) {
-    const graph =
-      this.workflow.create(
+    const tasks =
+      this.workflow.planner.build(
         goal
+      );
+
+    const definition:
+      WorkflowDefinition = {
+        workflowId:
+          goal.id,
+        goal,
+        tasks
+      };
+
+    await this.memory.put(
+      env,
+      requestId,
+      `workflow/${goal.id}/definition`,
+      definition
+    );
+
+    const graph =
+      new TaskGraph(
+        tasks
       );
 
     const completed =
@@ -44,7 +66,6 @@ export class WorkflowEngine {
     );
 
     while (true) {
-
       const nextTasks =
         graph.next(
           completed
@@ -60,7 +81,6 @@ export class WorkflowEngine {
         const task
         of nextTasks
       ) {
-
         let result:
           TaskResult = {
             taskId:
@@ -70,11 +90,9 @@ export class WorkflowEngine {
           };
 
         try {
-
           if (
             task.tool
           ) {
-
             result.output =
               await this.executor.runTool(
                 task.tool,
@@ -83,11 +101,9 @@ export class WorkflowEngine {
                 requestId
               );
           }
-
         } catch (
           error
         ) {
-
           result = {
             taskId:
               task.id,
@@ -155,17 +171,19 @@ export class WorkflowEngine {
       }
     }
 
+    const finalResult = {
+      workflowId:
+        goal.id,
+      completed:
+        [...completed],
+      results
+    };
+
     await this.memory.put(
       env,
       requestId,
       `workflow/${goal.id}/result`,
-      {
-        workflowId:
-          goal.id,
-        completed:
-          [...completed],
-        results
-      }
+      finalResult
     );
 
     await this.provenance.append(
@@ -180,12 +198,6 @@ export class WorkflowEngine {
       }
     );
 
-    return {
-      workflowId:
-        goal.id,
-      completed:
-        [...completed],
-      results
-    };
+    return finalResult;
   }
 }
