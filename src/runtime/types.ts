@@ -26,11 +26,25 @@ export interface ExecutionContext {
   goal: Goal;
 }
 
+export interface Checkpoint {
+  workflowId: string;
+  completed: string[];
+  lastTask?: string;
+}
+
+export interface TaskResult {
+  taskId: string;
+  success: boolean;
+  output?: unknown;
+  error?: string;
+}
+
 export interface ExecutionResult {
   success: boolean;
   state: RuntimeState;
   result?: unknown;
   error?: string;
+  checkpoint?: Checkpoint;
 }
 
 export interface WorkflowDefinition {
