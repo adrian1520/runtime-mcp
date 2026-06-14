@@ -1,4 +1,5 @@
 import { MemoryStore } from "./memory-store";
+import type { Checkpoint } from "./types";
 import type { Env } from "../server";
 
 export class RecoveryManager {
@@ -9,16 +10,16 @@ export class RecoveryManager {
     requestId: string,
     workflowId: string
   ) {
-    const state = await this.memory.get(
+    const checkpoint = await this.memory.get(
       env,
       requestId,
-      `workflow/${workflowId}`
+      `workflow/${workflowId}/checkpoint`
     );
 
     return {
       workflowId,
-      recovered: true,
-      state
+      recovered: checkpoint != null,
+      checkpoint: checkpoint as Checkpoint | null
     };
   }
 }
