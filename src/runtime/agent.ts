@@ -1,15 +1,20 @@
-import { Workflow } from "./workflow";
+import { WorkflowEngine } from "./workflow-engine";
 import { StateMachine } from "./state-machine";
 import type { Goal, ExecutionResult } from "./types";
+import type { Env } from "../server";
 
 export class Agent {
-  readonly workflow = new Workflow();
+  readonly engine = new WorkflowEngine();
   readonly state = new StateMachine();
 
-  async execute(goal: Goal): Promise<ExecutionResult> {
+  async execute(
+    goal: Goal,
+    env: Env,
+    requestId: string
+  ): Promise<ExecutionResult> {
     try {
       this.state.transition("PLANNING");
-      const graph = this.workflow.create(goal);
+      const graph = await this.engine.start(goal, env, requestId);
       this.state.transition("EXECUTION");
       this.state.transition("VALIDATION");
       this.state.transition("COMPLETE");
