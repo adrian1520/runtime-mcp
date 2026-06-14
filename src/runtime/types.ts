@@ -48,6 +48,28 @@ export interface ExecutionResult {
 }
 
 export interface WorkflowDefinition {
-  name: string;
-  states: RuntimeState[];
+  workflowId: string;
+  goal: Goal;
+  tasks: TaskNode[];
+}
+
+export interface RecoveryState {
+  workflowId: string;
+  checkpoint: Checkpoint | null;
+  definition: WorkflowDefinition | null;
+  completed: string[];
+  remaining: string[];
+}
+
+export interface WorkflowMetadata {
+  createdAt?: string;
+  updatedAt?: string;
+  version?: string;
+}
+
+export interface WorkflowSnapshot {
+  definition: WorkflowDefinition;
+  checkpoint?: Checkpoint;
+  results?: TaskResult[];
+  metadata?: WorkflowMetadata;
 }
