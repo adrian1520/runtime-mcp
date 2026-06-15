@@ -3,6 +3,7 @@ import { TaskGraph } from "./task-graph";
 import { Executor } from "./executor";
 import { MemoryStore } from "./memory-store";
 import { ProvenanceRecorder } from "./provenance-recorder";
+import { RecoveryManager } from "./recovery-manager";
 
 import type {
   Goal,
@@ -18,97 +19,43 @@ export class WorkflowEngine {
   readonly executor = new Executor();
   readonly memory = new MemoryStore();
   readonly provenance = new ProvenanceRecorder();
+  readonly recovery = new RecoveryManager();
 
-  async run(
-    goal: Goal,
+  private async executeGraph(
+    workflowId: string,
+    graph: TaskGraph,
+    completed: Set<string>,
     env: Env,
     requestId: string
-  ) {
-    const tasks =
-      this.workflow.planner.build(
-        goal
-      );
-
-    const definition:
-      WorkflowDefinition = {
-        workflowId:
-          goal.id,
-        goal,
-        tasks
-      };
-
-    await this.memory.put(
-      env,
-      requestId,
-      `workflow/${goal.id}/definition`,
-      definition
-    );
-
-    const graph =
-      new TaskGraph(
-        tasks
-      );
-
-    const completed =
-      new Set<string>();
-
-    const results:
-      TaskResult[] = [];
-
-    await this.provenance.append(
-      env,
-      requestId,
-      "workflow_started",
-      {
-        workflowId:
-          goal.id
-      }
-    );
+  ): Promise<TaskResult[]> {
+    const results: TaskResult[] = [];
 
     while (true) {
-      const nextTasks =
-        graph.next(
-          completed
-        );
+      const nextTasks = graph.next(completed);
 
-      if (
-        nextTasks.length === 0
-      ) {
+      if (nextTasks.length === 0) {
         break;
       }
 
-      for (
-        const task
-        of nextTasks
-      ) {
-        let result:
-          TaskResult = {
-            taskId:
-              task.id,
-            success:
-              true
-          };
+      for (const task of nextTasks) {
+        let result: TaskResult = {
+          taskId: task.id,
+          success: true
+        };
 
         try {
-          if (
-            task.tool
-          ) {
-            result.output =
-              await this.executor.runTool(
-                task.tool,
-                task.input,
-                env,
-                requestId
-              );
+          if (task.tool) {
+            result.output = await this.executor.runTool(
+              task.tool,
+              task.input,
+              env,
+              requestId
+            );
           }
-        } catch (
-          error
-        ) {
+        } catch (error) {
           result = {
-            taskId:
-              task.id,
-            success:
-              false,
+            taskId: task.id,
+            success: false,
             error:
               error instanceof Error
                 ? error.message
@@ -120,38 +67,26 @@ export class WorkflowEngine {
             requestId,
             "task_failed",
             {
-              workflowId:
-                goal.id,
-              taskId:
-                task.id,
-              error:
-                result.error
+              workflowId,
+              taskId: task.id,
+              error: result.error
             }
           );
         }
 
-        completed.add(
-          task.id
-        );
+        completed.add(task.id);
+        results.push(result);
 
-        results.push(
-          result
-        );
-
-        const checkpoint:
-          Checkpoint = {
-            workflowId:
-              goal.id,
-            completed:
-              [...completed],
-            lastTask:
-              task.id
-          };
+        const checkpoint: Checkpoint = {
+          workflowId,
+          completed: [...completed],
+          lastTask: task.id
+        };
 
         await this.memory.put(
           env,
           requestId,
-          `workflow/${goal.id}/checkpoint`,
+          `workflow/${workflowId}/checkpoint`,
           checkpoint
         );
 
@@ -160,22 +95,61 @@ export class WorkflowEngine {
           requestId,
           "task_completed",
           {
-            workflowId:
-              goal.id,
-            taskId:
-              task.id,
-            success:
-              result.success
+            workflowId,
+            taskId: task.id,
+            success: result.success
           }
         );
       }
     }
 
+    return results;
+  }
+
+  async run(
+    goal: Goal,
+    env: Env,
+    requestId: string
+  ) {
+    const tasks =
+      this.workflow.planner.build(goal);
+
+    const definition: WorkflowDefinition = {
+      workflowId: goal.id,
+      goal,
+      tasks
+    };
+
+    await this.memory.put(
+      env,
+      requestId,
+      `workflow/${goal.id}/definition`,
+      definition
+    );
+
+    const graph = new TaskGraph(tasks);
+    const completed = new Set<string>();
+
+    await this.provenance.append(
+      env,
+      requestId,
+      "workflow_started",
+      {
+        workflowId: goal.id
+      }
+    );
+
+    const results = await this.executeGraph(
+      goal.id,
+      graph,
+      completed,
+      env,
+      requestId
+    );
+
     const finalResult = {
-      workflowId:
-        goal.id,
-      completed:
-        [...completed],
+      workflowId: goal.id,
+      completed: [...completed],
       results
     };
 
@@ -191,10 +165,78 @@ export class WorkflowEngine {
       requestId,
       "workflow_completed",
       {
-        workflowId:
-          goal.id,
-        completed:
-          completed.size
+        workflowId: goal.id,
+        completed: completed.size
+      }
+    );
+
+    return finalResult;
+  }
+
+  async resume(
+    workflowId: string,
+    env: Env,
+    requestId: string
+  ) {
+    const state = await this.recovery.resume(
+      env,
+      requestId,
+      workflowId
+    );
+
+    if (!state.definition) {
+      throw new Error(
+        `Workflow definition not found: ${workflowId}`
+      );
+    }
+
+    const graph = new TaskGraph(
+      state.definition.tasks
+    );
+
+    const completed = new Set<string>(
+      state.completed
+    );
+
+    await this.provenance.append(
+      env,
+      requestId,
+      "workflow_resumed",
+      {
+        workflowId,
+        completed: completed.size,
+        remaining: state.remaining.length
+      }
+    );
+
+    const results = await this.executeGraph(
+      workflowId,
+      graph,
+      completed,
+      env,
+      requestId
+    );
+
+    const finalResult = {
+      workflowId,
+      completed: [...completed],
+      results
+    };
+
+    await this.memory.put(
+      env,
+      requestId,
+      `workflow/${workflowId}/result`,
+      finalResult
+    );
+
+    await this.provenance.append(
+      env,
+      requestId,
+      "workflow_completed",
+      {
+        workflowId,
+        completed: completed.size
       }
     );
 
