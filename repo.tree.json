@@ -1,0 +1,472 @@
+{
+  "schema": "repo.tree.v2",
+  "generated_at": "2026-06-15T08:42:01.650895+00:00",
+  "summary": {
+    "files": 35,
+    "directories": 15
+  },
+  "directories": [
+    {
+      "path": "",
+      "depth": 0,
+      "category": "general"
+    },
+    {
+      "path": ".github",
+      "depth": 1,
+      "category": "general"
+    },
+    {
+      "path": ".github/workflows",
+      "depth": 2,
+      "category": "workflow"
+    },
+    {
+      "path": "docs",
+      "depth": 1,
+      "category": "knowledge"
+    },
+    {
+      "path": "memory",
+      "depth": 1,
+      "category": "general"
+    },
+    {
+      "path": "src",
+      "depth": 1,
+      "category": "general"
+    },
+    {
+      "path": "src/auth",
+      "depth": 2,
+      "category": "general"
+    },
+    {
+      "path": "src/contracts",
+      "depth": 2,
+      "category": "general"
+    },
+    {
+      "path": "src/mcp",
+      "depth": 2,
+      "category": "general"
+    },
+    {
+      "path": "src/routes",
+      "depth": 2,
+      "category": "general"
+    },
+    {
+      "path": "src/runtime",
+      "depth": 2,
+      "category": "runtime"
+    },
+    {
+      "path": "src/tools",
+      "depth": 2,
+      "category": "general"
+    },
+    {
+      "path": "src/tools/memory",
+      "depth": 3,
+      "category": "general"
+    },
+    {
+      "path": "src/tools/provenance",
+      "depth": 3,
+      "category": "general"
+    },
+    {
+      "path": "src/tools/repository",
+      "depth": 3,
+      "category": "general"
+    }
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/build-repo-tree.yml",
+      "name": "build-repo-tree.yml",
+      "directory": ".github/workflows",
+      "extension": "yml",
+      "language": "yaml",
+      "category": "workflow",
+      "depth": 2,
+      "size": 6591,
+      "sha256": "33b2b52297860306f2df4b326b9dd12f4e8634d8a18028b17459857143c52ca3"
+    },
+    {
+      "path": ".gitignore",
+      "name": ".gitignore",
+      "directory": "",
+      "extension": "",
+      "language": "unknown",
+      "category": "general",
+      "depth": 0,
+      "size": 31,
+      "sha256": "3efa4e0ff2bc97281b01466654cca1eb47bf53d327d5d6b9b8f95435e57417c6"
+    },
+    {
+      "path": "README.md",
+      "name": "README.md",
+      "directory": "",
+      "extension": "md",
+      "language": "markdown",
+      "category": "general",
+      "depth": 0,
+      "size": 6103,
+      "sha256": "e49fc16fe8c5e933b1fd286b557629c30a1d2b468f5dc20782dfc3d20e969d48"
+    },
+    {
+      "path": "adrian1520_runtime-mcp_c1390f.json",
+      "name": "adrian1520_runtime-mcp_c1390f.json",
+      "directory": "",
+      "extension": "json",
+      "language": "json",
+      "category": "config",
+      "depth": 0,
+      "size": 115425,
+      "sha256": "40288ef91e577675d1019d85d8410559b0324114868efb53811404ce18caf704"
+    },
+    {
+      "path": "docs/repository-api.md",
+      "name": "repository-api.md",
+      "directory": "docs",
+      "extension": "md",
+      "language": "markdown",
+      "category": "knowledge",
+      "depth": 1,
+      "size": 517,
+      "sha256": "8cc35ac1e04609c1c32cfaf6456fab01e510d2c42eb9776714ef886d56beb524"
+    },
+    {
+      "path": "memory/README.md",
+      "name": "README.md",
+      "directory": "memory",
+      "extension": "md",
+      "language": "markdown",
+      "category": "general",
+      "depth": 1,
+      "size": 284,
+      "sha256": "58dc859ef630f1cb30df10a60384f3bd37c03c06e67463a5e526d5bf028f9001"
+    },
+    {
+      "path": "memory/index.md",
+      "name": "index.md",
+      "directory": "memory",
+      "extension": "md",
+      "language": "markdown",
+      "category": "general",
+      "depth": 1,
+      "size": 80,
+      "sha256": "70358e9254944a7e56bad33455eaab350b0569995474f7d840edf5cdd3e8b6f2"
+    },
+    {
+      "path": "package-lock.json",
+      "name": "package-lock.json",
+      "directory": "",
+      "extension": "json",
+      "language": "json",
+      "category": "config",
+      "depth": 0,
+      "size": 90057,
+      "sha256": "df2b14a4fea3ea8717a88492d9d26af5dc9e9cbcfb4fe047bc142ae1cb04065c"
+    },
+    {
+      "path": "package.json",
+      "name": "package.json",
+      "directory": "",
+      "extension": "json",
+      "language": "json",
+      "category": "config",
+      "depth": 0,
+      "size": 1203,
+      "sha256": "f0faa059691eb7cab3c8b1c70953b56b36a18a1b059cc3eded77aab8413aab2b"
+    },
+    {
+      "path": "src/auth/bearer.ts",
+      "name": "bearer.ts",
+      "directory": "src/auth",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 695,
+      "sha256": "f281099601289c0557844de8470f9ff3164e32cf4d3610eab5343ba46fb44f52"
+    },
+    {
+      "path": "src/contracts/tool.ts",
+      "name": "tool.ts",
+      "directory": "src/contracts",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 912,
+      "sha256": "49b56ea873a3a876f561f77c3d03b2b778561906ecb14a59c9abc72385f2b21a"
+    },
+    {
+      "path": "src/index.ts",
+      "name": "index.ts",
+      "directory": "src",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 1,
+      "size": 3860,
+      "sha256": "aa599a63f548032fc4571072316aed520dce29c2971bf34947f52ae7e438793f"
+    },
+    {
+      "path": "src/mcp/adapter.ts",
+      "name": "adapter.ts",
+      "directory": "src/mcp",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 9679,
+      "sha256": "89ba4de228522e731a105ed02bbe3dbf5dcf8af409a9e3f6a57907cdf4b14d39"
+    },
+    {
+      "path": "src/openapi.ts",
+      "name": "openapi.ts",
+      "directory": "src",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 1,
+      "size": 3133,
+      "sha256": "72be2ddbcb1b26e5ad69bff8a09d015eba1933f9f36adee61de4a4896247c479"
+    },
+    {
+      "path": "src/routes/resources.ts",
+      "name": "resources.ts",
+      "directory": "src/routes",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 4601,
+      "sha256": "682a5c0c17e1fc064fb71a6432f5318b1a95dafcb29e8c75007d437bd368e970"
+    },
+    {
+      "path": "src/routes/rpc.ts",
+      "name": "rpc.ts",
+      "directory": "src/routes",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 2000,
+      "sha256": "da7f7ca2191465627f27a5b3b010c58112a4547332cee31e0227882052fa7ffc"
+    },
+    {
+      "path": "src/routes/tools.ts",
+      "name": "tools.ts",
+      "directory": "src/routes",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 4790,
+      "sha256": "55c19837b98fa5a4d992095d020cee647ef99b55eef2e16b31a075b0e48558ee"
+    },
+    {
+      "path": "src/runtime/agent.ts",
+      "name": "agent.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 933,
+      "sha256": "4dcc6f1afad343c7702fb9e23296d4d4e2cc3eb0a04d2a277229027d336c39b8"
+    },
+    {
+      "path": "src/runtime/executor.ts",
+      "name": "executor.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 431,
+      "sha256": "efee3960a8c49433a0e379a58a3754f12e2075dac81a19a2692a77cd01b19a86"
+    },
+    {
+      "path": "src/runtime/index.ts",
+      "name": "index.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 338,
+      "sha256": "0be1e518536e9927b731823402338bab383cf6b1ddd1087cf05dd6d709a8fbde"
+    },
+    {
+      "path": "src/runtime/memory-store.ts",
+      "name": "memory-store.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 772,
+      "sha256": "c43216f4bb9d7155f564eb09a7acc2269b6c30a5d5b9f1dab9403f3d9b306c75"
+    },
+    {
+      "path": "src/runtime/planner.ts",
+      "name": "planner.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 359,
+      "sha256": "afa86bab9135892256909057fba94fdcef1edf905d75f2af2aec0aec5f972eb3"
+    },
+    {
+      "path": "src/runtime/provenance-recorder.ts",
+      "name": "provenance-recorder.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 605,
+      "sha256": "95ebadca2cdd4740f393332632cc59d77d87d69fe86483f454d5b649cf10de02"
+    },
+    {
+      "path": "src/runtime/recovery-manager.ts",
+      "name": "recovery-manager.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 1151,
+      "sha256": "e6012d0a80126a3ae8a4df41fd04017591c04ee8c1d8d9b2b64e30bbbf88cb27"
+    },
+    {
+      "path": "src/runtime/state-machine.ts",
+      "name": "state-machine.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 691,
+      "sha256": "abbd39b8e2176ad6ccfc92fbab743c01c4eabd7ef26eefd656d4d7b29829daf6"
+    },
+    {
+      "path": "src/runtime/task-graph.ts",
+      "name": "task-graph.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 539,
+      "sha256": "44a6359a07f81619f62d1a55bd66700265a882ea4abce046f456a165a65cc9da"
+    },
+    {
+      "path": "src/runtime/types.ts",
+      "name": "types.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 1442,
+      "sha256": "28941b4c9ef398fc52af024ff7de769267a696c6adc6caae844138be27102adc"
+    },
+    {
+      "path": "src/runtime/workflow-engine.ts",
+      "name": "workflow-engine.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 6220,
+      "sha256": "66b81dc0f64892907324cce695fae9d8fa0531fa7235f83961c7fc65c0921bcd"
+    },
+    {
+      "path": "src/runtime/workflow.ts",
+      "name": "workflow.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 285,
+      "sha256": "b8ff5c10aa97de56ded109f5f35c173ae351b798242d9760a4ba01f13dd4f638"
+    },
+    {
+      "path": "src/server.ts",
+      "name": "server.ts",
+      "directory": "src",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 1,
+      "size": 674,
+      "sha256": "46338562ddae2e93fdf2e3245f79684c04a55581a20ae97a335c1f9444a8e7e1"
+    },
+    {
+      "path": "src/tools/memory/index.ts",
+      "name": "index.ts",
+      "directory": "src/tools/memory",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 3,
+      "size": 6306,
+      "sha256": "e5049d00f613c707d7a65fdcff8dee032474f78db01a3e27236f36970adfd7d9"
+    },
+    {
+      "path": "src/tools/provenance/index.ts",
+      "name": "index.ts",
+      "directory": "src/tools/provenance",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 3,
+      "size": 4359,
+      "sha256": "cf6fe568a7ea4500ecb1ad35e87b889559f3b8f41b9583d9975557c03e6ce782"
+    },
+    {
+      "path": "src/tools/repository/index.ts",
+      "name": "index.ts",
+      "directory": "src/tools/repository",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 3,
+      "size": 9158,
+      "sha256": "e74e42fec6d23c249d431e07b6eca34cb5af9f406280afac3cd1df5cdf0e2e81"
+    },
+    {
+      "path": "tsconfig.json",
+      "name": "tsconfig.json",
+      "directory": "",
+      "extension": "json",
+      "language": "json",
+      "category": "config",
+      "depth": 0,
+      "size": 724,
+      "sha256": "57df6ad709ddd86e6483f11fb9d7dc6c322843159ec495ca42e7a9e6490d6367"
+    },
+    {
+      "path": "wrangler.toml",
+      "name": "wrangler.toml",
+      "directory": "",
+      "extension": "toml",
+      "language": "unknown",
+      "category": "general",
+      "depth": 0,
+      "size": 728,
+      "sha256": "1c3c3258dea4276345593b114656beea63fc7b5d46b1c88763a0804afcc4be27"
+    }
+  ]
+}
