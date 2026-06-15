@@ -1,0 +1,395 @@
+name: Build Repository Index
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths-ignore:
+      - repo.index.json
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: repo-index
+  cancel-in-progress: true
+
+jobs:
+  build-index:
+
+    if: github.actor != 'github-actions[bot]'
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+        with:
+          fetch-depth: 0
+
+      - name: Generate repo.index.v2
+        shell: bash
+        run: |
+
+          python << 'EOF'
+
+          import os
+          import re
+          import json
+          from datetime import datetime, timezone
+
+          ROOT = "."
+
+          IGNORE_DIRS = {
+              ".git",
+              "node_modules",
+              "dist",
+              "build",
+              ".next",
+              ".turbo",
+              ".cache",
+              ".idea",
+              ".vscode",
+              "__pycache__"
+          }
+
+          classes = []
+          interfaces = []
+          types = []
+          enums = []
+          functions = []
+          exports = []
+          imports = []
+
+          seen_classes = set()
+          seen_interfaces = set()
+          seen_types = set()
+          seen_enums = set()
+          seen_functions = set()
+          seen_exports = set()
+          seen_imports = set()
+
+          CLASS_RE = re.compile(
+              r'(?:export\s+)?class\s+([A-Za-z0-9_]+)'
+          )
+
+          INTERFACE_RE = re.compile(
+              r'(?:export\s+)?interface\s+([A-Za-z0-9_]+)'
+          )
+
+          TYPE_RE = re.compile(
+              r'(?:export\s+)?type\s+([A-Za-z0-9_]+)'
+          )
+
+          ENUM_RE = re.compile(
+              r'(?:export\s+)?enum\s+([A-Za-z0-9_]+)'
+          )
+
+          FUNCTION_RE = re.compile(
+              r'(?:export\s+)?(?:async\s+)?function\s+([A-Za-z0-9_]+)'
+          )
+
+          METHOD_RE = re.compile(
+              r'^\s*(?:public|private|protected)?\s*(?:static\s+)?(?:async\s+)?([A-Za-z0-9_]+)\s*\(',
+              re.MULTILINE
+          )
+
+          IMPORT_RE = re.compile(
+              r'import[\s\S]*?from\s+[\'"]([^\'"]+)[\'"]'
+          )
+
+          SKIP_METHODS = {
+              "constructor",
+              "if",
+              "for",
+              "while",
+              "switch",
+              "catch",
+              "return"
+          }
+
+          for current, dirs, files_in_dir in os.walk(ROOT):
+
+              dirs[:] = [
+                  d for d in dirs
+                  if d not in IGNORE_DIRS
+              ]
+
+              for filename in files_in_dir:
+
+                  if not (
+                      filename.endswith(".ts")
+                      or filename.endswith(".tsx")
+                  ):
+                      continue
+
+                  path = os.path.join(
+                      current,
+                      filename
+                  )
+
+                  rel = os.path.relpath(
+                      path,
+                      ROOT
+                  ).replace("\\", "/")
+
+                  try:
+                      with open(
+                          path,
+                          "r",
+                          encoding="utf-8"
+                      ) as f:
+                          content = f.read()
+                  except Exception:
+                      continue
+
+                  for match in CLASS_RE.finditer(content):
+
+                      name = match.group(1)
+
+                      key = (name, rel)
+
+                      if key in seen_classes:
+                          continue
+
+                      seen_classes.add(key)
+
+                      classes.append({
+                          "name": name,
+                          "file": rel,
+                          "exported":
+                            f"export class {name}"
+                            in content
+                      })
+
+                  for match in INTERFACE_RE.finditer(content):
+
+                      name = match.group(1)
+
+                      key = (name, rel)
+
+                      if key in seen_interfaces:
+                          continue
+
+                      seen_interfaces.add(key)
+
+                      interfaces.append({
+                          "name": name,
+                          "file": rel,
+                          "exported":
+                            f"export interface {name}"
+                            in content
+                      })
+
+                  for match in TYPE_RE.finditer(content):
+
+                      name = match.group(1)
+
+                      key = (name, rel)
+
+                      if key in seen_types:
+                          continue
+
+                      seen_types.add(key)
+
+                      types.append({
+                          "name": name,
+                          "file": rel,
+                          "exported":
+                            f"export type {name}"
+                            in content
+                      })
+
+                  for match in ENUM_RE.finditer(content):
+
+                      name = match.group(1)
+
+                      key = (name, rel)
+
+                      if key in seen_enums:
+                          continue
+
+                      seen_enums.add(key)
+
+                      enums.append({
+                          "name": name,
+                          "file": rel,
+                          "exported":
+                            f"export enum {name}"
+                            in content
+                      })
+
+                  for match in FUNCTION_RE.finditer(content):
+
+                      name = match.group(1)
+
+                      key = (name, rel)
+
+                      if key in seen_functions:
+                          continue
+
+                      seen_functions.add(key)
+
+                      functions.append({
+                          "name": name,
+                          "kind": "function",
+                          "file": rel
+                      })
+
+                  for match in METHOD_RE.finditer(content):
+
+                      name = match.group(1)
+
+                      if name in SKIP_METHODS:
+                          continue
+
+                      key = (
+                          "method",
+                          name,
+                          rel
+                      )
+
+                      if key in seen_functions:
+                          continue
+
+                      seen_functions.add(key)
+
+                      functions.append({
+                          "name": name,
+                          "kind": "method",
+                          "file": rel
+                      })
+
+                  for source in IMPORT_RE.findall(
+                      content
+                  ):
+
+                      key = (rel, source)
+
+                      if key in seen_imports:
+                          continue
+
+                      seen_imports.add(key)
+
+                      imports.append({
+                          "file": rel,
+                          "from": source
+                      })
+
+                  export_matches = re.findall(
+                      r'export\s+(?:class|interface|type|enum|function)\s+([A-Za-z0-9_]+)',
+                      content
+                  )
+
+                  for symbol in export_matches:
+
+                      key = (symbol, rel)
+
+                      if key in seen_exports:
+                          continue
+
+                      seen_exports.add(key)
+
+                      exports.append({
+                          "name": symbol,
+                          "file": rel
+                      })
+
+          manifest = {
+              "schema": "repo.index.v2",
+              "generated_at":
+                datetime.now(
+                    timezone.utc
+                ).isoformat(),
+              "summary": {
+                  "classes": len(classes),
+                  "interfaces": len(interfaces),
+                  "types": len(types),
+                  "enums": len(enums),
+                  "functions": len(functions),
+                  "exports": len(exports),
+                  "imports": len(imports)
+              },
+              "classes": sorted(
+                  classes,
+                  key=lambda x: x["name"]
+              ),
+              "interfaces": sorted(
+                  interfaces,
+                  key=lambda x: x["name"]
+              ),
+              "types": sorted(
+                  types,
+                  key=lambda x: x["name"]
+              ),
+              "enums": sorted(
+                  enums,
+                  key=lambda x: x["name"]
+              ),
+              "functions": sorted(
+                  functions,
+                  key=lambda x: (
+                      x["file"],
+                      x["name"]
+                  )
+              ),
+              "exports": sorted(
+                  exports,
+                  key=lambda x: (
+                      x["file"],
+                      x["name"]
+                  )
+              ),
+              "imports": sorted(
+                  imports,
+                  key=lambda x: (
+                      x["file"],
+                      x["from"]
+                  )
+              )
+          }
+
+          with open(
+              "repo.index.json",
+              "w",
+              encoding="utf-8"
+          ) as f:
+              json.dump(
+                  manifest,
+                  f,
+                  indent=2,
+                  ensure_ascii=False
+              )
+
+          EOF
+
+      - name: Commit repo.index.json
+        shell: bash
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+
+          git config user.name \
+            "github-actions[bot]"
+
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add repo.index.json
+
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+
+          git commit \
+            -m "chore(repo): rebuild repo.index.v2"
+
+          git pull --rebase origin "${BRANCH_NAME}"
+
+          git push origin HEAD:"${BRANCH_NAME}"
