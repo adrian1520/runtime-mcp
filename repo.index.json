@@ -1,0 +1,952 @@
+{
+  "schema": "repo.index.v2",
+  "generated_at": "2026-06-15T20:44:02.808377+00:00",
+  "summary": {
+    "classes": 11,
+    "interfaces": 11,
+    "types": 22,
+    "enums": 0,
+    "functions": 70,
+    "exports": 33,
+    "imports": 56
+  },
+  "classes": [
+    {
+      "name": "Agent",
+      "file": "src/runtime/agent.ts",
+      "exported": true
+    },
+    {
+      "name": "Executor",
+      "file": "src/runtime/executor.ts",
+      "exported": true
+    },
+    {
+      "name": "MemoryStore",
+      "file": "src/runtime/memory-store.ts",
+      "exported": true
+    },
+    {
+      "name": "Planner",
+      "file": "src/runtime/planner.ts",
+      "exported": true
+    },
+    {
+      "name": "ProvenanceRecorder",
+      "file": "src/runtime/provenance-recorder.ts",
+      "exported": true
+    },
+    {
+      "name": "RecoveryManager",
+      "file": "src/runtime/recovery-manager.ts",
+      "exported": true
+    },
+    {
+      "name": "RepositoryError",
+      "file": "src/tools/repository/index.ts",
+      "exported": false
+    },
+    {
+      "name": "StateMachine",
+      "file": "src/runtime/state-machine.ts",
+      "exported": true
+    },
+    {
+      "name": "TaskGraph",
+      "file": "src/runtime/task-graph.ts",
+      "exported": true
+    },
+    {
+      "name": "Workflow",
+      "file": "src/runtime/workflow.ts",
+      "exported": true
+    },
+    {
+      "name": "WorkflowEngine",
+      "file": "src/runtime/workflow-engine.ts",
+      "exported": true
+    }
+  ],
+  "interfaces": [
+    {
+      "name": "Checkpoint",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "ExecutionContext",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "ExecutionResult",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "Goal",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "RecoveryState",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "TaskNode",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "TaskResult",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "WorkflowDefinition",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "WorkflowMetadata",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "WorkflowSnapshot",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "WorkflowStatus",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    }
+  ],
+  "types": [
+    {
+      "name": "BearerAuthResult",
+      "file": "src/auth/bearer.ts",
+      "exported": true
+    },
+    {
+      "name": "Env",
+      "file": "src/server.ts",
+      "exported": true
+    },
+    {
+      "name": "Env",
+      "file": "src/mcp/adapter.ts",
+      "exported": false
+    },
+    {
+      "name": "Env",
+      "file": "src/runtime/executor.ts",
+      "exported": false
+    },
+    {
+      "name": "Env",
+      "file": "src/routes/rpc.ts",
+      "exported": false
+    },
+    {
+      "name": "Env",
+      "file": "src/routes/tools.ts",
+      "exported": false
+    },
+    {
+      "name": "Env",
+      "file": "src/tools/repository/index.ts",
+      "exported": false
+    },
+    {
+      "name": "Env",
+      "file": "src/tools/provenance/index.ts",
+      "exported": false
+    },
+    {
+      "name": "Env",
+      "file": "src/tools/memory/index.ts",
+      "exported": false
+    },
+    {
+      "name": "GitHubContent",
+      "file": "src/tools/repository/index.ts",
+      "exported": false
+    },
+    {
+      "name": "JsonSchema",
+      "file": "src/contracts/tool.ts",
+      "exported": true
+    },
+    {
+      "name": "OpenApiOperation",
+      "file": "src/openapi.ts",
+      "exported": false
+    },
+    {
+      "name": "OpenApiPathItem",
+      "file": "src/openapi.ts",
+      "exported": false
+    },
+    {
+      "name": "OpenApiResponse",
+      "file": "src/openapi.ts",
+      "exported": false
+    },
+    {
+      "name": "OpenApiSchema",
+      "file": "src/openapi.ts",
+      "exported": false
+    },
+    {
+      "name": "ReadArgs",
+      "file": "src/tools/repository/index.ts",
+      "exported": false
+    },
+    {
+      "name": "RuntimeState",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "SaveArgs",
+      "file": "src/tools/repository/index.ts",
+      "exported": false
+    },
+    {
+      "name": "ToolContext",
+      "file": "src/contracts/tool.ts",
+      "exported": true
+    },
+    {
+      "name": "ToolDefinition",
+      "file": "src/contracts/tool.ts",
+      "exported": true
+    },
+    {
+      "name": "ToolRegistry",
+      "file": "src/contracts/tool.ts",
+      "exported": true
+    },
+    {
+      "name": "html",
+      "file": "src/mcp/adapter.ts",
+      "exported": false
+    }
+  ],
+  "enums": [],
+  "functions": [
+    {
+      "name": "verifyBearer",
+      "kind": "function",
+      "file": "src/auth/bearer.ts"
+    },
+    {
+      "name": "buildOpenApi",
+      "kind": "method",
+      "file": "src/index.ts"
+    },
+    {
+      "name": "fetch",
+      "kind": "method",
+      "file": "src/index.ts"
+    },
+    {
+      "name": "json",
+      "kind": "function",
+      "file": "src/index.ts"
+    },
+    {
+      "name": "requestId",
+      "kind": "function",
+      "file": "src/index.ts"
+    },
+    {
+      "name": "requestId",
+      "kind": "method",
+      "file": "src/index.ts"
+    },
+    {
+      "name": "async",
+      "kind": "method",
+      "file": "src/mcp/adapter.ts"
+    },
+    {
+      "name": "createMcpServer",
+      "kind": "function",
+      "file": "src/mcp/adapter.ts"
+    },
+    {
+      "name": "errorResponse",
+      "kind": "function",
+      "file": "src/mcp/adapter.ts"
+    },
+    {
+      "name": "executeRepositoryQuery",
+      "kind": "function",
+      "file": "src/mcp/adapter.ts"
+    },
+    {
+      "name": "executeTool",
+      "kind": "function",
+      "file": "src/mcp/adapter.ts"
+    },
+    {
+      "name": "handleMcpRoute",
+      "kind": "function",
+      "file": "src/mcp/adapter.ts"
+    },
+    {
+      "name": "mcpHeaders",
+      "kind": "function",
+      "file": "src/mcp/adapter.ts"
+    },
+    {
+      "name": "resultContent",
+      "kind": "function",
+      "file": "src/mcp/adapter.ts"
+    },
+    {
+      "name": "serializedResult",
+      "kind": "function",
+      "file": "src/mcp/adapter.ts"
+    },
+    {
+      "name": "typeof",
+      "kind": "method",
+      "file": "src/mcp/adapter.ts"
+    },
+    {
+      "name": "withMcpHeaders",
+      "kind": "function",
+      "file": "src/mcp/adapter.ts"
+    },
+    {
+      "name": "buildOpenApi",
+      "kind": "function",
+      "file": "src/openapi.ts"
+    },
+    {
+      "name": "handleResourcesRoute",
+      "kind": "function",
+      "file": "src/routes/resources.ts"
+    },
+    {
+      "name": "json",
+      "kind": "function",
+      "file": "src/routes/resources.ts"
+    },
+    {
+      "name": "handleRpcRoute",
+      "kind": "function",
+      "file": "src/routes/rpc.ts"
+    },
+    {
+      "name": "handleToolsRoute",
+      "kind": "function",
+      "file": "src/routes/tools.ts"
+    },
+    {
+      "name": "json",
+      "kind": "function",
+      "file": "src/routes/tools.ts"
+    },
+    {
+      "name": "verifyBearer",
+      "kind": "method",
+      "file": "src/routes/tools.ts"
+    },
+    {
+      "name": "execute",
+      "kind": "method",
+      "file": "src/runtime/agent.ts"
+    },
+    {
+      "name": "runTool",
+      "kind": "method",
+      "file": "src/runtime/executor.ts"
+    },
+    {
+      "name": "exists",
+      "kind": "method",
+      "file": "src/runtime/memory-store.ts"
+    },
+    {
+      "name": "get",
+      "kind": "method",
+      "file": "src/runtime/memory-store.ts"
+    },
+    {
+      "name": "put",
+      "kind": "method",
+      "file": "src/runtime/memory-store.ts"
+    },
+    {
+      "name": "build",
+      "kind": "method",
+      "file": "src/runtime/planner.ts"
+    },
+    {
+      "name": "append",
+      "kind": "method",
+      "file": "src/runtime/provenance-recorder.ts"
+    },
+    {
+      "name": "query",
+      "kind": "method",
+      "file": "src/runtime/provenance-recorder.ts"
+    },
+    {
+      "name": "resume",
+      "kind": "method",
+      "file": "src/runtime/recovery-manager.ts"
+    },
+    {
+      "name": "transition",
+      "kind": "method",
+      "file": "src/runtime/state-machine.ts"
+    },
+    {
+      "name": "getTask",
+      "kind": "method",
+      "file": "src/runtime/task-graph.ts"
+    },
+    {
+      "name": "next",
+      "kind": "method",
+      "file": "src/runtime/task-graph.ts"
+    },
+    {
+      "name": "roots",
+      "kind": "method",
+      "file": "src/runtime/task-graph.ts"
+    },
+    {
+      "name": "executeGraph",
+      "kind": "method",
+      "file": "src/runtime/workflow-engine.ts"
+    },
+    {
+      "name": "resume",
+      "kind": "method",
+      "file": "src/runtime/workflow-engine.ts"
+    },
+    {
+      "name": "run",
+      "kind": "method",
+      "file": "src/runtime/workflow-engine.ts"
+    },
+    {
+      "name": "updateStatus",
+      "kind": "method",
+      "file": "src/runtime/workflow-engine.ts"
+    },
+    {
+      "name": "create",
+      "kind": "method",
+      "file": "src/runtime/workflow.ts"
+    },
+    {
+      "name": "registerMemoryTools",
+      "kind": "method",
+      "file": "src/server.ts"
+    },
+    {
+      "name": "registerProvenanceTools",
+      "kind": "method",
+      "file": "src/server.ts"
+    },
+    {
+      "name": "registerRepositoryTools",
+      "kind": "method",
+      "file": "src/server.ts"
+    },
+    {
+      "name": "keyOf",
+      "kind": "function",
+      "file": "src/tools/memory/index.ts"
+    },
+    {
+      "name": "keyOf",
+      "kind": "method",
+      "file": "src/tools/memory/index.ts"
+    },
+    {
+      "name": "registerMemoryTools",
+      "kind": "function",
+      "file": "src/tools/memory/index.ts"
+    },
+    {
+      "name": "safeStringify",
+      "kind": "function",
+      "file": "src/tools/memory/index.ts"
+    },
+    {
+      "name": "safeStringify",
+      "kind": "method",
+      "file": "src/tools/memory/index.ts"
+    },
+    {
+      "name": "sanitizeKey",
+      "kind": "function",
+      "file": "src/tools/memory/index.ts"
+    },
+    {
+      "name": "sanitizeKey",
+      "kind": "method",
+      "file": "src/tools/memory/index.ts"
+    },
+    {
+      "name": "async",
+      "kind": "method",
+      "file": "src/tools/provenance/index.ts"
+    },
+    {
+      "name": "registerProvenanceTools",
+      "kind": "function",
+      "file": "src/tools/provenance/index.ts"
+    },
+    {
+      "name": "safeParse",
+      "kind": "function",
+      "file": "src/tools/provenance/index.ts"
+    },
+    {
+      "name": "safeStringify",
+      "kind": "function",
+      "file": "src/tools/provenance/index.ts"
+    },
+    {
+      "name": "safeStringify",
+      "kind": "method",
+      "file": "src/tools/provenance/index.ts"
+    },
+    {
+      "name": "contentsUrl",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "decodeBase64",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "encodeBase64",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "encodePath",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "findExistingFile",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "githubError",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "githubRequest",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "isValidMemoryPath",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "normalizeMemoryPath",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "pathParts",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "registerRepositoryTools",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "repositoryConfig",
+      "kind": "function",
+      "file": "src/tools/repository/index.ts"
+    },
+    {
+      "name": "super",
+      "kind": "method",
+      "file": "src/tools/repository/index.ts"
+    }
+  ],
+  "exports": [
+    {
+      "name": "BearerAuthResult",
+      "file": "src/auth/bearer.ts"
+    },
+    {
+      "name": "verifyBearer",
+      "file": "src/auth/bearer.ts"
+    },
+    {
+      "name": "JsonSchema",
+      "file": "src/contracts/tool.ts"
+    },
+    {
+      "name": "ToolContext",
+      "file": "src/contracts/tool.ts"
+    },
+    {
+      "name": "ToolDefinition",
+      "file": "src/contracts/tool.ts"
+    },
+    {
+      "name": "ToolRegistry",
+      "file": "src/contracts/tool.ts"
+    },
+    {
+      "name": "buildOpenApi",
+      "file": "src/openapi.ts"
+    },
+    {
+      "name": "Agent",
+      "file": "src/runtime/agent.ts"
+    },
+    {
+      "name": "Executor",
+      "file": "src/runtime/executor.ts"
+    },
+    {
+      "name": "MemoryStore",
+      "file": "src/runtime/memory-store.ts"
+    },
+    {
+      "name": "Planner",
+      "file": "src/runtime/planner.ts"
+    },
+    {
+      "name": "ProvenanceRecorder",
+      "file": "src/runtime/provenance-recorder.ts"
+    },
+    {
+      "name": "RecoveryManager",
+      "file": "src/runtime/recovery-manager.ts"
+    },
+    {
+      "name": "StateMachine",
+      "file": "src/runtime/state-machine.ts"
+    },
+    {
+      "name": "TaskGraph",
+      "file": "src/runtime/task-graph.ts"
+    },
+    {
+      "name": "Checkpoint",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "ExecutionContext",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "ExecutionResult",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "Goal",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "RecoveryState",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "RuntimeState",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "TaskNode",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "TaskResult",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "WorkflowDefinition",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "WorkflowMetadata",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "WorkflowSnapshot",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "WorkflowStatus",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "WorkflowEngine",
+      "file": "src/runtime/workflow-engine.ts"
+    },
+    {
+      "name": "Workflow",
+      "file": "src/runtime/workflow.ts"
+    },
+    {
+      "name": "Env",
+      "file": "src/server.ts"
+    },
+    {
+      "name": "registerMemoryTools",
+      "file": "src/tools/memory/index.ts"
+    },
+    {
+      "name": "registerProvenanceTools",
+      "file": "src/tools/provenance/index.ts"
+    },
+    {
+      "name": "registerRepositoryTools",
+      "file": "src/tools/repository/index.ts"
+    }
+  ],
+  "imports": [
+    {
+      "file": "src/index.ts",
+      "from": "./mcp/adapter"
+    },
+    {
+      "file": "src/index.ts",
+      "from": "./openapi"
+    },
+    {
+      "file": "src/index.ts",
+      "from": "./routes/resources"
+    },
+    {
+      "file": "src/index.ts",
+      "from": "./routes/rpc"
+    },
+    {
+      "file": "src/index.ts",
+      "from": "./routes/tools"
+    },
+    {
+      "file": "src/index.ts",
+      "from": "./server"
+    },
+    {
+      "file": "src/mcp/adapter.ts",
+      "from": "../auth/bearer"
+    },
+    {
+      "file": "src/mcp/adapter.ts",
+      "from": "../contracts/tool"
+    },
+    {
+      "file": "src/mcp/adapter.ts",
+      "from": "../server"
+    },
+    {
+      "file": "src/mcp/adapter.ts",
+      "from": "@modelcontextprotocol/sdk/server/index.js"
+    },
+    {
+      "file": "src/mcp/adapter.ts",
+      "from": "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js"
+    },
+    {
+      "file": "src/mcp/adapter.ts",
+      "from": "@modelcontextprotocol/sdk/types.js"
+    },
+    {
+      "file": "src/openapi.ts",
+      "from": "./contracts/tool"
+    },
+    {
+      "file": "src/openapi.ts",
+      "from": "./server"
+    },
+    {
+      "file": "src/routes/resources.ts",
+      "from": "../server"
+    },
+    {
+      "file": "src/routes/rpc.ts",
+      "from": "../auth/bearer"
+    },
+    {
+      "file": "src/routes/rpc.ts",
+      "from": "../server"
+    },
+    {
+      "file": "src/routes/tools.ts",
+      "from": "../auth/bearer"
+    },
+    {
+      "file": "src/routes/tools.ts",
+      "from": "../server"
+    },
+    {
+      "file": "src/routes/tools.ts",
+      "from": "zod"
+    },
+    {
+      "file": "src/runtime/agent.ts",
+      "from": "../server"
+    },
+    {
+      "file": "src/runtime/agent.ts",
+      "from": "./state-machine"
+    },
+    {
+      "file": "src/runtime/agent.ts",
+      "from": "./types"
+    },
+    {
+      "file": "src/runtime/agent.ts",
+      "from": "./workflow-engine"
+    },
+    {
+      "file": "src/runtime/executor.ts",
+      "from": "../server"
+    },
+    {
+      "file": "src/runtime/memory-store.ts",
+      "from": "../server"
+    },
+    {
+      "file": "src/runtime/memory-store.ts",
+      "from": "./executor"
+    },
+    {
+      "file": "src/runtime/planner.ts",
+      "from": "./types"
+    },
+    {
+      "file": "src/runtime/provenance-recorder.ts",
+      "from": "../server"
+    },
+    {
+      "file": "src/runtime/provenance-recorder.ts",
+      "from": "./executor"
+    },
+    {
+      "file": "src/runtime/recovery-manager.ts",
+      "from": "../server"
+    },
+    {
+      "file": "src/runtime/recovery-manager.ts",
+      "from": "./memory-store"
+    },
+    {
+      "file": "src/runtime/recovery-manager.ts",
+      "from": "./types"
+    },
+    {
+      "file": "src/runtime/state-machine.ts",
+      "from": "./types"
+    },
+    {
+      "file": "src/runtime/task-graph.ts",
+      "from": "./types"
+    },
+    {
+      "file": "src/runtime/workflow-engine.ts",
+      "from": "../server"
+    },
+    {
+      "file": "src/runtime/workflow-engine.ts",
+      "from": "./executor"
+    },
+    {
+      "file": "src/runtime/workflow-engine.ts",
+      "from": "./memory-store"
+    },
+    {
+      "file": "src/runtime/workflow-engine.ts",
+      "from": "./provenance-recorder"
+    },
+    {
+      "file": "src/runtime/workflow-engine.ts",
+      "from": "./recovery-manager"
+    },
+    {
+      "file": "src/runtime/workflow-engine.ts",
+      "from": "./task-graph"
+    },
+    {
+      "file": "src/runtime/workflow-engine.ts",
+      "from": "./types"
+    },
+    {
+      "file": "src/runtime/workflow-engine.ts",
+      "from": "./workflow"
+    },
+    {
+      "file": "src/runtime/workflow.ts",
+      "from": "./planner"
+    },
+    {
+      "file": "src/runtime/workflow.ts",
+      "from": "./task-graph"
+    },
+    {
+      "file": "src/runtime/workflow.ts",
+      "from": "./types"
+    },
+    {
+      "file": "src/server.ts",
+      "from": "./contracts/tool"
+    },
+    {
+      "file": "src/server.ts",
+      "from": "./tools/memory"
+    },
+    {
+      "file": "src/server.ts",
+      "from": "./tools/provenance"
+    },
+    {
+      "file": "src/server.ts",
+      "from": "./tools/repository"
+    },
+    {
+      "file": "src/tools/memory/index.ts",
+      "from": "../../contracts/tool"
+    },
+    {
+      "file": "src/tools/memory/index.ts",
+      "from": "zod"
+    },
+    {
+      "file": "src/tools/provenance/index.ts",
+      "from": "../../contracts/tool"
+    },
+    {
+      "file": "src/tools/provenance/index.ts",
+      "from": "zod"
+    },
+    {
+      "file": "src/tools/repository/index.ts",
+      "from": "../../contracts/tool"
+    },
+    {
+      "file": "src/tools/repository/index.ts",
+      "from": "zod"
+    }
+  ]
+}
