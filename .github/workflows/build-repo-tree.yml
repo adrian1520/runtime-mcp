@@ -1,0 +1,255 @@
+# .github/workflows/build-repo-tree.yml
+
+name: Build Repository Tree
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-tree
+  cancel-in-progress: true
+
+jobs:
+
+  build-tree:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate repo.tree.v2
+        shell: bash
+        run: |
+
+          python << 'EOF'
+
+          import os
+          import json
+          import hashlib
+          from datetime import datetime, timezone
+
+          ROOT = "."
+
+          IGNORE_DIRS = {
+              ".git",
+              "node_modules",
+              ".next",
+              ".turbo",
+              ".cache",
+              ".idea",
+              ".vscode",
+              "__pycache__",
+              "dist",
+              "build",
+              "coverage"
+          }
+
+          IGNORE_FILES = {
+              "repo.tree.json"
+          }
+
+          CATEGORY_RULES = {
+              "runtime": ["src/runtime"],
+              "workflow": [".github/workflows"],
+              "knowledge": ["knowledge", "docs"],
+              "tests": ["test", "tests"],
+              "prompts": ["prompts"],
+              "agents": ["agents"],
+              "config": []
+          }
+
+          EXTENSION_LANGUAGE = {
+              "ts": "typescript",
+              "tsx": "typescript",
+              "js": "javascript",
+              "mjs": "javascript",
+              "cjs": "javascript",
+              "py": "python",
+              "go": "go",
+              "rs": "rust",
+              "java": "java",
+              "kt": "kotlin",
+              "yaml": "yaml",
+              "yml": "yaml",
+              "json": "json",
+              "md": "markdown",
+              "txt": "text",
+              "sh": "shell"
+          }
+
+          def classify(path):
+              normalized = path.replace("\\", "/")
+
+              for category, prefixes in CATEGORY_RULES.items():
+                  for prefix in prefixes:
+                      if normalized.startswith(prefix):
+                          return category
+
+              ext = normalized.split(".")[-1].lower()
+
+              if ext in ("json", "yaml", "yml"):
+                  return "config"
+
+              return "general"
+
+          directories = {}
+          files = []
+
+          for current, dirs, filenames in os.walk(ROOT):
+
+              dirs[:] = [
+                  d for d in dirs
+                  if d not in IGNORE_DIRS
+              ]
+
+              rel_dir = os.path.relpath(
+                  current,
+                  ROOT
+              ).replace("\\", "/")
+
+              if rel_dir == ".":
+                  rel_dir = ""
+
+              depth = (
+                  0
+                  if not rel_dir
+                  else len(rel_dir.split("/"))
+              )
+
+              directories[rel_dir] = {
+                  "path": rel_dir,
+                  "depth": depth,
+                  "category": classify(rel_dir)
+              }
+
+              for filename in filenames:
+
+                  if filename in IGNORE_FILES:
+                      continue
+
+                  full_path = os.path.join(
+                      current,
+                      filename
+                  )
+
+                  rel_path = os.path.relpath(
+                      full_path,
+                      ROOT
+                  ).replace("\\", "/")
+
+                  try:
+
+                      stat = os.stat(full_path)
+
+                      with open(
+                          full_path,
+                          "rb"
+                      ) as fp:
+                          digest = hashlib.sha256(
+                              fp.read()
+                          ).hexdigest()
+
+                      ext = (
+                          os.path.splitext(filename)[1]
+                          .replace(".", "")
+                          .lower()
+                      )
+
+                      directory = os.path.dirname(
+                          rel_path
+                      ).replace("\\", "/")
+
+                      files.append({
+                          "path": rel_path,
+                          "name": filename,
+                          "directory": directory,
+                          "extension": ext,
+                          "language":
+                            EXTENSION_LANGUAGE.get(
+                              ext,
+                              "unknown"
+                            ),
+                          "category":
+                            classify(rel_path),
+                          "depth":
+                            len(
+                              rel_path.split("/")
+                            ) - 1,
+                          "size":
+                            stat.st_size,
+                          "sha256":
+                            digest
+                      })
+
+                  except Exception:
+                      pass
+
+          files.sort(
+              key=lambda x: x["path"]
+          )
+
+          directory_list = sorted(
+              directories.values(),
+              key=lambda x: x["path"]
+          )
+
+          manifest = {
+              "schema": "repo.tree.v2",
+              "generated_at":
+                datetime.now(
+                    timezone.utc
+                ).isoformat(),
+              "summary": {
+                  "files": len(files),
+                  "directories":
+                    len(directory_list)
+              },
+              "directories":
+                directory_list,
+              "files":
+                files
+          }
+
+          with open(
+              "repo.tree.json",
+              "w",
+              encoding="utf-8"
+          ) as fp:
+              json.dump(
+                  manifest,
+                  fp,
+                  indent=2,
+                  ensure_ascii=False
+              )
+
+          EOF
+
+      - name: Commit repo.tree.json
+        shell: bash
+        run: |
+
+          git config user.name \
+            "github-actions[bot]"
+
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add repo.tree.json
+
+          git diff --cached --quiet && exit 0
+
+          git commit \
+            -m "chore(repo): rebuild repo.tree.v2"
+
+          git push
