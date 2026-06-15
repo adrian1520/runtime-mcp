@@ -61,6 +61,13 @@ export interface RecoveryState {
   remaining: string[];
 }
 
+export interface WorkflowStatus {
+  workflowId: string;
+  state: RuntimeState;
+  updatedAt: string;
+  lastTask?: string;
+}
+
 export interface WorkflowMetadata {
   createdAt?: string;
   updatedAt?: string;
