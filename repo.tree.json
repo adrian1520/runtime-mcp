@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T19:15:38.852869+00:00",
+  "generated_at": "2026-06-16T19:23:45.594715+00:00",
   "summary": {
-    "files": 55,
+    "files": 56,
     "directories": 19
   },
   "directories": [
@@ -124,6 +124,17 @@
       "depth": 2,
       "size": 595,
       "sha256": "1f48c52f209a971b8e7eae4120144d28fcf8ee38a7778a7b4d8cf1ab356617d2"
+    },
+    {
+      "path": ".github/workflows/auto-fix.yml",
+      "name": "auto-fix.yml",
+      "directory": ".github/workflows",
+      "extension": "yml",
+      "language": "yaml",
+      "category": "workflow",
+      "depth": 2,
+      "size": 3220,
+      "sha256": "ec08100ecb19f10814866436c6e362071fd309b196622f03876b4d7d8fef82f2"
     },
     {
       "path": ".github/workflows/build-repo-index.yml",
@@ -288,7 +299,7 @@
       "category": "config",
       "depth": 0,
       "size": 28093,
-      "sha256": "f209dc4e6bb887cdfa2ecf9d354a784f938c4e0f053d7b8432e9fc9cd5677d1f"
+      "sha256": "516f02246653147792d0b0889a7599846edf0de215cda3e8fb7b5b4f090d28ec"
     },
     {
       "path": "src/agents/context-builder.ts",
