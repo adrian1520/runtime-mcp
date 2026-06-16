@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T05:00:46.516529+00:00",
+  "generated_at": "2026-06-16T08:11:54.049350+00:00",
   "summary": {
-    "files": 41,
-    "directories": 16
+    "files": 43,
+    "directories": 17
   },
   "directories": [
     {
@@ -64,6 +64,11 @@
     {
       "path": "src/runtime",
       "depth": 2,
+      "category": "runtime"
+    },
+    {
+      "path": "src/runtime/registries",
+      "depth": 3,
       "category": "runtime"
     },
     {
@@ -251,7 +256,7 @@
       "category": "config",
       "depth": 0,
       "size": 19892,
-      "sha256": "7b8e2e29629a89d6d10764305d9d8fd70cb65d98f553b2bac24afdce481fa081"
+      "sha256": "da5f133d16cc6365e6256e2c49b9fc3737f2a1b818b9a33ebc55ecf8502c095c"
     },
     {
       "path": "src/auth/bearer.ts",
@@ -417,6 +422,28 @@
       "depth": 2,
       "size": 1151,
       "sha256": "e6012d0a80126a3ae8a4df41fd04017591c04ee8c1d8d9b2b64e30bbbf88cb27"
+    },
+    {
+      "path": "src/runtime/registries/workflow-registry.ts",
+      "name": "workflow-registry.ts",
+      "directory": "src/runtime/registries",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 3,
+      "size": 814,
+      "sha256": "7794ea1345b8c19900b515fbdf5c16ba9f88455772df9988d004302b8a1c497f"
+    },
+    {
+      "path": "src/runtime/registry.ts",
+      "name": "registry.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 386,
+      "sha256": "78ef5a2813c21e840443aa7ff62d76ea64f348750bf477a632ac769cb8ccc461"
     },
     {
       "path": "src/runtime/state-machine.ts",
