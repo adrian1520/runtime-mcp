@@ -1,0 +1,153 @@
+# contracts/tool.contract.yaml
+
+schema: runtime.tool.v1
+
+kind: contract
+
+metadata:
+  name: Runtime MCP Tool Contract
+  version: 1.0.0
+  status: active
+
+description: >
+  Canonical specification for Runtime MCP tools.
+  Tools are executable capabilities registered in the runtime
+  and callable by agents, workflows and external clients.
+
+lifecycle:
+  states:
+    - DRAFT
+    - REGISTERED
+    - ACTIVE
+    - DISABLED
+    - DEPRECATED
+    - REMOVED
+
+registry:
+  path: tools/
+
+registration:
+  discovery:
+    path: tools/**/*.yaml
+  validation:
+    contract_required: true
+  activation:
+    auto_register: true
+
+tool:
+  required:
+    - id
+    - version
+    - name
+    - description
+    - input
+    - output
+    - implementation
+
+  fields:
+    id:
+      type: string
+      pattern: namespace.action
+
+    version:
+      type: string
+
+    name:
+      type: string
+
+    description:
+      type: string
+
+    category:
+      type: string
+
+    tags:
+      type: array
+
+    implementation:
+      type: string
+
+    runtime:
+      type: string
+
+    entrypoint:
+      type: string
+
+    permissions:
+      type: array
+
+    timeout_seconds:
+      type: integer
+
+    retryable:
+      type: boolean
+
+    idempotent:
+      type: boolean
+
+    input:
+      type: object
+
+    output:
+      type: object
+
+binding:
+  implementation:
+    types:
+      - typescript
+      - javascript
+      - python
+      - workflow
+      - remote
+
+  entrypoint:
+    required: true
+
+permissions:
+  available:
+    - read_repository
+    - write_repository
+    - execute_code
+    - execute_workflow
+    - execute_agent
+
+validation:
+  input:
+    schema_required: true
+
+  output:
+    schema_required: true
+
+execution:
+  request:
+    fields:
+      tool:
+        type: string
+      arguments:
+        type: object
+      request_id:
+        type: string
+
+  response:
+    fields:
+      success:
+        type: boolean
+      output:
+        type: object
+      error:
+        type: string
+
+runtime:
+  persistence:
+    registry:
+      path: registry/tools
+
+observability:
+  provenance:
+    enabled: true
+
+  metrics:
+    enabled: true
+
+goal:
+  tools_are_first_class_runtime_objects: true
