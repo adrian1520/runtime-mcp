@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T05:00:12.208991+00:00",
+  "generated_at": "2026-06-16T05:00:46.516529+00:00",
   "summary": {
-    "files": 40,
+    "files": 41,
     "directories": 16
   },
   "directories": [
@@ -155,6 +155,17 @@
       "sha256": "53901d2e948d60e38cd21d8ef45b4cd37c9e5a72394a4c6c6b242638d4236322"
     },
     {
+      "path": "contracts/knowledge.contract.yaml",
+      "name": "knowledge.contract.yaml",
+      "directory": "contracts",
+      "extension": "yaml",
+      "language": "yaml",
+      "category": "config",
+      "depth": 1,
+      "size": 1247,
+      "sha256": "c61b8cd89cfa6070a9904967811b4292acf80bc6f63af7034a2432552dd681a7"
+    },
+    {
       "path": "contracts/tool.contract.yaml",
       "name": "tool.contract.yaml",
       "directory": "contracts",
@@ -240,7 +251,7 @@
       "category": "config",
       "depth": 0,
       "size": 19892,
-      "sha256": "7afdcd691d7898859398e899ab458842b8f924649ded70fde77ca56d76502d5d"
+      "sha256": "7b8e2e29629a89d6d10764305d9d8fd70cb65d98f553b2bac24afdce481fa081"
     },
     {
       "path": "src/auth/bearer.ts",
