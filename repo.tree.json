@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T17:59:52.759684+00:00",
+  "generated_at": "2026-06-16T18:07:11.167095+00:00",
   "summary": {
-    "files": 53,
+    "files": 52,
     "directories": 18
   },
   "directories": [
@@ -154,17 +154,6 @@
       "sha256": "e49fc16fe8c5e933b1fd286b557629c30a1d2b468f5dc20782dfc3d20e969d48"
     },
     {
-      "path": "adrian1520_runtime-mcp_c1390f.json",
-      "name": "adrian1520_runtime-mcp_c1390f.json",
-      "directory": "",
-      "extension": "json",
-      "language": "json",
-      "category": "config",
-      "depth": 0,
-      "size": 115425,
-      "sha256": "40288ef91e577675d1019d85d8410559b0324114868efb53811404ce18caf704"
-    },
-    {
       "path": "contracts/agent.contract.yaml",
       "name": "agent.contract.yaml",
       "directory": "contracts",
@@ -271,8 +260,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 25840,
-      "sha256": "3766ef1ba7c08dc1a62f76dea43a900d7f119ad791ddbcd66b288631105c9a76"
+      "size": 28093,
+      "sha256": "fde78bd80129e14a7b8b5e9a04edac870618665049efab60f4a63bcbdfeff7e8"
     },
     {
       "path": "src/agents/context-builder.ts",
