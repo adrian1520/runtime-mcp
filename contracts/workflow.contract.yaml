@@ -1,0 +1,143 @@
+schema: runtime.workflow.v1
+
+kind: contract
+
+metadata:
+  name: Runtime MCP Workflow Contract
+  version: 1.0.0
+  status: active
+
+description: >
+  Canonical specification for workflow runtime objects.
+  Workflows are first-class executable assets that can be created,
+  registered, orchestrated, recovered and improved by agents.
+
+lifecycle:
+  states:
+    - DRAFT
+    - REGISTERED
+    - ACTIVE
+    - PAUSED
+    - RECOVERY
+    - COMPLETE
+    - FAILED
+    - DEPRECATED
+
+registry:
+  path: workflows/
+
+workflow:
+  required:
+    - id
+    - version
+    - name
+    - tasks
+
+  fields:
+    id:
+      type: string
+
+    version:
+      type: string
+
+    name:
+      type: string
+
+    description:
+      type: string
+
+    tags:
+      type: array
+
+    owner:
+      type: string
+
+    tasks:
+      type: array
+
+    transitions:
+      type: array
+
+    retry_policy:
+      type: object
+
+    checkpointing:
+      type: object
+
+    observability:
+      type: object
+
+state_machine:
+  states:
+    - DISCOVERY
+    - PLANNING
+    - EXECUTION
+    - VALIDATION
+    - COMPLETE
+    - FAILED
+    - RECOVERY
+
+  recovery_transition:
+    from: FAILED
+    to: RECOVERY
+
+execution:
+  task:
+    required:
+      - id
+      - name
+
+    fields:
+      tool:
+        type: string
+
+      agent:
+        type: string
+
+      workflow:
+        type: string
+
+      depends_on:
+        type: array
+
+      input:
+        type: object
+
+retry_policy:
+  enabled: true
+
+  fields:
+    max_attempts:
+      type: integer
+
+    backoff_seconds:
+      type: integer
+
+checkpointing:
+  enabled: true
+
+  storage:
+    path: workflow/<id>/checkpoint
+
+recovery:
+  enabled: true
+
+  resume_supported: true
+
+observability:
+  provenance:
+    enabled: true
+
+  metrics:
+    enabled: true
+
+workflow_factory:
+  enabled: true
+
+runtime:
+  persistence:
+    registry:
+      path: registry/workflows
+
+goal:
+  workflows_are_first_class_runtime_objects: true
