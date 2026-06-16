@@ -71,6 +71,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add -A
           git commit -m "fix: auto-fix linting and formatting issues" || echo "No changes to commit"
+          git pull --rebase origin main
           git push
       
       # ========== CREATE PR FOR TEST FIXES (if needed) ==========
