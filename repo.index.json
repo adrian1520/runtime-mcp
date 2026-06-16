@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-06-16T08:11:41.668043+00:00",
+  "generated_at": "2026-06-16T08:12:16.728652+00:00",
   "summary": {
-    "classes": 11,
-    "interfaces": 13,
+    "classes": 13,
+    "interfaces": 14,
     "types": 22,
     "enums": 0,
-    "functions": 75,
-    "exports": 35,
-    "imports": 56
+    "functions": 85,
+    "exports": 38,
+    "imports": 59
   },
   "classes": [
     {
@@ -57,6 +57,11 @@
       "exported": true
     },
     {
+      "name": "ToolRegistry",
+      "file": "src/runtime/registries/tool-registry.ts",
+      "exported": true
+    },
+    {
       "name": "Workflow",
       "file": "src/runtime/workflow.ts",
       "exported": true
@@ -64,6 +69,11 @@
     {
       "name": "WorkflowEngine",
       "file": "src/runtime/workflow-engine.ts",
+      "exported": true
+    },
+    {
+      "name": "WorkflowRegistry",
+      "file": "src/runtime/registries/workflow-registry.ts",
       "exported": true
     }
   ],
@@ -111,6 +121,11 @@
     {
       "name": "TaskResult",
       "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "ToolDefinition",
+      "file": "src/runtime/registries/tool-registry.ts",
       "exported": true
     },
     {
@@ -416,6 +431,56 @@
     {
       "name": "exists",
       "kind": "method",
+      "file": "src/runtime/registries/tool-registry.ts"
+    },
+    {
+      "name": "get",
+      "kind": "method",
+      "file": "src/runtime/registries/tool-registry.ts"
+    },
+    {
+      "name": "list",
+      "kind": "method",
+      "file": "src/runtime/registries/tool-registry.ts"
+    },
+    {
+      "name": "register",
+      "kind": "method",
+      "file": "src/runtime/registries/tool-registry.ts"
+    },
+    {
+      "name": "remove",
+      "kind": "method",
+      "file": "src/runtime/registries/tool-registry.ts"
+    },
+    {
+      "name": "exists",
+      "kind": "method",
+      "file": "src/runtime/registries/workflow-registry.ts"
+    },
+    {
+      "name": "get",
+      "kind": "method",
+      "file": "src/runtime/registries/workflow-registry.ts"
+    },
+    {
+      "name": "list",
+      "kind": "method",
+      "file": "src/runtime/registries/workflow-registry.ts"
+    },
+    {
+      "name": "register",
+      "kind": "method",
+      "file": "src/runtime/registries/workflow-registry.ts"
+    },
+    {
+      "name": "remove",
+      "kind": "method",
+      "file": "src/runtime/registries/workflow-registry.ts"
+    },
+    {
+      "name": "exists",
+      "kind": "method",
       "file": "src/runtime/registry.ts"
     },
     {
@@ -678,6 +743,18 @@
       "file": "src/runtime/recovery-manager.ts"
     },
     {
+      "name": "ToolDefinition",
+      "file": "src/runtime/registries/tool-registry.ts"
+    },
+    {
+      "name": "ToolRegistry",
+      "file": "src/runtime/registries/tool-registry.ts"
+    },
+    {
+      "name": "WorkflowRegistry",
+      "file": "src/runtime/registries/workflow-registry.ts"
+    },
+    {
       "name": "RegistryRecord",
       "file": "src/runtime/registry.ts"
     },
@@ -898,6 +975,18 @@
     {
       "file": "src/runtime/recovery-manager.ts",
       "from": "./types"
+    },
+    {
+      "file": "src/runtime/registries/tool-registry.ts",
+      "from": "../registry"
+    },
+    {
+      "file": "src/runtime/registries/workflow-registry.ts",
+      "from": "../registry"
+    },
+    {
+      "file": "src/runtime/registries/workflow-registry.ts",
+      "from": "../types"
     },
     {
       "file": "src/runtime/state-machine.ts",
