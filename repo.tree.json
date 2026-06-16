@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T08:12:23.674638+00:00",
+  "generated_at": "2026-06-16T08:12:56.893457+00:00",
   "summary": {
-    "files": 44,
+    "files": 46,
     "directories": 17
   },
   "directories": [
@@ -255,8 +255,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 20784,
-      "sha256": "7bcac24a4fc515a1144d43a9c60d6a5c28c651d5a368f131cbe773664b3ff898"
+      "size": 22953,
+      "sha256": "2b294222f7adcc1df989d74166caae0b7906bc161e06c1dbdc44f87c476f2043"
     },
     {
       "path": "src/auth/bearer.ts",
@@ -422,6 +422,28 @@
       "depth": 2,
       "size": 1151,
       "sha256": "e6012d0a80126a3ae8a4df41fd04017591c04ee8c1d8d9b2b64e30bbbf88cb27"
+    },
+    {
+      "path": "src/runtime/registries/agent-registry.ts",
+      "name": "agent-registry.ts",
+      "directory": "src/runtime/registries",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 3,
+      "size": 772,
+      "sha256": "722bb326041ed729e655a7d8a18c9704e0c8585f3431e0a1697b0ee80b544520"
+    },
+    {
+      "path": "src/runtime/registries/knowledge-registry.ts",
+      "name": "knowledge-registry.ts",
+      "directory": "src/runtime/registries",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 3,
+      "size": 818,
+      "sha256": "5813956868be8af686bf0ac89d1f9520668e1efa1107a0d96ff82e73daf4355b"
     },
     {
       "path": "src/runtime/registries/tool-registry.ts",
