@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Runtime MCP Dashboard - Monitor and test your MCP tools" />
+  <title>Runtime MCP Dashboard</title>
+  
+  <style>
+    /* ============================================
+       HTML5 SEMANTIC & CSS3 CUSTOM PROPERTIES
+       ============================================ */
+    
+    :root {
+      --color-primary: #3b82f6;
+      --color-primary-dark: #1e40af;
+      --color-success: #10b981;
+      --color-error: #ef4444;
+      --color-warning: #f59e0b;
+      --color-info: #06b6d4;
+      
+      --color-bg: #0f172a;
+      --color-surface: #1e293b;
+      --color-surface-light: #334155;
+      --color-text: #e2e8f0;
+      --color-text-muted: #cbd5e1;
+      
+      --spacing-xs: 0.25rem;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2rem;
+      --spacing-2xl: 3rem;
+      
+      --border-radius-sm: 0.375rem;
+      --border-radius-md: 0.5rem;
+      --border-radius-lg: 0.75rem;
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      
+      --transition-fast: 150ms ease;
+      --transition-normal: 300ms ease;
+      
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+    }
+
+    /* ============================================
+       GLOBAL & RESET (HTML5 Best Practices)
+       ============================================ */
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-family);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ============================================
+       SEMANTIC HTML5 ELEMENTS
+       ============================================ */
+    
+    header {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+      padding: var(--spacing-xl) var(--spacing-2xl);
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-sm);
+      letter-spacing: -0.025em;
+    }
+
+    header p {
+      opacity: 0.9;
+      font-size: 0.875rem;
+    }
+
+    nav {
+      display: flex;
+      gap: var(--spacing-lg);
+      padding: var(--spacing-md) var(--spacing-2xl);
+      background-color: var(--color-surface);
+      border-bottom: 1px solid var(--color-surface-light);
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--border-radius-md);
+      transition: all var(--transition-fast);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--color-primary);
+      background-color: rgba(59, 130, 246, 0.1);
+    }
+
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--spacing-2xl) var(--spacing-xl);
+    }
+
+    section {
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    section > h2 {
+      font-size: 1.5rem;
+      margin-bottom: var(--spacing-lg);
+      padding-bottom: var(--spacing-md);
+      border-bottom: 2px solid var(--color-surface-light);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+
+    aside {
+      background-color: var(--color-surface);
+      border-left: 4px solid var(--color-primary);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius-md);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    footer {
+      background-color: var(--color-surface);
+      border-top: 1px solid var(--color-surface-light);
+      padding: var(--spacing-xl) var(--spacing-2xl);
+      text-align: center;
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+      margin-top: auto;
+    }
+
+    /* ============================================
+       CARDS & CONTAINERS
+       ============================================ */
+    
+    .card {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-surface-light);
+      border-radius: var(--border-radius-lg);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow-md);
+      transition: all var(--transition-normal);
+    }
+
+    .card:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    /* ============================================
+       STATUS INDICATORS (CSS3 Animations)
+       ============================================ */
+    
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status-badge.success {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--color-success);
+    }
+
+    .status-badge.error {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--color-error);
+    }
+
+    .status-badge.warning {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--color-warning);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .status-badge.success .status-dot {
+      background-color: var(--color-success);
+    }
+
+    .status-badge.error .status-dot {
+      background-color: var(--color-error);
+    }
+
+    .status-badge.warning .status-dot {
+      background-color: var(--color-warning);
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    /* ============================================
+       BUTTONS & INTERACTIVE ELEMENTS
+       ============================================ */
+    
+    button, a.btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: none;
+      border-radius: var(--border-radius-md);
+      font-family: var(--font-family);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      user-select: none;
+      text-decoration: none;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background-color: var(--color-primary);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--color-primary-dark);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background-color: var(--color-surface-light);
+      color: var(--color-text);
+      border: 1px solid var(--color-text-muted);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background-color: rgba(59, 130, 246, 0.1);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    /* ============================================
+       FORM ELEMENTS
+       ============================================ */
+    
+    label {
+      display: block;
+      margin-bottom: var(--spacing-sm);
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    textarea,
+    select {
+      display: block;
+      width: 100%;
+      padding: var(--spacing-sm) var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+      background-color: var(--color-surface-light);
+      color: var(--color-text);
+      border: 1px solid var(--color-surface-light);
+      border-radius: var(--border-radius-md);
+      font-family: var(--font-family);
+      font-size: 0.875rem;
+      transition: all var(--transition-fast);
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background-color: var(--color-surface);
+    }
+
+    .form-group {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    /* ============================================
+       TYPOGRAPHY & CODE
+       ============================================ */
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: var(--spacing-md);
+    }
+
+    code {
+      background-color: var(--color-surface-light);
+      color: var(--color-info);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--border-radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.875em;
+    }
+
+    pre {
+      background-color: var(--color-surface-light);
+      color: var(--color-text);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius-md);
+      overflow-x: auto;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    /* ============================================
+       UTILITY CLASSES
+       ============================================ */
+    
+    .flex {
+      display: flex;
+    }
+
+    .flex-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gap-md {
+      gap: var(--spacing-md);
+    }
+
+    .gap-lg {
+      gap: var(--spacing-lg);
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .text-muted {
+      color: var(--color-text-muted);
+    }
+
+    .text-sm {
+      font-size: 0.875rem;
+    }
+
+    .text-xs {
+      font-size: 0.75rem;
+    }
+
+    .mt-lg {
+      margin-top: var(--spacing-lg);
+    }
+
+    .mb-lg {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .p-lg {
+      padding: var(--spacing-lg);
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN (Mobile First)
+       ============================================ */
+    
+    @media (max-width: 768px) {
+      header {
+        padding: var(--spacing-lg);
+      }
+
+      header h1 {
+        font-size: 1.5rem;
+      }
+
+      nav {
+        padding: var(--spacing-md);
+      }
+
+      nav a {
+        font-size: 0.875rem;
+        padding: var(--spacing-sm);
+      }
+
+      main {
+        padding: var(--spacing-lg) var(--spacing-md);
+      }
+
+      section > h2 {
+        font-size: 1.25rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      :root {
+        font-size: 14px;
+      }
+
+      header h1 {
+        font-size: 1.25rem;
+      }
+
+      button, a.btn {
+        width: 100%;
+      }
+    }
+
+    /* ============================================
+       ACCESSIBILITY & FOCUS STATES
+       ============================================ */
+    
+    :focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --color-bg: #f8fafc;
+        --color-surface: #f1f5f9;
+        --color-surface-light: #e2e8f0;
+        --color-text: #0f172a;
+        --color-text-muted: #475569;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ==========================================
+       HEADER (HTML5 Semantic Element)
+       ========================================== -->
+  <header>
+    <h1>🚀 Runtime MCP Dashboard</h1>
+    <p>Monitor, test, and manage your Model Context Protocol tools</p>
+  </header>
+
+  <!-- ==========================================
+       NAVIGATION (HTML5 Semantic Element)
+       ========================================== -->
+  <nav>
+    <a href="#status" class="active">Status</a>
+    <a href="#tools">Tools</a>
+    <a href="#resources">Resources</a>
+    <a href="#api">API</a>
+  </nav>
+
+  <!-- ==========================================
+       MAIN CONTENT (HTML5 Semantic Element)
+       ========================================== -->
+  <main>
+    <!-- Status Section -->
+    <section id="status">
+      <h2>🔌 System Status</h2>
+      
+      <div class="card-grid">
+        <article class="card">
+          <div class="flex justify-between items-center">
+            <h3>Runtime Health</h3>
+            <span class="status-badge success">
+              <span class="status-dot"></span>
+              Healthy
+            </span>
+          </div>
+          <p class="text-sm text-muted mt-lg">All systems operational</p>
+        </article>
+
+        <article class="card">
+          <div class="flex justify-between items-center">
+            <h3>API Endpoint</h3>
+            <span class="status-badge success">
+              <span class="status-dot"></span>
+              Online
+            </span>
+          </div>
+          <p class="text-sm text-muted mt-lg"><code>/mcp</code> responding</p>
+        </article>
+
+        <article class="card">
+          <div class="flex justify-between items-center">
+            <h3>Response Time</h3>
+            <span class="status-badge success">
+              <span class="status-dot"></span>
+              &lt; 100ms
+            </span>
+          </div>
+          <p class="text-sm text-muted mt-lg">Average latency</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section id="tools">
+      <h2>🛠️ Available Tools</h2>
+      
+      <aside>
+        <strong>ℹ️ Info:</strong> Tools are executable functions that extend MCP capabilities. Click on a tool to view details and test parameters.
+      </aside>
+
+      <div class="card-grid">
+        <article class="card">
+          <h3>raw_read</h3>
+          <p class="text-sm text-muted">Read UTF-8 text files from repository memory</p>
+          <div class="mt-lg flex gap-md">
+            <button class="btn btn-primary">Test</button>
+            <button class="btn btn-secondary">Docs</button>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>raw_save</h3>
+          <p class="text-sm text-muted">Create or update UTF-8 text files in repository</p>
+          <div class="mt-lg flex gap-md">
+            <button class="btn btn-primary">Test</button>
+            <button class="btn btn-secondary">Docs</button>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>repository.query</h3>
+          <p class="text-sm text-muted">Execute repository worker requests via MCP</p>
+          <div class="mt-lg flex gap-md">
+            <button class="btn btn-primary">Test</button>
+            <button class="btn btn-secondary">Docs</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources">
+      <h2>📦 Resources</h2>
+      
+      <article class="card">
+        <h3>Available Resources</h3>
+        <p class="text-sm text-muted mb-lg">Resources provide data and context to your tools</p>
+        
+        <pre><code>{
+  "resources": [
+    {
+      "uri": "file:///memory/projects/runtime.md",
+      "type": "text/markdown",
+      "description": "Project memory notes"
+    }
+  ]
+}</code></pre>
+      </article>
+    </section>
+
+    <!-- API Section -->
+    <section id="api">
+      <h2>🔌 API Reference</h2>
+      
+      <div class="card mb-lg">
+        <h3>Endpoints</h3>
+        <table style="width: 100%; margin-top: var(--spacing-md);">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--color-surface-light);">
+              <th style="text-align: left; padding: var(--spacing-md);">Path</th>
+              <th style="text-align: left; padding: var(--spacing-md);">Method</th>
+              <th style="text-align: left; padding: var(--spacing-md);">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--color-surface-light);">
+              <td style="padding: var(--spacing-md);"><code>/mcp</code></td>
+              <td style="padding: var(--spacing-md);">POST</td>
+              <td style="padding: var(--spacing-md);">MCP JSON-RPC endpoint</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-surface-light);">
+              <td style="padding: var(--spacing-md);"><code>/health</code></td>
+              <td style="padding: var(--spacing-md);">GET</td>
+              <td style="padding: var(--spacing-md);">Health check</td>
+            </tr>
+            <tr>
+              <td style="padding: var(--spacing-md);"><code>/openapi.json</code></td>
+              <td style="padding: var(--spacing-md);">GET</td>
+              <td style="padding: var(--spacing-md);">OpenAPI specification</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <article class="card">
+        <h3>Authentication</h3>
+        <p class="text-sm text-muted mb-lg">When <code>API_KEY</code> is configured, send it as a bearer token:</p>
+        <pre><code>Authorization: Bearer &lt;API_KEY&gt;</code></pre>
+      </article>
+    </section>
+  </main>
+
+  <!-- ==========================================
+       FOOTER (HTML5 Semantic Element)
+       ========================================== -->
+  <footer>
+    <p>&copy; 2024 Runtime MCP • <a href="#" style="color: var(--color-primary); text-decoration: none;">GitHub</a> • <a href="#" style="color: var(--color-primary); text-decoration: none;">Docs</a></p>
+  </footer>
+
+  <script>
+    /* ==========================================
+       NAVIGATION ACTIVE STATE
+       ========================================== */
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', function() {
+        document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    /* ==========================================
+       SMOOTH SCROLL OFFSET FOR STICKY HEADER
+       ========================================== */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const headerOffset = 100;
+          const elementPosition = target.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
