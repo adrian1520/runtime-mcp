@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T14:56:33.408930+00:00",
+  "generated_at": "2026-06-16T17:59:52.759684+00:00",
   "summary": {
-    "files": 46,
-    "directories": 17
+    "files": 53,
+    "directories": 18
   },
   "directories": [
     {
@@ -39,6 +39,11 @@
     {
       "path": "src",
       "depth": 1,
+      "category": "general"
+    },
+    {
+      "path": "src/agents",
+      "depth": 2,
       "category": "general"
     },
     {
@@ -114,6 +119,17 @@
       "depth": 2,
       "size": 6591,
       "sha256": "33b2b52297860306f2df4b326b9dd12f4e8634d8a18028b17459857143c52ca3"
+    },
+    {
+      "path": ".github/workflows/codeql.yml",
+      "name": "codeql.yml",
+      "directory": ".github/workflows",
+      "extension": "yml",
+      "language": "yaml",
+      "category": "workflow",
+      "depth": 2,
+      "size": 4740,
+      "sha256": "a8c1c75e056b667b7ba869482161444f415264dfdefc63c40f749a226524f16f"
     },
     {
       "path": ".gitignore",
@@ -255,8 +271,74 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 26251,
-      "sha256": "8b4fa87a816fad2ce93ce9318bdb3f62e86f09e74558e20fb0c355af15f4902f"
+      "size": 25840,
+      "sha256": "3766ef1ba7c08dc1a62f76dea43a900d7f119ad791ddbcd66b288631105c9a76"
+    },
+    {
+      "path": "src/agents/context-builder.ts",
+      "name": "context-builder.ts",
+      "directory": "src/agents",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 81,
+      "sha256": "abe8b7120ed0873ac09d5f3a34a26f91f15e08b3164dba70f6ce751a386381ca"
+    },
+    {
+      "path": "src/agents/index.ts",
+      "name": "index.ts",
+      "directory": "src/agents",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 160,
+      "sha256": "ae3bfc2c69155ae64a2d623be0165545d0a498d82e834591049c918adb25ca25"
+    },
+    {
+      "path": "src/agents/runtime-agent.ts",
+      "name": "runtime-agent.ts",
+      "directory": "src/agents",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 92,
+      "sha256": "0b1bfd35cca78e021d6293cad2aab415ec768c6ca5b5593641b8d34585544e35"
+    },
+    {
+      "path": "src/agents/session-manager.ts",
+      "name": "session-manager.ts",
+      "directory": "src/agents",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 226,
+      "sha256": "55d69c31050e480f24ce7b329a377b528d573a8590b43ecc3ca6aaf65eef7f54"
+    },
+    {
+      "path": "src/agents/tool-catalog.ts",
+      "name": "tool-catalog.ts",
+      "directory": "src/agents",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 169,
+      "sha256": "c39deef98ca1977f862253aa4f3308386968401bde9b799ff63dfdbdf9d063ca"
+    },
+    {
+      "path": "src/agents/types.ts",
+      "name": "types.ts",
+      "directory": "src/agents",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 539,
+      "sha256": "ee3da2e2ed6905370e7751569946a3326df2d217f8fe27e2cfb18e826501f748"
     },
     {
       "path": "src/auth/bearer.ts",
