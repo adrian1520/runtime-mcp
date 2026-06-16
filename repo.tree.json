@@ -1,6 +1,6 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T08:14:40.214858+00:00",
+  "generated_at": "2026-06-16T14:56:33.408930+00:00",
   "summary": {
     "files": 46,
     "directories": 17
@@ -255,8 +255,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 22953,
-      "sha256": "2b294222f7adcc1df989d74166caae0b7906bc161e06c1dbdc44f87c476f2043"
+      "size": 26251,
+      "sha256": "8b4fa87a816fad2ce93ce9318bdb3f62e86f09e74558e20fb0c355af15f4902f"
     },
     {
       "path": "src/auth/bearer.ts",
@@ -431,8 +431,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 3,
-      "size": 772,
-      "sha256": "722bb326041ed729e655a7d8a18c9704e0c8585f3431e0a1697b0ee80b544520"
+      "size": 709,
+      "sha256": "c7a041e1a17320ce9dbebf9198f0769c3000dc37cc4013a49db7747199d2cd25"
     },
     {
       "path": "src/runtime/registries/knowledge-registry.ts",
@@ -442,8 +442,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 3,
-      "size": 818,
-      "sha256": "5813956868be8af686bf0ac89d1f9520668e1efa1107a0d96ff82e73daf4355b"
+      "size": 755,
+      "sha256": "c4d344f90459171dd2f1861789b159771df0d929650c119e73fec36545ff60fa"
     },
     {
       "path": "src/runtime/registries/tool-registry.ts",
@@ -453,8 +453,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 3,
-      "size": 759,
-      "sha256": "ad1a3ccedd51ee7b7757533f9c6f56f4a8473d963ecccdf9276881ce48733b06"
+      "size": 696,
+      "sha256": "3aa399938b4956dc2a8f3d966436397c6d77dda95f89f5fa791945b417594771"
     },
     {
       "path": "src/runtime/registries/workflow-registry.ts",
