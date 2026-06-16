@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-15T20:44:01.759200+00:00",
+  "generated_at": "2026-06-16T04:19:00.409903+00:00",
   "summary": {
-    "files": 36,
-    "directories": 15
+    "files": 38,
+    "directories": 16
   },
   "directories": [
     {
@@ -20,6 +20,11 @@
       "path": ".github/workflows",
       "depth": 2,
       "category": "workflow"
+    },
+    {
+      "path": "contracts",
+      "depth": 1,
+      "category": "general"
     },
     {
       "path": "docs",
@@ -139,6 +144,17 @@
       "sha256": "40288ef91e577675d1019d85d8410559b0324114868efb53811404ce18caf704"
     },
     {
+      "path": "contracts/agent.contract.yaml",
+      "name": "agent.contract.yaml",
+      "directory": "contracts",
+      "extension": "yaml",
+      "language": "yaml",
+      "category": "config",
+      "depth": 1,
+      "size": 1011,
+      "sha256": "53901d2e948d60e38cd21d8ef45b4cd37c9e5a72394a4c6c6b242638d4236322"
+    },
+    {
       "path": "docs/repository-api.md",
       "name": "repository-api.md",
       "directory": "docs",
@@ -192,6 +208,17 @@
       "depth": 0,
       "size": 1203,
       "sha256": "f0faa059691eb7cab3c8b1c70953b56b36a18a1b059cc3eded77aab8413aab2b"
+    },
+    {
+      "path": "repo.index.json",
+      "name": "repo.index.json",
+      "directory": "",
+      "extension": "json",
+      "language": "json",
+      "category": "config",
+      "depth": 0,
+      "size": 19892,
+      "sha256": "27962aa0aa2f3686fb9724033f3f5562c004e2464f36382c6c6edd966d1dbdeb"
     },
     {
       "path": "src/auth/bearer.ts",
