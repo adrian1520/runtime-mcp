@@ -1,11 +1,5 @@
 import type { RuntimeRegistry } from "../registry";
-
-export interface KnowledgeDefinition {
-  id: string;
-  version: string;
-  name: string;
-  description?: string;
-}
+import type { KnowledgeDefinition } from "../types";
 
 export class KnowledgeRegistry implements RuntimeRegistry<KnowledgeDefinition> {
   private readonly knowledge = new Map<string, KnowledgeDefinition>();
