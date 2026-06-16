@@ -1,0 +1,93 @@
+schema: runtime.knowledge.v1
+
+kind: contract
+
+metadata:
+  name: Runtime MCP Knowledge Contract
+  version: 1.0.0
+  status: active
+
+description: >
+  Canonical specification for knowledge runtime objects.
+  Knowledge packs are persistent, versioned, discoverable assets
+  consumable by tools, workflows and agents.
+
+lifecycle:
+  states:
+    - DRAFT
+    - REGISTERED
+    - ACTIVE
+    - ARCHIVED
+    - DEPRECATED
+
+registry:
+  path: knowledge/
+
+knowledge:
+  required:
+    - id
+    - version
+    - name
+
+  fields:
+    id:
+      type: string
+
+    version:
+      type: string
+
+    name:
+      type: string
+
+    description:
+      type: string
+
+    tags:
+      type: array
+
+    sources:
+      type: array
+
+    embeddings:
+      type: object
+
+    metadata:
+      type: object
+
+    permissions:
+      type: array
+
+registration:
+  discovery:
+    path: knowledge/**/*.yaml
+
+  activation:
+    auto_register: true
+
+retrieval:
+  search:
+    enabled: true
+
+  semantic_search:
+    enabled: true
+
+  versioning:
+    enabled: true
+
+runtime:
+  persistence:
+    registry:
+      path: registry/knowledge
+
+observability:
+  provenance:
+    enabled: true
+
+  metrics:
+    enabled: true
+
+knowledge_factory:
+  enabled: true
+
+goal:
+  knowledge_is_first_class_runtime_object: true
