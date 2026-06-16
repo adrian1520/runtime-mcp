@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T19:05:58.353841+00:00",
+  "generated_at": "2026-06-16T19:09:44.133747+00:00",
   "summary": {
-    "files": 54,
+    "files": 55,
     "directories": 19
   },
   "directories": [
@@ -288,7 +288,7 @@
       "category": "config",
       "depth": 0,
       "size": 28093,
-      "sha256": "bab93657ae8ea0827c1cef291eb35127bf1a96b7a7757934b47d134789484aa8"
+      "sha256": "3a3d7f160e1824c34d319ea8aaccf3e63d664e32eb319381cf8d3b2009412305"
     },
     {
       "path": "src/agents/context-builder.ts",
@@ -443,6 +443,17 @@
       "depth": 2,
       "size": 4790,
       "sha256": "55c19837b98fa5a4d992095d020cee647ef99b55eef2e16b31a075b0e48558ee"
+    },
+    {
+      "path": "src/routes/ui.html",
+      "name": "ui.html",
+      "directory": "src/routes",
+      "extension": "html",
+      "language": "unknown",
+      "category": "general",
+      "depth": 2,
+      "size": 19331,
+      "sha256": "303fcb1e054b64809a0daa029cb0e08d3f7b04e3ff81cd47399932a669579cdf"
     },
     {
       "path": "src/runtime/agent.ts",
