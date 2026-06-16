@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-06-16T08:12:16.728652+00:00",
+  "generated_at": "2026-06-16T08:14:35.534691+00:00",
   "summary": {
-    "classes": 13,
-    "interfaces": 14,
-    "types": 22,
+    "classes": 15,
+    "interfaces": 20,
+    "types": 23,
     "enums": 0,
-    "functions": 85,
-    "exports": 38,
-    "imports": 59
+    "functions": 95,
+    "exports": 47,
+    "imports": 61
   },
   "classes": [
     {
@@ -17,8 +17,18 @@
       "exported": true
     },
     {
+      "name": "AgentRegistry",
+      "file": "src/runtime/registries/agent-registry.ts",
+      "exported": true
+    },
+    {
       "name": "Executor",
       "file": "src/runtime/executor.ts",
+      "exported": true
+    },
+    {
+      "name": "KnowledgeRegistry",
+      "file": "src/runtime/registries/knowledge-registry.ts",
       "exported": true
     },
     {
@@ -79,6 +89,16 @@
   ],
   "interfaces": [
     {
+      "name": "AgentDefinition",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "AgentDefinition",
+      "file": "src/runtime/registries/agent-registry.ts",
+      "exported": true
+    },
+    {
       "name": "Checkpoint",
       "file": "src/runtime/types.ts",
       "exported": true
@@ -99,7 +119,22 @@
       "exported": true
     },
     {
+      "name": "KnowledgeDefinition",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "KnowledgeDefinition",
+      "file": "src/runtime/registries/knowledge-registry.ts",
+      "exported": true
+    },
+    {
       "name": "RecoveryState",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "RegistryRecord",
       "file": "src/runtime/types.ts",
       "exported": true
     },
@@ -120,6 +155,11 @@
     },
     {
       "name": "TaskResult",
+      "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "ToolDefinition",
       "file": "src/runtime/types.ts",
       "exported": true
     },
@@ -229,6 +269,11 @@
       "name": "ReadArgs",
       "file": "src/tools/repository/index.ts",
       "exported": false
+    },
+    {
+      "name": "RuntimeObjectKind",
+      "file": "src/runtime/types.ts",
+      "exported": true
     },
     {
       "name": "RuntimeState",
@@ -427,6 +472,56 @@
       "name": "resume",
       "kind": "method",
       "file": "src/runtime/recovery-manager.ts"
+    },
+    {
+      "name": "exists",
+      "kind": "method",
+      "file": "src/runtime/registries/agent-registry.ts"
+    },
+    {
+      "name": "get",
+      "kind": "method",
+      "file": "src/runtime/registries/agent-registry.ts"
+    },
+    {
+      "name": "list",
+      "kind": "method",
+      "file": "src/runtime/registries/agent-registry.ts"
+    },
+    {
+      "name": "register",
+      "kind": "method",
+      "file": "src/runtime/registries/agent-registry.ts"
+    },
+    {
+      "name": "remove",
+      "kind": "method",
+      "file": "src/runtime/registries/agent-registry.ts"
+    },
+    {
+      "name": "exists",
+      "kind": "method",
+      "file": "src/runtime/registries/knowledge-registry.ts"
+    },
+    {
+      "name": "get",
+      "kind": "method",
+      "file": "src/runtime/registries/knowledge-registry.ts"
+    },
+    {
+      "name": "list",
+      "kind": "method",
+      "file": "src/runtime/registries/knowledge-registry.ts"
+    },
+    {
+      "name": "register",
+      "kind": "method",
+      "file": "src/runtime/registries/knowledge-registry.ts"
+    },
+    {
+      "name": "remove",
+      "kind": "method",
+      "file": "src/runtime/registries/knowledge-registry.ts"
     },
     {
       "name": "exists",
@@ -743,6 +838,22 @@
       "file": "src/runtime/recovery-manager.ts"
     },
     {
+      "name": "AgentDefinition",
+      "file": "src/runtime/registries/agent-registry.ts"
+    },
+    {
+      "name": "AgentRegistry",
+      "file": "src/runtime/registries/agent-registry.ts"
+    },
+    {
+      "name": "KnowledgeDefinition",
+      "file": "src/runtime/registries/knowledge-registry.ts"
+    },
+    {
+      "name": "KnowledgeRegistry",
+      "file": "src/runtime/registries/knowledge-registry.ts"
+    },
+    {
       "name": "ToolDefinition",
       "file": "src/runtime/registries/tool-registry.ts"
     },
@@ -771,6 +882,10 @@
       "file": "src/runtime/task-graph.ts"
     },
     {
+      "name": "AgentDefinition",
+      "file": "src/runtime/types.ts"
+    },
+    {
       "name": "Checkpoint",
       "file": "src/runtime/types.ts"
     },
@@ -787,7 +902,19 @@
       "file": "src/runtime/types.ts"
     },
     {
+      "name": "KnowledgeDefinition",
+      "file": "src/runtime/types.ts"
+    },
+    {
       "name": "RecoveryState",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "RegistryRecord",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "RuntimeObjectKind",
       "file": "src/runtime/types.ts"
     },
     {
@@ -800,6 +927,10 @@
     },
     {
       "name": "TaskResult",
+      "file": "src/runtime/types.ts"
+    },
+    {
+      "name": "ToolDefinition",
       "file": "src/runtime/types.ts"
     },
     {
@@ -975,6 +1106,14 @@
     {
       "file": "src/runtime/recovery-manager.ts",
       "from": "./types"
+    },
+    {
+      "file": "src/runtime/registries/agent-registry.ts",
+      "from": "../registry"
+    },
+    {
+      "file": "src/runtime/registries/knowledge-registry.ts",
+      "from": "../registry"
     },
     {
       "file": "src/runtime/registries/tool-registry.ts",
