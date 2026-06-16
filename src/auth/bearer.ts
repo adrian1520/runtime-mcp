@@ -4,7 +4,7 @@ export type BearerAuthResult =
 
 export function verifyBearer(
   request: Request,
-  apiKey?: string
+  apiKey?: string,
 ): BearerAuthResult {
   // If no key configured, auth is disabled (useful for dev).
   if (!apiKey) return { ok: true };
@@ -15,7 +15,7 @@ export function verifyBearer(
       ok: false,
       status: 401,
       code: "UNAUTHORIZED",
-      message: "Missing Authorization header"
+      message: "Missing Authorization header",
     };
   }
 
@@ -24,7 +24,7 @@ export function verifyBearer(
       ok: false,
       status: 401,
       code: "UNAUTHORIZED",
-      message: "Invalid API key"
+      message: "Invalid API key",
     };
   }
 

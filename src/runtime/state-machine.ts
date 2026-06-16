@@ -7,7 +7,7 @@ const ALLOWED: Record<RuntimeState, RuntimeState[]> = {
   VALIDATION: ["COMPLETE", "FAILED"],
   COMPLETE: [],
   FAILED: ["RECOVERY"],
-  RECOVERY: ["EXECUTION", "FAILED"]
+  RECOVERY: ["EXECUTION", "FAILED"],
 };
 
 export class StateMachine {

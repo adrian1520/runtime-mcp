@@ -1,4 +1,4 @@
-import type { ToolDescriptor } from './types';
+import type { ToolDescriptor } from "./types";
 
 export interface ToolCatalog {
   list(): Promise<ToolDescriptor[]>;

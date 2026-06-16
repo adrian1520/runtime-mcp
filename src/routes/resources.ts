@@ -1,60 +1,37 @@
 import type { Env } from "../server";
 
-function json(
-  data: unknown,
-  init?: ResponseInit
-): Response {
+function json(data: unknown, init?: ResponseInit): Response {
+  return new Response(JSON.stringify(data, null, 2), {
+    headers: {
+      "content-type": "application/json; charset=utf-8",
 
-  return new Response(
-    JSON.stringify(
-      data,
-      null,
-      2
-    ),
-    {
-      headers: {
+      "cache-control": "no-store",
 
-        "content-type":
-          "application/json; charset=utf-8",
+      "access-control-allow-origin": "*",
 
-        "cache-control":
-          "no-store",
+      "access-control-allow-methods": "GET, OPTIONS",
 
-        "access-control-allow-origin":
-          "*",
+      "access-control-allow-headers": "content-type",
+    },
 
-        "access-control-allow-methods":
-          "GET, OPTIONS",
-
-        "access-control-allow-headers":
-          "content-type"
-      },
-
-      ...init
-    }
-  );
+    ...init,
+  });
 }
 
 export async function handleResourcesRoute(
   request: Request,
   env: Env,
-  requestId: string
+  requestId: string,
 ): Promise<Response | null> {
-
-  const url =
-    new URL(request.url);
+  const url = new URL(request.url);
 
   /*
    * Route guard
    */
 
   if (
-    !url.pathname.startsWith(
-      "/resources"
-    ) &&
-    !url.pathname.startsWith(
-      "/ui"
-    )
+    !url.pathname.startsWith("/resources") &&
+    !url.pathname.startsWith("/ui")
   ) {
     return null;
   }
@@ -63,29 +40,18 @@ export async function handleResourcesRoute(
    * CORS preflight
    */
 
-  if (
-    request.method ===
-    "OPTIONS"
-  ) {
+  if (request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
 
-    return new Response(
-      null,
-      {
-        status: 204,
+      headers: {
+        "access-control-allow-origin": "*",
 
-        headers: {
+        "access-control-allow-methods": "GET, OPTIONS",
 
-          "access-control-allow-origin":
-            "*",
-
-          "access-control-allow-methods":
-            "GET, OPTIONS",
-
-          "access-control-allow-headers":
-            "content-type"
-        }
-      }
-    );
+        "access-control-allow-headers": "content-type",
+      },
+    });
   }
 
   /*
@@ -104,7 +70,7 @@ export async function handleResourcesRoute(
   const uiPaths = new Set([
     "/ui",
     "/ui/widget/result.html",
-    "/resources/ui/widget/result.html"
+    "/resources/ui/widget/result.html",
   ]);
 
   if (uiPaths.has(url.pathname) && request.method === "GET") {
@@ -125,8 +91,8 @@ export async function handleResourcesRoute(
           "content-type": "text/html; profile=mcp-app; charset=utf-8",
           "cache-control": "no-cache",
           "access-control-allow-origin": "*",
-          "access-control-allow-methods": "GET, OPTIONS"
-        }
+          "access-control-allow-methods": "GET, OPTIONS",
+        },
       });
     } catch (error: any) {
       return json(
@@ -135,16 +101,16 @@ export async function handleResourcesRoute(
 
           error: {
             code: "UI_FETCH_ERROR",
-            message: error?.message ?? "Failed to load UI widget"
+            message: error?.message ?? "Failed to load UI widget",
           },
 
           requestId,
 
-          ts: Date.now()
+          ts: Date.now(),
         },
         {
-          status: 500
-        }
+          status: 500,
+        },
       );
     }
   }
@@ -155,54 +121,39 @@ export async function handleResourcesRoute(
    * Runtime resources manifest
    */
 
-  if (
-    url.pathname ===
-      "/resources" &&
-    request.method === "GET"
-  ) {
-
+  if (url.pathname === "/resources" && request.method === "GET") {
     return json({
-
       ok: true,
 
       resources: [
-
         {
-          id:
-            "memory",
+          id: "memory",
 
-          type:
-            "kv_namespace",
+          type: "kv_namespace",
 
-          description:
-            "Mutable runtime memory storage"
+          description: "Mutable runtime memory storage",
         },
 
         {
-          id:
-            "provenance",
+          id: "provenance",
 
-          type:
-            "append_only_log",
+          type: "append_only_log",
 
-          description:
-            "Immutable provenance audit events"
-        }
+          description: "Immutable provenance audit events",
+        },
       ],
 
       capabilities: {
-
         memory: true,
 
         provenance: true,
 
-        pagination: true
+        pagination: true,
       },
 
       requestId,
 
-      ts:
-        Date.now()
+      ts: Date.now(),
     });
   }
 
@@ -210,83 +161,49 @@ export async function handleResourcesRoute(
    * GET /resources/memory
    */
 
-  if (
-    url.pathname ===
-      "/resources/memory" &&
-    request.method === "GET"
-  ) {
-
+  if (url.pathname === "/resources/memory" && request.method === "GET") {
     try {
+      const res = await env.STATE_KV.list({
+        prefix: "memory:",
 
-      const res =
-        await env.STATE_KV.list({
-
-          prefix:
-            "memory:",
-
-          limit: 100
-        });
+        limit: 100,
+      });
 
       return json({
-
         ok: true,
 
-        resource:
-          "memory",
+        resource: "memory",
 
-        keys:
-          res.keys.map(
-            (k) =>
-              k.name.replace(
-                /^memory:/,
-                ""
-              )
-          ),
+        keys: res.keys.map((k) => k.name.replace(/^memory:/, "")),
 
-        count:
-          res.keys.length,
+        count: res.keys.length,
 
-        complete:
-          res.list_complete,
+        complete: res.list_complete,
 
-        cursor:
-          "cursor" in res
-            ? res.cursor
-            : undefined,
+        cursor: "cursor" in res ? res.cursor : undefined,
 
         requestId,
 
-        ts:
-          Date.now()
+        ts: Date.now(),
       });
-
-    } catch (
-      error: any
-    ) {
-
+    } catch (error: any) {
       return json(
         {
-
           ok: false,
 
           error: {
+            code: "MEMORY_RESOURCE_ERROR",
 
-            code:
-              "MEMORY_RESOURCE_ERROR",
-
-            message:
-              error?.message ??
-              "Failed to load memory resources"
+            message: error?.message ?? "Failed to load memory resources",
           },
 
           requestId,
 
-          ts:
-            Date.now()
+          ts: Date.now(),
         },
         {
-          status: 500
-        }
+          status: 500,
+        },
       );
     }
   }
@@ -295,79 +212,49 @@ export async function handleResourcesRoute(
    * GET /resources/provenance
    */
 
-  if (
-    url.pathname ===
-      "/resources/provenance" &&
-    request.method === "GET"
-  ) {
-
+  if (url.pathname === "/resources/provenance" && request.method === "GET") {
     try {
+      const res = await env.STATE_KV.list({
+        prefix: "prov:",
 
-      const res =
-        await env.STATE_KV.list({
-
-          prefix:
-            "prov:",
-
-          limit: 100
-        });
+        limit: 100,
+      });
 
       return json({
-
         ok: true,
 
-        resource:
-          "provenance",
+        resource: "provenance",
 
-        keys:
-          res.keys.map(
-            (k) => k.name
-          ),
+        keys: res.keys.map((k) => k.name),
 
-        count:
-          res.keys.length,
+        count: res.keys.length,
 
-        complete:
-          res.list_complete,
+        complete: res.list_complete,
 
-        cursor:
-          "cursor" in res
-            ? res.cursor
-            : undefined,
+        cursor: "cursor" in res ? res.cursor : undefined,
 
         requestId,
 
-        ts:
-          Date.now()
+        ts: Date.now(),
       });
-
-    } catch (
-      error: any
-    ) {
-
+    } catch (error: any) {
       return json(
         {
-
           ok: false,
 
           error: {
+            code: "PROVENANCE_RESOURCE_ERROR",
 
-            code:
-              "PROVENANCE_RESOURCE_ERROR",
-
-            message:
-              error?.message ??
-              "Failed to load provenance resources"
+            message: error?.message ?? "Failed to load provenance resources",
           },
 
           requestId,
 
-          ts:
-            Date.now()
+          ts: Date.now(),
         },
         {
-          status: 500
-        }
+          status: 500,
+        },
       );
     }
   }
@@ -379,25 +266,20 @@ export async function handleResourcesRoute(
 
   return json(
     {
-
       ok: false,
 
       error: {
+        code: "RESOURCE_NOT_FOUND",
 
-        code:
-          "RESOURCE_NOT_FOUND",
-
-        message:
-          "Unknown resource endpoint"
+        message: "Unknown resource endpoint",
       },
 
       requestId,
 
-      ts:
-        Date.now()
+      ts: Date.now(),
     },
     {
-      status: 404
-    }
+      status: 404,
+    },
   );
 }

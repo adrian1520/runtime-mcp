@@ -10,7 +10,7 @@ export class Agent {
   async execute(
     goal: Goal,
     env: Env,
-    requestId: string
+    requestId: string,
   ): Promise<ExecutionResult> {
     try {
       this.state.transition("PLANNING");
@@ -22,13 +22,13 @@ export class Agent {
       return {
         success: true,
         state: this.state.current,
-        result: graph
+        result: graph,
       };
     } catch (error) {
       return {
         success: false,
         state: "FAILED",
-        error: error instanceof Error ? error.message : "Unknown runtime error"
+        error: error instanceof Error ? error.message : "Unknown runtime error",
       };
     }
   }

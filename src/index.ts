@@ -1,91 +1,51 @@
-import type { Env }
-  from "./server";
+import type { Env } from "./server";
 
-import { buildOpenApi }
-  from "./openapi";
+import { buildOpenApi } from "./openapi";
 
-import { handleToolsRoute }
-  from "./routes/tools";
+import { handleToolsRoute } from "./routes/tools";
 
-import { handleRpcRoute }
-  from "./routes/rpc";
+import { handleRpcRoute } from "./routes/rpc";
 
-import { handleResourcesRoute }
-  from "./routes/resources";
+import { handleResourcesRoute } from "./routes/resources";
 
-import { handleMcpRoute }
-  from "./mcp/adapter";
+import { handleMcpRoute } from "./mcp/adapter";
 
-function requestId():
-  string {
-
+function requestId(): string {
   return crypto.randomUUID();
 }
 
-function json(
-  data: unknown,
-  init?: ResponseInit
-): Response {
+function json(data: unknown, init?: ResponseInit): Response {
+  return new Response(JSON.stringify(data, null, 2), {
+    ...init,
 
-  return new Response(
-    JSON.stringify(
-      data,
-      null,
-      2
-    ),
-    {
-      ...init,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
 
-      headers: {
+      "cache-control": "no-store",
 
-        "content-type":
-          "application/json; charset=utf-8",
+      "access-control-allow-origin": "*",
 
-        "cache-control":
-          "no-store",
+      "access-control-allow-methods": "GET, POST, OPTIONS",
 
-        "access-control-allow-origin":
-          "*",
+      "access-control-allow-headers": "content-type, authorization",
 
-        "access-control-allow-methods":
-          "GET, POST, OPTIONS",
-
-        "access-control-allow-headers":
-          "content-type, authorization",
-
-        ...(init?.headers ?? {})
-      }
-    }
-  );
+      ...(init?.headers ?? {}),
+    },
+  });
 }
 
 export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const rid = requestId();
 
-  async fetch(
-    request: Request,
-    env: Env
-  ): Promise<Response> {
-
-    const rid =
-      requestId();
-
-    const url =
-      new URL(
-        request.url
-      );
+    const url = new URL(request.url);
 
     try {
-
       /*
        * STREAMABLE HTTP MCP
        */
 
-      const mcp =
-        await handleMcpRoute(
-          request,
-          env,
-          rid
-        );
+      const mcp = await handleMcpRoute(request, env, rid);
 
       if (mcp) {
         return mcp;
@@ -95,55 +55,35 @@ export default {
        * Global CORS preflight
        */
 
-      if (
-        request.method ===
-        "OPTIONS"
-      ) {
+      if (request.method === "OPTIONS") {
+        return new Response(null, {
+          status: 204,
 
-        return new Response(
-          null,
-          {
-            status: 204,
+          headers: {
+            "access-control-allow-origin": "*",
 
-            headers: {
+            "access-control-allow-methods": "GET, POST, OPTIONS",
 
-              "access-control-allow-origin":
-                "*",
-
-              "access-control-allow-methods":
-                "GET, POST, OPTIONS",
-
-              "access-control-allow-headers":
-                "content-type, authorization"
-            }
-          }
-        );
+            "access-control-allow-headers": "content-type, authorization",
+          },
+        });
       }
 
       /*
        * HEALTH
        */
 
-      if (
-        url.pathname ===
-        "/health"
-      ) {
-
+      if (url.pathname === "/health") {
         return json({
-
           ok: true,
 
-          service:
-            "runtime-mcp",
+          service: "runtime-mcp",
 
-          version:
-            "1.0.0",
+          version: "1.0.0",
 
-          requestId:
-            rid,
+          requestId: rid,
 
-          ts:
-            Date.now()
+          ts: Date.now(),
         });
       }
 
@@ -151,31 +91,17 @@ export default {
        * OPENAPI
        */
 
-      if (
-        url.pathname ===
-        "/openapi.json"
-      ) {
+      if (url.pathname === "/openapi.json") {
+        const baseUrl = `${url.protocol}//${url.host}`;
 
-        const baseUrl =
-          `${url.protocol}//${url.host}`;
-
-        return json(
-          buildOpenApi(
-            baseUrl
-          )
-        );
+        return json(buildOpenApi(baseUrl));
       }
 
       /*
        * TOOLS
        */
 
-      const tools =
-        await handleToolsRoute(
-          request,
-          env,
-          rid
-        );
+      const tools = await handleToolsRoute(request, env, rid);
 
       if (tools) {
         return tools;
@@ -185,12 +111,7 @@ export default {
        * RPC
        */
 
-      const rpc =
-        await handleRpcRoute(
-          request,
-          env,
-          rid
-        );
+      const rpc = await handleRpcRoute(request, env, rid);
 
       if (rpc) {
         return rpc;
@@ -200,12 +121,7 @@ export default {
        * RESOURCES
        */
 
-      const resources =
-        await handleResourcesRoute(
-          request,
-          env,
-          rid
-        );
+      const resources = await handleResourcesRoute(request, env, rid);
 
       if (resources) {
         return resources;
@@ -217,58 +133,41 @@ export default {
 
       return json(
         {
-
           ok: false,
 
           error: {
+            code: "NOT_FOUND",
 
-            code:
-              "NOT_FOUND",
-
-            message:
-              "Endpoint not found"
+            message: "Endpoint not found",
           },
 
-          requestId:
-            rid,
+          requestId: rid,
 
-          ts:
-            Date.now()
+          ts: Date.now(),
         },
         {
-          status: 404
-        }
+          status: 404,
+        },
       );
-
-    } catch (
-      error: any
-    ) {
-
+    } catch (error: any) {
       return json(
         {
-
           ok: false,
 
           error: {
+            code: "INTERNAL_SERVER_ERROR",
 
-            code:
-              "INTERNAL_SERVER_ERROR",
-
-            message:
-              error?.message ??
-              "Unexpected runtime error"
+            message: error?.message ?? "Unexpected runtime error",
           },
 
-          requestId:
-            rid,
+          requestId: rid,
 
-          ts:
-            Date.now()
+          ts: Date.now(),
         },
         {
-          status: 500
-        }
+          status: 500,
+        },
       );
     }
-  }
+  },
 };

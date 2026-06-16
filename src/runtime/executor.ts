@@ -5,7 +5,7 @@ export class Executor {
     toolName: string,
     args: unknown,
     env: Env,
-    requestId: string
+    requestId: string,
   ): Promise<unknown> {
     const tool = server.tools[toolName];
 
@@ -17,7 +17,7 @@ export class Executor {
 
     return tool.execute(validated, {
       env,
-      requestId
+      requestId,
     });
   }
 }

@@ -4,7 +4,7 @@ import {
   CallToolRequestSchema,
   ListResourcesRequestSchema,
   ListToolsRequestSchema,
-  ReadResourceRequestSchema
+  ReadResourceRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { verifyBearer } from "../auth/bearer";
 import type { JsonSchema, ToolDefinition } from "../contracts/tool";
@@ -16,11 +16,11 @@ const repositoryQuerySchema: JsonSchema = {
   type: "object",
   properties: {
     query: {
-      type: "string"
-    }
+      type: "string",
+    },
   },
   required: ["query"],
-  additionalProperties: false
+  additionalProperties: false,
 };
 
 const widgetHtml = `<!doctype html>
@@ -47,13 +47,12 @@ const widgetHtml = `<!doctype html>
 
 const appMetadata = {
   ui: {
-    resourceUri: OUTPUT_TEMPLATE
+    resourceUri: OUTPUT_TEMPLATE,
   },
   "openai/outputTemplate": OUTPUT_TEMPLATE,
   "openai/toolInvocation/invoking": "Querying repository…",
-  "openai/toolInvocation/invoked": "Repository result ready"
+  "openai/toolInvocation/invoked": "Repository result ready",
 };
-
 
 const toolAnnotations: Record<
   string,
@@ -66,58 +65,56 @@ const toolAnnotations: Record<
   memory_put: {
     readOnlyHint: false,
     destructiveHint: false,
-    openWorldHint: false
+    openWorldHint: false,
   },
   memory_get: {
     readOnlyHint: true,
     destructiveHint: false,
-    openWorldHint: false
+    openWorldHint: false,
   },
   memory_exists: {
     readOnlyHint: true,
     destructiveHint: false,
-    openWorldHint: false
+    openWorldHint: false,
   },
   memory_delete: {
     readOnlyHint: false,
     destructiveHint: true,
-    openWorldHint: false
+    openWorldHint: false,
   },
   memory_list: {
     readOnlyHint: true,
     destructiveHint: false,
-    openWorldHint: false
+    openWorldHint: false,
   },
   provenance_append: {
     readOnlyHint: false,
     destructiveHint: false,
-    openWorldHint: false
+    openWorldHint: false,
   },
   provenance_query: {
     readOnlyHint: true,
     destructiveHint: false,
-    openWorldHint: false
+    openWorldHint: false,
   },
   raw_read: {
     readOnlyHint: true,
     destructiveHint: false,
-    openWorldHint: false
+    openWorldHint: false,
   },
   raw_save: {
     readOnlyHint: false,
     destructiveHint: true,
-    openWorldHint: true
-  }
+    openWorldHint: true,
+  },
 };
 
 const genericObjectOutputSchema = {
   type: "object" as const,
-  additionalProperties: true
+  additionalProperties: true,
 };
 
-function mcpHeaders(
-  headers?: HeadersInit
-): Headers {
+function mcpHeaders(headers?: HeadersInit): Headers {
   const result = new Headers(headers);
 
   result.set("access-control-allow-origin", "*");
@@ -129,32 +126,30 @@ function mcpHeaders(
       "authorization",
       "mcp-protocol-version",
       "mcp-session-id",
-      "last-event-id"
-    ].join(", ")
+      "last-event-id",
+    ].join(", "),
   );
   result.set(
     "access-control-expose-headers",
-    "mcp-protocol-version, mcp-session-id"
+    "mcp-protocol-version, mcp-session-id",
   );
   result.set("cache-control", "no-store");
 
   return result;
 }
 
-function withMcpHeaders(
-  response: Response
-): Response {
+function withMcpHeaders(response: Response): Response {
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
-    headers: mcpHeaders(response.headers)
+    headers: mcpHeaders(response.headers),
   });
 }
 
 function errorResponse(
   status: number,
   code: number,
-  message: string
+  message: string,
 ): Response {
   return new Response(
     JSON.stringify({
@@ -162,40 +157,34 @@ function errorResponse(
       id: null,
       error: {
         code,
-        message
-      }
+        message,
+      },
     }),
     {
       status,
       headers: mcpHeaders({
-        "content-type": "application/json; charset=utf-8"
-      })
-    }
+        "content-type": "application/json; charset=utf-8",
+      }),
+    },
   );
 }
 
-function serializedResult(
-  result: unknown
-): string {
+function serializedResult(result: unknown): string {
   const serialized = JSON.stringify(result, null, 2);
   return serialized ?? String(result);
 }
 
-function resultContent(
-  result: unknown
-) {
+function resultContent(result: unknown) {
   return {
-    ...(result !== null &&
-    typeof result === "object" &&
-    !Array.isArray(result)
+    ...(result !== null && typeof result === "object" && !Array.isArray(result)
       ? { structuredContent: result as Record<string, unknown> }
       : {}),
     content: [
       {
         type: "text" as const,
-        text: serializedResult(result)
-      }
-    ]
+        text: serializedResult(result),
+      },
+    ],
   };
 }
 
@@ -203,19 +192,19 @@ async function executeTool(
   tool: ToolDefinition<Env>,
   args: unknown,
   env: Env,
-  requestId: string
+  requestId: string,
 ) {
   const validated = tool.validate(args);
   return tool.execute(validated, {
     env,
-    requestId
+    requestId,
   });
 }
 
 async function executeRepositoryQuery(
   args: unknown,
   env: Env,
-  requestId: string
+  requestId: string,
 ) {
   if (
     args === null ||
@@ -235,111 +224,98 @@ async function executeRepositoryQuery(
   return executeTool(
     repositoryReader,
     {
-      path: (args as { query: string }).query
+      path: (args as { query: string }).query,
     },
     env,
-    requestId
+    requestId,
   );
 }
 
-function createMcpServer(
-  env: Env,
-  requestId: string
-): Server {
+function createMcpServer(env: Env, requestId: string): Server {
   const mcp = new Server(
     {
       name: "repository-worker",
-      version: "1.0.0"
+      version: "1.0.0",
     },
     {
       capabilities: {
         resources: {},
-        tools: {}
+        tools: {},
       },
       instructions:
-        "Use repository.query to read a repository memory file by path, or call any registered worker tool directly."
-    }
+        "Use repository.query to read a repository memory file by path, or call any registered worker tool directly.",
+    },
   );
 
-  mcp.setRequestHandler(
-    ListResourcesRequestSchema,
-    async () => ({
-      resources: [
+  mcp.setRequestHandler(ListResourcesRequestSchema, async () => ({
+    resources: [
+      {
+        name: "Repository result widget",
+        uri: OUTPUT_TEMPLATE,
+        mimeType: "text/html;profile=mcp-app",
+      },
+    ],
+  }));
+
+  mcp.setRequestHandler(ReadResourceRequestSchema, async (request) => {
+    if (request.params.uri !== OUTPUT_TEMPLATE) {
+      throw new Error(`Unknown resource: ${request.params.uri}`);
+    }
+
+    return {
+      contents: [
         {
-          name: "Repository result widget",
           uri: OUTPUT_TEMPLATE,
-          mimeType: "text/html;profile=mcp-app"
-        }
-      ]
-    })
-  );
-
-  mcp.setRequestHandler(
-    ReadResourceRequestSchema,
-    async (request) => {
-      if (request.params.uri !== OUTPUT_TEMPLATE) {
-        throw new Error(`Unknown resource: ${request.params.uri}`);
-      }
-
-      return {
-        contents: [
-          {
-            uri: OUTPUT_TEMPLATE,
-            mimeType: "text/html;profile=mcp-app",
-            text: widgetHtml,
-            _meta: {
-              ui: {
-                prefersBorder: false
-              }
-            }
-          }
-        ]
-      };
-    }
-  );
-
-  mcp.setRequestHandler(
-    ListToolsRequestSchema,
-    async () => ({
-      tools: [
-        {
-          name: "repository.query",
-          title: "Query repository",
-          description: "Execute repository worker request",
-          inputSchema: repositoryQuerySchema,
-          outputSchema: genericObjectOutputSchema,
-          annotations: {
-            readOnlyHint: true,
-            destructiveHint: false,
-            openWorldHint: true
+          mimeType: "text/html;profile=mcp-app",
+          text: widgetHtml,
+          _meta: {
+            ui: {
+              prefersBorder: false,
+            },
           },
-          _meta: appMetadata
         },
-        ...Object.entries(server.tools).map(([name, tool]) => ({
-          name,
-          title: name.replaceAll("_", " "),
-          description: tool.description,
-          inputSchema: tool.inputSchema,
-          outputSchema: genericObjectOutputSchema,
-          annotations: toolAnnotations[name] ?? {
-            readOnlyHint: false,
-            destructiveHint: false,
-            openWorldHint: true
-          }
-        }))
-      ]
-    })
-  );
+      ],
+    };
+  });
 
-  mcp.setRequestHandler(
-    CallToolRequestSchema,
-    async (request) => {
-      try {
-        const result = request.params.name === "repository.query"
+  mcp.setRequestHandler(ListToolsRequestSchema, async () => ({
+    tools: [
+      {
+        name: "repository.query",
+        title: "Query repository",
+        description: "Execute repository worker request",
+        inputSchema: repositoryQuerySchema,
+        outputSchema: genericObjectOutputSchema,
+        annotations: {
+          readOnlyHint: true,
+          destructiveHint: false,
+          openWorldHint: true,
+        },
+        _meta: appMetadata,
+      },
+      ...Object.entries(server.tools).map(([name, tool]) => ({
+        name,
+        title: name.replaceAll("_", " "),
+        description: tool.description,
+        inputSchema: tool.inputSchema,
+        outputSchema: genericObjectOutputSchema,
+        annotations: toolAnnotations[name] ?? {
+          readOnlyHint: false,
+          destructiveHint: false,
+          openWorldHint: true,
+        },
+      })),
+    ],
+  }));
+
+  mcp.setRequestHandler(CallToolRequestSchema, async (request) => {
+    try {
+      const result =
+        request.params.name === "repository.query"
           ? await executeRepositoryQuery(
               request.params.arguments ?? {},
               env,
-              requestId
+              requestId,
             )
           : await (async () => {
               const tool = server.tools[request.params.name];
@@ -351,27 +327,24 @@ function createMcpServer(
                 tool,
                 request.params.arguments ?? {},
                 env,
-                requestId
+                requestId,
               );
             })();
 
-        return resultContent(result);
-      } catch (error) {
-        return {
-          isError: true,
-          content: [
-            {
-              type: "text" as const,
-              text:
-                error instanceof Error
-                  ? error.message
-                  : "Tool execution failed"
-            }
-          ]
-        };
-      }
+      return resultContent(result);
+    } catch (error) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text" as const,
+            text:
+              error instanceof Error ? error.message : "Tool execution failed",
+          },
+        ],
+      };
     }
-  );
+  });
 
   return mcp;
 }
@@ -379,7 +352,7 @@ function createMcpServer(
 export async function handleMcpRoute(
   request: Request,
   env: Env,
-  requestId: string
+  requestId: string,
 ): Promise<Response | null> {
   const url = new URL(request.url);
   if (url.pathname !== "/mcp") {
@@ -389,7 +362,7 @@ export async function handleMcpRoute(
   if (request.method === "OPTIONS") {
     return new Response(null, {
       status: 204,
-      headers: mcpHeaders()
+      headers: mcpHeaders(),
     });
   }
 
@@ -406,18 +379,16 @@ export async function handleMcpRoute(
     return errorResponse(
       405,
       -32000,
-      "SSE notifications are not available in stateless mode"
+      "SSE notifications are not available in stateless mode",
     );
   }
 
   const transport = new WebStandardStreamableHTTPServerTransport({
-    enableJsonResponse: true
+    enableJsonResponse: true,
   });
   const mcp = createMcpServer(env, requestId);
 
   await mcp.connect(transport);
 
-  return withMcpHeaders(
-    await transport.handleRequest(request)
-  );
+  return withMcpHeaders(await transport.handleRequest(request));
 }

@@ -7,11 +7,7 @@ export type RuntimeState =
   | "FAILED"
   | "RECOVERY";
 
-export type RuntimeObjectKind =
-  | "tool"
-  | "workflow"
-  | "agent"
-  | "knowledge";
+export type RuntimeObjectKind = "tool" | "workflow" | "agent" | "knowledge";
 
 export interface RegistryRecord {
   id: string;

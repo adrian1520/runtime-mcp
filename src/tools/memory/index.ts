@@ -20,10 +20,7 @@ function keyOf(k: string) {
  * GPT-generated hierarchical keys are valid.
  */
 
-const keySchema = z
-  .string()
-  .min(1)
-  .max(512);
+const keySchema = z.string().min(1).max(512);
 
 const putSchema = z.object({
   key: keySchema,
@@ -35,38 +32,25 @@ const putSchema = z.object({
     .int()
     .positive()
     .max(60 * 60 * 24 * 30)
-    .optional()
+    .optional(),
 });
 
 const getSchema = z.object({
-  key: keySchema
+  key: keySchema,
 });
 
 const delSchema = z.object({
-  key: keySchema
+  key: keySchema,
 });
 
 const listSchema = z.object({
-  prefix: z
-    .string()
-    .max(512)
-    .optional(),
+  prefix: z.string().max(512).optional(),
 
-  limit: z
-    .number()
-    .int()
-    .min(1)
-    .max(100)
-    .optional()
+  limit: z.number().int().min(1).max(100).optional(),
 });
 
-function sanitizeKey(
-  key: string
-): string {
-
-  return key
-    .replace(/^memory:/, "")
-    .trim();
+function sanitizeKey(key: string): string {
+  return key.replace(/^memory:/, "").trim();
 }
 
 /*
@@ -78,35 +62,21 @@ function sanitizeKey(
  * - unsupported structures
  */
 
-function safeStringify(
-  value: unknown
-): string {
-
-  const seen =
-    new WeakSet<object>();
+function safeStringify(value: unknown): string {
+  const seen = new WeakSet<object>();
 
   return JSON.stringify(
     value,
 
     (_, v) => {
-
-      if (
-        typeof v === "bigint"
-      ) {
+      if (typeof v === "bigint") {
         return v.toString();
       }
 
-      if (
-        typeof v === "object" &&
-        v !== null
-      ) {
+      if (typeof v === "object" && v !== null) {
+        const obj = v as object;
 
-        const obj =
-          v as object;
-
-        if (
-          seen.has(obj)
-        ) {
+        if (seen.has(obj)) {
           return "[Circular]";
         }
 
@@ -114,67 +84,49 @@ function safeStringify(
       }
 
       return v;
-    }
+    },
   );
 }
 
-export function registerMemoryTools(
-  registry: ToolRegistry<Env>
-) {
-
+export function registerMemoryTools(registry: ToolRegistry<Env>) {
   /*
    * MEMORY PUT
    */
 
   registry.memory_put = {
-
-    description:
-      "Store structured memory in KV",
+    description: "Store structured memory in KV",
 
     inputSchema: {
       type: "object",
 
       properties: {
-
         key: {
-          type: "string"
+          type: "string",
         },
 
         value: {},
 
         ttl: {
-          type: "integer"
-        }
+          type: "integer",
+        },
       },
 
-      required: [
-        "key",
-        "value"
-      ],
+      required: ["key", "value"],
 
-      additionalProperties: false
+      additionalProperties: false,
     },
 
-    validate: (args) =>
-      putSchema.parse(args),
+    validate: (args) => putSchema.parse(args),
 
-    execute: async (
-      args,
-      { env }
-    ) => {
-
+    execute: async (args, { env }) => {
       const payload = {
-
         value: args.value,
 
         ts: Date.now(),
 
         version: 1,
 
-        type:
-          Array.isArray(args.value)
-            ? "array"
-            : typeof args.value
+        type: Array.isArray(args.value) ? "array" : typeof args.value,
       };
 
       await env.STATE_KV.put(
@@ -184,25 +136,21 @@ export function registerMemoryTools(
 
         args.ttl
           ? {
-              expirationTtl:
-                args.ttl
+              expirationTtl: args.ttl,
             }
-          : undefined
+          : undefined,
       );
 
       return {
-
         ok: true,
 
-        key: sanitizeKey(
-          args.key
-        ),
+        key: sanitizeKey(args.key),
 
         stored: true,
 
-        ts: payload.ts
+        ts: payload.ts,
       };
-    }
+    },
   };
 
   /*
@@ -210,86 +158,59 @@ export function registerMemoryTools(
    */
 
   registry.memory_get = {
-
-    description:
-      "Get structured memory from KV",
+    description: "Get structured memory from KV",
 
     inputSchema: {
       type: "object",
 
       properties: {
         key: {
-          type: "string"
-        }
+          type: "string",
+        },
       },
 
-      required: [
-        "key"
-      ],
+      required: ["key"],
 
-      additionalProperties: false
+      additionalProperties: false,
     },
 
-    validate: (args) =>
-      getSchema.parse(args),
+    validate: (args) => getSchema.parse(args),
 
-    execute: async (
-      args,
-      { env }
-    ) => {
-
-      const raw =
-        await env.STATE_KV.get(
-          keyOf(args.key)
-        );
+    execute: async (args, { env }) => {
+      const raw = await env.STATE_KV.get(keyOf(args.key));
 
       if (!raw) {
-
         return {
-
           ok: true,
 
-          key: sanitizeKey(
-            args.key
-          ),
+          key: sanitizeKey(args.key),
 
           found: false,
 
-          value: null
+          value: null,
         };
       }
 
       try {
-
         return {
-
           ok: true,
 
-          key: sanitizeKey(
-            args.key
-          ),
+          key: sanitizeKey(args.key),
 
           found: true,
 
-          value:
-            JSON.parse(raw)
+          value: JSON.parse(raw),
         };
-
       } catch {
-
         return {
-
           ok: false,
 
-          error:
-            "INVALID_STORED_JSON",
+          error: "INVALID_STORED_JSON",
 
-          key: sanitizeKey(
-            args.key
-          )
+          key: sanitizeKey(args.key),
         };
       }
-    }
+    },
   };
 
   /*
@@ -297,52 +218,35 @@ export function registerMemoryTools(
    */
 
   registry.memory_exists = {
-
-    description:
-      "Check if memory key exists",
+    description: "Check if memory key exists",
 
     inputSchema: {
       type: "object",
 
       properties: {
         key: {
-          type: "string"
-        }
+          type: "string",
+        },
       },
 
-      required: [
-        "key"
-      ],
+      required: ["key"],
 
-      additionalProperties: false
+      additionalProperties: false,
     },
 
-    validate: (args) =>
-      getSchema.parse(args),
+    validate: (args) => getSchema.parse(args),
 
-    execute: async (
-      args,
-      { env }
-    ) => {
-
-      const raw =
-        await env.STATE_KV.get(
-          keyOf(args.key),
-          "text"
-        );
+    execute: async (args, { env }) => {
+      const raw = await env.STATE_KV.get(keyOf(args.key), "text");
 
       return {
-
         ok: true,
 
-        key: sanitizeKey(
-          args.key
-        ),
+        key: sanitizeKey(args.key),
 
-        exists:
-          raw !== null
+        exists: raw !== null,
       };
-    }
+    },
   };
 
   /*
@@ -350,51 +254,37 @@ export function registerMemoryTools(
    */
 
   registry.memory_delete = {
-
-    description:
-      "Delete memory from KV",
+    description: "Delete memory from KV",
 
     inputSchema: {
       type: "object",
 
       properties: {
         key: {
-          type: "string"
-        }
+          type: "string",
+        },
       },
 
-      required: [
-        "key"
-      ],
+      required: ["key"],
 
-      additionalProperties: false
+      additionalProperties: false,
     },
 
-    validate: (args) =>
-      delSchema.parse(args),
+    validate: (args) => delSchema.parse(args),
 
-    execute: async (
-      args,
-      { env }
-    ) => {
-
-      await env.STATE_KV.delete(
-        keyOf(args.key)
-      );
+    execute: async (args, { env }) => {
+      await env.STATE_KV.delete(keyOf(args.key));
 
       return {
-
         ok: true,
 
-        key: sanitizeKey(
-          args.key
-        ),
+        key: sanitizeKey(args.key),
 
         deleted: true,
 
-        ts: Date.now()
+        ts: Date.now(),
       };
-    }
+    },
   };
 
   /*
@@ -402,70 +292,47 @@ export function registerMemoryTools(
    */
 
   registry.memory_list = {
-
-    description:
-      "List stored memory keys",
+    description: "List stored memory keys",
 
     inputSchema: {
       type: "object",
 
       properties: {
-
         prefix: {
-          type: "string"
+          type: "string",
         },
 
         limit: {
-          type: "integer"
-        }
+          type: "integer",
+        },
       },
 
-      additionalProperties: false
+      additionalProperties: false,
     },
 
-    validate: (args) =>
-      listSchema.parse(args),
+    validate: (args) => listSchema.parse(args),
 
-    execute: async (
-      args,
-      { env }
-    ) => {
+    execute: async (args, { env }) => {
+      const normalizedPrefix = sanitizeKey(args.prefix ?? "");
 
-      const normalizedPrefix =
-        sanitizeKey(
-          args.prefix ?? ""
-        );
+      const prefix = `memory:${normalizedPrefix}`;
 
-      const prefix =
-        `memory:${normalizedPrefix}`;
-
-      const res =
-        await env.STATE_KV.list({
-          prefix,
-          limit:
-            args.limit ?? 50
-        });
+      const res = await env.STATE_KV.list({
+        prefix,
+        limit: args.limit ?? 50,
+      });
 
       return {
-
         ok: true,
 
-        keys:
-          res.keys.map((k) =>
-            sanitizeKey(k.name)
-          ),
+        keys: res.keys.map((k) => sanitizeKey(k.name)),
 
-        count:
-          res.keys.length,
+        count: res.keys.length,
 
-        complete:
-          res.list_complete,
+        complete: res.list_complete,
 
-        cursor:
-          "cursor" in res
-            ? res.cursor
-            : undefined
+        cursor: "cursor" in res ? res.cursor : undefined,
       };
-    }
+    },
   };
 }

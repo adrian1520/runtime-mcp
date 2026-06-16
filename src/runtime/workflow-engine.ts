@@ -11,7 +11,7 @@ import type {
   TaskResult,
   WorkflowDefinition,
   WorkflowStatus,
-  RuntimeState
+  RuntimeState,
 } from "./types";
 
 import type { Env } from "../server";
@@ -28,20 +28,20 @@ export class WorkflowEngine {
     state: RuntimeState,
     env: Env,
     requestId: string,
-    lastTask?: string
+    lastTask?: string,
   ) {
     const status: WorkflowStatus = {
       workflowId,
       state,
       updatedAt: new Date().toISOString(),
-      lastTask
+      lastTask,
     };
 
     await this.memory.put(
       env,
       requestId,
       `workflow/${workflowId}/status`,
-      status
+      status,
     );
   }
 
@@ -50,7 +50,7 @@ export class WorkflowEngine {
     graph: TaskGraph,
     completed: Set<string>,
     env: Env,
-    requestId: string
+    requestId: string,
   ): Promise<{
     results: TaskResult[];
     hasFailures: boolean;
@@ -59,9 +59,7 @@ export class WorkflowEngine {
     let hasFailures = false;
 
     while (true) {
-      const nextTasks = graph.next(
-        completed
-      );
+      const nextTasks = graph.next(completed);
 
       if (nextTasks.length === 0) {
         break;
@@ -70,18 +68,17 @@ export class WorkflowEngine {
       for (const task of nextTasks) {
         let result: TaskResult = {
           taskId: task.id,
-          success: true
+          success: true,
         };
 
         try {
           if (task.tool) {
-            result.output =
-              await this.executor.runTool(
-                task.tool,
-                task.input,
-                env,
-                requestId
-              );
+            result.output = await this.executor.runTool(
+              task.tool,
+              task.input,
+              env,
+              requestId,
+            );
           }
         } catch (error) {
           hasFailures = true;
@@ -89,10 +86,7 @@ export class WorkflowEngine {
           result = {
             taskId: task.id,
             success: false,
-            error:
-              error instanceof Error
-                ? error.message
-                : "Unknown error"
+            error: error instanceof Error ? error.message : "Unknown error",
           };
 
           await this.updateStatus(
@@ -100,235 +94,159 @@ export class WorkflowEngine {
             "FAILED",
             env,
             requestId,
-            task.id
+            task.id,
           );
 
-          await this.provenance.append(
-            env,
-            requestId,
-            "task_failed",
-            {
-              workflowId,
-              taskId: task.id,
-              error: result.error
-            }
-          );
+          await this.provenance.append(env, requestId, "task_failed", {
+            workflowId,
+            taskId: task.id,
+            error: result.error,
+          });
         }
 
-        completed.add(
-          task.id
-        );
+        completed.add(task.id);
 
-        results.push(
-          result
-        );
+        results.push(result);
 
         const checkpoint: Checkpoint = {
           workflowId,
           completed: [...completed],
-          lastTask: task.id
+          lastTask: task.id,
         };
 
         await this.memory.put(
           env,
           requestId,
           `workflow/${workflowId}/checkpoint`,
-          checkpoint
+          checkpoint,
         );
 
-        await this.provenance.append(
-          env,
-          requestId,
-          "task_completed",
-          {
-            workflowId,
-            taskId: task.id,
-            success: result.success
-          }
-        );
+        await this.provenance.append(env, requestId, "task_completed", {
+          workflowId,
+          taskId: task.id,
+          success: result.success,
+        });
       }
     }
 
     return {
       results,
-      hasFailures
+      hasFailures,
     };
   }
 
-  async run(
-    goal: Goal,
-    env: Env,
-    requestId: string
-  ) {
-    const tasks =
-      this.workflow.planner.build(
-        goal
-      );
+  async run(goal: Goal, env: Env, requestId: string) {
+    const tasks = this.workflow.planner.build(goal);
 
     const definition: WorkflowDefinition = {
       workflowId: goal.id,
       goal,
-      tasks
+      tasks,
     };
 
     await this.memory.put(
       env,
       requestId,
       `workflow/${goal.id}/definition`,
-      definition
+      definition,
     );
 
-    await this.updateStatus(
+    await this.updateStatus(goal.id, "EXECUTION", env, requestId);
+
+    const graph = new TaskGraph(tasks);
+
+    const completed = new Set<string>();
+
+    await this.provenance.append(env, requestId, "workflow_started", {
+      workflowId: goal.id,
+    });
+
+    const execution = await this.executeGraph(
       goal.id,
-      "EXECUTION",
-      env,
-      requestId
-    );
-
-    const graph =
-      new TaskGraph(tasks);
-
-    const completed =
-      new Set<string>();
-
-    await this.provenance.append(
+      graph,
+      completed,
       env,
       requestId,
-      "workflow_started",
-      {
-        workflowId: goal.id
-      }
     );
-
-    const execution =
-      await this.executeGraph(
-        goal.id,
-        graph,
-        completed,
-        env,
-        requestId
-      );
 
     const finalResult = {
       workflowId: goal.id,
       completed: [...completed],
-      results: execution.results
+      results: execution.results,
     };
 
     await this.memory.put(
       env,
       requestId,
       `workflow/${goal.id}/result`,
-      finalResult
+      finalResult,
     );
 
-    await this.provenance.append(
-      env,
-      requestId,
-      "workflow_completed",
-      {
-        workflowId: goal.id,
-        completed: completed.size
-      }
-    );
+    await this.provenance.append(env, requestId, "workflow_completed", {
+      workflowId: goal.id,
+      completed: completed.size,
+    });
 
     await this.updateStatus(
       goal.id,
-      execution.hasFailures
-        ? "FAILED"
-        : "COMPLETE",
+      execution.hasFailures ? "FAILED" : "COMPLETE",
       env,
-      requestId
+      requestId,
     );
 
     return finalResult;
   }
 
-  async resume(
-    workflowId: string,
-    env: Env,
-    requestId: string
-  ) {
-    const state =
-      await this.recovery.resume(
-        env,
-        requestId,
-        workflowId
-      );
+  async resume(workflowId: string, env: Env, requestId: string) {
+    const state = await this.recovery.resume(env, requestId, workflowId);
 
     if (!state.definition) {
-      throw new Error(
-        `Workflow definition not found: ${workflowId}`
-      );
+      throw new Error(`Workflow definition not found: ${workflowId}`);
     }
 
-    const graph =
-      new TaskGraph(
-        state.definition.tasks
-      );
+    const graph = new TaskGraph(state.definition.tasks);
 
-    const completed =
-      new Set<string>(
-        state.completed
-      );
+    const completed = new Set<string>(state.completed);
 
-    await this.updateStatus(
+    await this.updateStatus(workflowId, "RECOVERY", env, requestId);
+
+    await this.provenance.append(env, requestId, "workflow_resumed", {
       workflowId,
-      "RECOVERY",
-      env,
-      requestId
-    );
+      completed: completed.size,
+      remaining: state.remaining.length,
+    });
 
-    await this.provenance.append(
+    const execution = await this.executeGraph(
+      workflowId,
+      graph,
+      completed,
       env,
       requestId,
-      "workflow_resumed",
-      {
-        workflowId,
-        completed: completed.size,
-        remaining: state.remaining.length
-      }
     );
-
-    const execution =
-      await this.executeGraph(
-        workflowId,
-        graph,
-        completed,
-        env,
-        requestId
-      );
 
     const finalResult = {
       workflowId,
       completed: [...completed],
-      results: execution.results
+      results: execution.results,
     };
 
     await this.memory.put(
       env,
       requestId,
       `workflow/${workflowId}/result`,
-      finalResult
+      finalResult,
     );
 
-    await this.provenance.append(
-      env,
-      requestId,
-      "workflow_completed",
-      {
-        workflowId,
-        completed: completed.size
-      }
-    );
+    await this.provenance.append(env, requestId, "workflow_completed", {
+      workflowId,
+      completed: completed.size,
+    });
 
     await this.updateStatus(
       workflowId,
-      execution.hasFailures
-        ? "FAILED"
-        : "COMPLETE",
+      execution.hasFailures ? "FAILED" : "COMPLETE",
       env,
-      requestId
+      requestId,
     );
 
     return finalResult;

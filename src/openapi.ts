@@ -1,134 +1,85 @@
-import { server }
-  from "./server";
+import { server } from "./server";
 
-import type {
-  JsonSchema
-} from "./contracts/tool";
+import type { JsonSchema } from "./contracts/tool";
 
-type OpenApiSchema =
-  JsonSchema;
+type OpenApiSchema = JsonSchema;
 
 type OpenApiResponse = {
-  readonly description:
-    string;
+  readonly description: string;
 };
 
 type OpenApiOperation = {
-  readonly operationId:
-    string;
+  readonly operationId: string;
 
-  readonly summary:
-    string;
+  readonly summary: string;
 
-  readonly tags:
-    readonly string[];
+  readonly tags: readonly string[];
 
   readonly requestBody?: {
-    readonly required:
-      boolean;
+    readonly required: boolean;
 
     readonly content: {
       readonly "application/json": {
-        readonly schema:
-          OpenApiSchema;
+        readonly schema: OpenApiSchema;
       };
     };
   };
 
-  readonly responses:
-    Record<
-      string,
-      OpenApiResponse
-    >;
+  readonly responses: Record<string, OpenApiResponse>;
 };
 
 type OpenApiPathItem = {
-  readonly get?:
-    OpenApiOperation;
+  readonly get?: OpenApiOperation;
 
-  readonly post?:
-    OpenApiOperation;
+  readonly post?: OpenApiOperation;
 };
 
-export function buildOpenApi(
-  baseUrl: string
-) {
-
-  const paths:
-    Record<
-      string,
-      OpenApiPathItem
-    > = {};
+export function buildOpenApi(baseUrl: string) {
+  const paths: Record<string, OpenApiPathItem> = {};
 
   /*
    * TOOL ROUTES
    */
 
-  for (
-    const [name, tool]
-    of Object.entries(
-      server.tools
-    )
-  ) {
-
-    const path =
-      `/tools/${name}`;
+  for (const [name, tool] of Object.entries(server.tools)) {
+    const path = `/tools/${name}`;
 
     paths[path] = {
-
       post: {
+        operationId: name,
 
-        operationId:
-          name,
+        summary: tool.description,
 
-        summary:
-          tool.description,
-
-        tags: [
-          "tools"
-        ],
+        tags: ["tools"],
 
         requestBody: {
-
           required: true,
 
           content: {
-
             "application/json": {
-
-              schema:
-                tool.inputSchema
-            }
-          }
+              schema: tool.inputSchema,
+            },
+          },
         },
 
         responses: {
-
           "200": {
-
-            description:
-              "Successful response"
+            description: "Successful response",
           },
 
           "400": {
-
-            description:
-              "Validation or JSON error"
+            description: "Validation or JSON error",
           },
 
           "404": {
-
-            description:
-              "Tool not found"
+            description: "Tool not found",
           },
 
           "500": {
-
-            description:
-              "Runtime execution error"
-          }
-        }
-      }
+            description: "Runtime execution error",
+          },
+        },
+      },
     };
   }
 
@@ -137,28 +88,19 @@ export function buildOpenApi(
    */
 
   paths["/health"] = {
-
     get: {
+      operationId: "health",
 
-      operationId:
-        "health",
+      summary: "Runtime health check",
 
-      summary:
-        "Runtime health check",
-
-      tags: [
-        "system"
-      ],
+      tags: ["system"],
 
       responses: {
-
         "200": {
-
-          description:
-            "Runtime healthy"
-        }
-      }
-    }
+          description: "Runtime healthy",
+        },
+      },
+    },
   };
 
   /*
@@ -166,28 +108,19 @@ export function buildOpenApi(
    */
 
   paths["/resources"] = {
-
     get: {
+      operationId: "resources",
 
-      operationId:
-        "resources",
+      summary: "Runtime resources manifest",
 
-      summary:
-        "Runtime resources manifest",
-
-      tags: [
-        "resources"
-      ],
+      tags: ["resources"],
 
       responses: {
-
         "200": {
-
-          description:
-            "Resources manifest"
-        }
-      }
-    }
+          description: "Resources manifest",
+        },
+      },
+    },
   };
 
   /*
@@ -195,56 +128,42 @@ export function buildOpenApi(
    */
 
   return {
-
-    openapi:
-      "3.1.0",
+    openapi: "3.1.0",
 
     info: {
+      title: "runtime-mcp",
 
-      title:
-        "runtime-mcp",
+      version: "1.0.0",
 
-      version:
-        "1.0.0",
-
-      description:
-        "Production MCP runtime running on Cloudflare Workers"
+      description: "Production MCP runtime running on Cloudflare Workers",
     },
 
     servers: [
       {
-        url:
-          baseUrl
-      }
+        url: baseUrl,
+      },
     ],
 
     tags: [
-
       {
-        name:
-          "tools",
+        name: "tools",
 
-        description:
-          "MCP executable tools"
+        description: "MCP executable tools",
       },
 
       {
-        name:
-          "resources",
+        name: "resources",
 
-        description:
-          "Runtime resources"
+        description: "Runtime resources",
       },
 
       {
-        name:
-          "system",
+        name: "system",
 
-        description:
-          "Runtime system endpoints"
-      }
+        description: "Runtime system endpoints",
+      },
     ],
 
-    paths
+    paths,
   };
 }

@@ -1,60 +1,37 @@
-import type {
-  ToolRegistry
-} from "./contracts/tool";
+import type { ToolRegistry } from "./contracts/tool";
 
-import {
-  registerMemoryTools
-} from "./tools/memory";
+import { registerMemoryTools } from "./tools/memory";
 
-import {
-  registerProvenanceTools
-} from "./tools/provenance";
+import { registerProvenanceTools } from "./tools/provenance";
 
-import {
-  registerRepositoryTools
-} from "./tools/repository";
+import { registerRepositoryTools } from "./tools/repository";
 
 export type Env = {
+  STATE_KV: KVNamespace;
 
-  STATE_KV:
-    KVNamespace;
+  API_KEY?: string;
 
-  API_KEY?:
-    string;
+  GITHUB_OWNER?: string;
 
-  GITHUB_OWNER?:
-    string;
+  GITHUB_REPO?: string;
 
-  GITHUB_REPO?:
-    string;
+  GITHUB_BRANCH?: string;
 
-  GITHUB_BRANCH?:
-    string;
-
-  GITHUB_TOKEN?:
-    string;
+  GITHUB_TOKEN?: string;
 };
 
 export const server: {
-  tools:
-    ToolRegistry<Env>;
+  tools: ToolRegistry<Env>;
 } = {
-
-  tools: {}
+  tools: {},
 };
 
 /*
  * REGISTER TOOLS
  */
 
-registerMemoryTools(
-  server.tools
-);
+registerMemoryTools(server.tools);
 
-registerProvenanceTools(
-  server.tools
-);
+registerProvenanceTools(server.tools);
 
-registerRepositoryTools(
-  server.tools
-);
+registerRepositoryTools(server.tools);

@@ -13,7 +13,7 @@ export interface SessionState {
 export interface ToolDescriptor {
   id: string;
   version: string;
-  category: 'memory' | 'repository' | 'python' | 'skill';
+  category: "memory" | "repository" | "python" | "skill";
   enabled: boolean;
   description: string;
 }
@@ -22,5 +22,5 @@ export interface SkillDescriptor {
   id: string;
   version: string;
   score: number;
-  status: 'draft' | 'testing' | 'published';
+  status: "draft" | "testing" | "published";
 }
