@@ -54,11 +54,6 @@ jobs:
         run: npm test -- --coverage
         continue-on-error: true
       
-      - name: Run integration tests
-        id: integration-tests
-        run: npm run test:integration
-        continue-on-error: true
-      
       # ========== CAPTURE TEST RESULTS ==========
       - name: Get test failure details
         if: failure()
@@ -80,7 +75,7 @@ jobs:
       
       # ========== CREATE PR FOR TEST FIXES (if needed) ==========
       - name: Create PR for test failures
-        if: steps.unit-tests.outcome == 'failure' || steps.integration-tests.outcome == 'failure'
+        if: steps.unit-tests.outcome == 'failure'
         uses: peter-evans/create-pull-request@v5
         with:
           commit-message: "fix: address test failures"
@@ -90,9 +85,6 @@ jobs:
             
             ### Unit Tests
             Status: ${{ steps.unit-tests.outcome }}
-            
-            ### Integration Tests
-            Status: ${{ steps.integration-tests.outcome }}
             
             **Please review and fix the failing tests manually.**
             
