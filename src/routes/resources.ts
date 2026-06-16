@@ -51,6 +51,9 @@ export async function handleResourcesRoute(
   if (
     !url.pathname.startsWith(
       "/resources"
+    ) &&
+    !url.pathname.startsWith(
+      "/ui"
     )
   ) {
     return null;
@@ -83,6 +86,67 @@ export async function handleResourcesRoute(
         }
       }
     );
+  }
+
+  /*
+   * Serve UI widget
+   * Mapped paths:
+   *  - /ui
+   *  - /ui/widget/result.html
+   *  - /resources/ui/widget/result.html
+   *
+   * Implementation: fetch the committed raw HTML from the repository's
+   * raw.githubusercontent URL. For private repositories you can replace this
+   * with a repository API fetch using GITHUB_TOKEN or embed the HTML at
+   * build time.
+   */
+
+  const uiPaths = new Set([
+    "/ui",
+    "/ui/widget/result.html",
+    "/resources/ui/widget/result.html"
+  ]);
+
+  if (uiPaths.has(url.pathname) && request.method === "GET") {
+    try {
+      const rawUrl =
+        "https://raw.githubusercontent.com/adrian1520/runtime-mcp/main/src/routes/ui.html";
+
+      const fetched = await fetch(rawUrl);
+
+      if (!fetched.ok) {
+        throw new Error(`Failed to fetch UI (${fetched.status})`);
+      }
+
+      const html = await fetched.text();
+
+      return new Response(html, {
+        headers: {
+          "content-type": "text/html; profile=mcp-app; charset=utf-8",
+          "cache-control": "no-cache",
+          "access-control-allow-origin": "*",
+          "access-control-allow-methods": "GET, OPTIONS"
+        }
+      });
+    } catch (error: any) {
+      return json(
+        {
+          ok: false,
+
+          error: {
+            code: "UI_FETCH_ERROR",
+            message: error?.message ?? "Failed to load UI widget"
+          },
+
+          requestId,
+
+          ts: Date.now()
+        },
+        {
+          status: 500
+        }
+      );
+    }
   }
 
   /*
