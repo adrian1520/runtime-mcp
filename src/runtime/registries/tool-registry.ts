@@ -1,11 +1,5 @@
 import type { RuntimeRegistry } from "../registry";
-
-export interface ToolDefinition {
-  id: string;
-  version: string;
-  name: string;
-  description?: string;
-}
+import type { ToolDefinition } from "../types";
 
 export class ToolRegistry implements RuntimeRegistry<ToolDefinition> {
   private readonly tools = new Map<string, ToolDefinition>();
