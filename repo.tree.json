@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T04:22:18.773651+00:00",
+  "generated_at": "2026-06-16T05:00:12.208991+00:00",
   "summary": {
-    "files": 39,
+    "files": 40,
     "directories": 16
   },
   "directories": [
@@ -166,6 +166,17 @@
       "sha256": "6d0587062f8121d5a4eb150cc3dc734d0df0003cebff5a82467564500f177b51"
     },
     {
+      "path": "contracts/workflow.contract.yaml",
+      "name": "workflow.contract.yaml",
+      "directory": "contracts",
+      "extension": "yaml",
+      "language": "yaml",
+      "category": "config",
+      "depth": 1,
+      "size": 1879,
+      "sha256": "cb89c31abafaf58ac344fa7b18c959c67c46bf74897f2e89b0a3fddf714cf2ae"
+    },
+    {
       "path": "docs/repository-api.md",
       "name": "repository-api.md",
       "directory": "docs",
@@ -229,7 +240,7 @@
       "category": "config",
       "depth": 0,
       "size": 19892,
-      "sha256": "145d3e6459f2e19a696ab3291cc649468e347a0649921fdc81a277f111b6d9ed"
+      "sha256": "7afdcd691d7898859398e899ab458842b8f924649ded70fde77ca56d76502d5d"
     },
     {
       "path": "src/auth/bearer.ts",
