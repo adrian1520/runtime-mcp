@@ -1,0 +1,101 @@
+name: Auto-Fix Linting and Test Failures
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  detect-and-fix:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      # ========== LINTING & FORMATTING ==========
+      - name: Check for linting issues
+        id: lint-check
+        run: npm run lint 2>&1 || true
+        continue-on-error: true
+      
+      - name: Auto-fix formatting issues
+        id: format-fix
+        run: |
+          npm run lint -- --fix || true
+          echo "formatting_changed=$(git diff --quiet || echo 'true')" >> $GITHUB_OUTPUT
+      
+      - name: Auto-fix with Prettier
+        id: prettier-fix
+        run: |
+          npx prettier --write "src/**/*.{js,jsx,ts,tsx,json,md,css,scss}"
+          echo "prettier_changed=$(git diff --quiet || echo 'true')" >> $GITHUB_OUTPUT
+      
+      # ========== RUN TESTS ==========
+      - name: Run unit tests
+        id: unit-tests
+        run: npm test -- --coverage
+        continue-on-error: true
+      
+      - name: Run integration tests
+        id: integration-tests
+        run: npm run test:integration
+        continue-on-error: true
+      
+      # ========== CAPTURE TEST RESULTS ==========
+      - name: Get test failure details
+        if: failure()
+        id: test-failures
+        run: |
+          if [ -f "test-results.json" ]; then
+            echo "TEST_RESULTS=$(cat test-results.json)" >> $GITHUB_ENV
+          fi
+      
+      # ========== COMMIT AUTO-FIXES ==========
+      - name: Commit linting/formatting fixes
+        if: steps.format-fix.outputs.formatting_changed == 'true' || steps.prettier-fix.outputs.prettier_changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          git commit -m "fix: auto-fix linting and formatting issues" || echo "No changes to commit"
+          git push
+      
+      # ========== CREATE PR FOR TEST FIXES (if needed) ==========
+      - name: Create PR for test failures
+        if: steps.unit-tests.outcome == 'failure' || steps.integration-tests.outcome == 'failure'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "fix: address test failures"
+          title: "🔧 Test Failures Detected - Review Required"
+          body: |
+            ## Test Failure Report
+            
+            ### Unit Tests
+            Status: ${{ steps.unit-tests.outcome }}
+            
+            ### Integration Tests
+            Status: ${{ steps.integration-tests.outcome }}
+            
+            **Please review and fix the failing tests manually.**
+            
+            Test results available in workflow logs.
+          branch: auto-fix/test-failures
+          delete-branch: true
