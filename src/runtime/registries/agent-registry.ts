@@ -1,11 +1,5 @@
 import type { RuntimeRegistry } from "../registry";
-
-export interface AgentDefinition {
-  id: string;
-  version: string;
-  name: string;
-  description?: string;
-}
+import type { AgentDefinition } from "../types";
 
 export class AgentRegistry implements RuntimeRegistry<AgentDefinition> {
   private readonly agents = new Map<string, AgentDefinition>();
