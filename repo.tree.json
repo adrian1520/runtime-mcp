@@ -1,6 +1,6 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T19:49:38.751781+00:00",
+  "generated_at": "2026-06-16T19:51:47.210401+00:00",
   "summary": {
     "files": 56,
     "directories": 19
@@ -133,8 +133,8 @@
       "language": "yaml",
       "category": "workflow",
       "depth": 2,
-      "size": 2923,
-      "sha256": "d794b3582b36de235e04e6ad30f5cc4475040ebf3c547fc3a7533989306e04e6"
+      "size": 2963,
+      "sha256": "c51c35d3327e3c367a7670a41630b9b670d1ad03f129c4951b21bd77292f7af8"
     },
     {
       "path": ".github/workflows/build-repo-index.yml",
