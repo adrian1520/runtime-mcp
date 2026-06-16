@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T18:07:11.167095+00:00",
+  "generated_at": "2026-06-16T19:05:58.353841+00:00",
   "summary": {
-    "files": 52,
-    "directories": 18
+    "files": 54,
+    "directories": 19
   },
   "directories": [
     {
@@ -14,6 +14,11 @@
     {
       "path": ".github",
       "depth": 1,
+      "category": "general"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE",
+      "depth": 2,
       "category": "general"
     },
     {
@@ -98,6 +103,28 @@
     }
   ],
   "files": [
+    {
+      "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "name": "bug_report.md",
+      "directory": ".github/ISSUE_TEMPLATE",
+      "extension": "md",
+      "language": "markdown",
+      "category": "general",
+      "depth": 2,
+      "size": 834,
+      "sha256": "0c8d64f29fb4536513653bf8c97da30f3340e2041b91c8952db1515d6b23a7b3"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "name": "feature_request.md",
+      "directory": ".github/ISSUE_TEMPLATE",
+      "extension": "md",
+      "language": "markdown",
+      "category": "general",
+      "depth": 2,
+      "size": 595,
+      "sha256": "1f48c52f209a971b8e7eae4120144d28fcf8ee38a7778a7b4d8cf1ab356617d2"
+    },
     {
       "path": ".github/workflows/build-repo-index.yml",
       "name": "build-repo-index.yml",
@@ -261,7 +288,7 @@
       "category": "config",
       "depth": 0,
       "size": 28093,
-      "sha256": "fde78bd80129e14a7b8b5e9a04edac870618665049efab60f4a63bcbdfeff7e8"
+      "sha256": "bab93657ae8ea0827c1cef291eb35127bf1a96b7a7757934b47d134789484aa8"
     },
     {
       "path": "src/agents/context-builder.ts",
