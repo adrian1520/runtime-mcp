@@ -1,0 +1,59 @@
+schema: runtime.agent.v2
+
+kind: contract
+
+metadata:
+  name: Runtime MCP Agent Contract
+  version: 2.0.0
+  status: active
+  description: >
+    Canonical contract for Runtime MCP Agent Operating System.
+    Defines tools, agents, workflows, knowledge packs,
+    execution semantics, persistence, governance and self-improving loops.
+
+vision:
+  system: Agent Operating System
+
+principles:
+  - outcome_first
+  - contract_driven
+  - stateful_execution
+  - recoverable_runtime
+  - autonomous_iteration
+  - provenance_tracking
+
+registry:
+  tools:
+    path: tools/
+  agents:
+    path: agents/
+  workflows:
+    path: workflows/
+  knowledge:
+    path: knowledge/
+  contracts:
+    path: contracts/
+
+runtime:
+  execution_states:
+    - CREATED
+    - PLANNING
+    - EXECUTION
+    - RECOVERY
+    - WAITING
+    - COMPLETE
+    - FAILED
+
+meta_agent:
+  enabled: true
+
+agent_factory:
+  enabled: true
+
+improvement_loop:
+  enabled: true
+
+limits:
+  max_iterations: 20
+  max_recovery_attempts: 5
+  max_tool_execution_time_seconds: 300
