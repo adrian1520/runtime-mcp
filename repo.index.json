@@ -1,13 +1,13 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-06-16T05:00:41.687133+00:00",
+  "generated_at": "2026-06-16T08:11:41.668043+00:00",
   "summary": {
     "classes": 11,
-    "interfaces": 11,
+    "interfaces": 13,
     "types": 22,
     "enums": 0,
-    "functions": 70,
-    "exports": 33,
+    "functions": 75,
+    "exports": 35,
     "imports": 56
   },
   "classes": [
@@ -91,6 +91,16 @@
     {
       "name": "RecoveryState",
       "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "RegistryRecord",
+      "file": "src/runtime/registry.ts",
+      "exported": true
+    },
+    {
+      "name": "RuntimeRegistry",
+      "file": "src/runtime/registry.ts",
       "exported": true
     },
     {
@@ -404,6 +414,31 @@
       "file": "src/runtime/recovery-manager.ts"
     },
     {
+      "name": "exists",
+      "kind": "method",
+      "file": "src/runtime/registry.ts"
+    },
+    {
+      "name": "get",
+      "kind": "method",
+      "file": "src/runtime/registry.ts"
+    },
+    {
+      "name": "list",
+      "kind": "method",
+      "file": "src/runtime/registry.ts"
+    },
+    {
+      "name": "register",
+      "kind": "method",
+      "file": "src/runtime/registry.ts"
+    },
+    {
+      "name": "remove",
+      "kind": "method",
+      "file": "src/runtime/registry.ts"
+    },
+    {
       "name": "transition",
       "kind": "method",
       "file": "src/runtime/state-machine.ts"
@@ -641,6 +676,14 @@
     {
       "name": "RecoveryManager",
       "file": "src/runtime/recovery-manager.ts"
+    },
+    {
+      "name": "RegistryRecord",
+      "file": "src/runtime/registry.ts"
+    },
+    {
+      "name": "RuntimeRegistry",
+      "file": "src/runtime/registry.ts"
     },
     {
       "name": "StateMachine",
