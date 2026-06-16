@@ -1,6 +1,6 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T19:10:52.504357+00:00",
+  "generated_at": "2026-06-16T19:15:38.852869+00:00",
   "summary": {
     "files": 55,
     "directories": 19
@@ -155,8 +155,8 @@
       "language": "yaml",
       "category": "workflow",
       "depth": 2,
-      "size": 4740,
-      "sha256": "a8c1c75e056b667b7ba869482161444f415264dfdefc63c40f749a226524f16f"
+      "size": 4843,
+      "sha256": "6cea5dbbe33a6d81b471716f97590235bf538ecf0568d5b99a06cdd56633a56f"
     },
     {
       "path": ".gitignore",
@@ -288,7 +288,7 @@
       "category": "config",
       "depth": 0,
       "size": 28093,
-      "sha256": "fad20aacee5605a2016049e06e37e6a2804e1845aa1e5e7bba881d468a8cd703"
+      "sha256": "f209dc4e6bb887cdfa2ecf9d354a784f938c4e0f053d7b8432e9fc9cd5677d1f"
     },
     {
       "path": "src/agents/context-builder.ts",
