@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-06-16T08:14:35.534691+00:00",
+  "generated_at": "2026-06-16T08:16:42.510723+00:00",
   "summary": {
     "classes": 15,
-    "interfaces": 20,
+    "interfaces": 17,
     "types": 23,
     "enums": 0,
     "functions": 95,
-    "exports": 47,
-    "imports": 61
+    "exports": 44,
+    "imports": 64
   },
   "classes": [
     {
@@ -94,11 +94,6 @@
       "exported": true
     },
     {
-      "name": "AgentDefinition",
-      "file": "src/runtime/registries/agent-registry.ts",
-      "exported": true
-    },
-    {
       "name": "Checkpoint",
       "file": "src/runtime/types.ts",
       "exported": true
@@ -121,11 +116,6 @@
     {
       "name": "KnowledgeDefinition",
       "file": "src/runtime/types.ts",
-      "exported": true
-    },
-    {
-      "name": "KnowledgeDefinition",
-      "file": "src/runtime/registries/knowledge-registry.ts",
       "exported": true
     },
     {
@@ -161,11 +151,6 @@
     {
       "name": "ToolDefinition",
       "file": "src/runtime/types.ts",
-      "exported": true
-    },
-    {
-      "name": "ToolDefinition",
-      "file": "src/runtime/registries/tool-registry.ts",
       "exported": true
     },
     {
@@ -838,24 +823,12 @@
       "file": "src/runtime/recovery-manager.ts"
     },
     {
-      "name": "AgentDefinition",
-      "file": "src/runtime/registries/agent-registry.ts"
-    },
-    {
       "name": "AgentRegistry",
       "file": "src/runtime/registries/agent-registry.ts"
     },
     {
-      "name": "KnowledgeDefinition",
-      "file": "src/runtime/registries/knowledge-registry.ts"
-    },
-    {
       "name": "KnowledgeRegistry",
       "file": "src/runtime/registries/knowledge-registry.ts"
-    },
-    {
-      "name": "ToolDefinition",
-      "file": "src/runtime/registries/tool-registry.ts"
     },
     {
       "name": "ToolRegistry",
@@ -1112,12 +1085,24 @@
       "from": "../registry"
     },
     {
+      "file": "src/runtime/registries/agent-registry.ts",
+      "from": "../types"
+    },
+    {
       "file": "src/runtime/registries/knowledge-registry.ts",
       "from": "../registry"
     },
     {
+      "file": "src/runtime/registries/knowledge-registry.ts",
+      "from": "../types"
+    },
+    {
       "file": "src/runtime/registries/tool-registry.ts",
       "from": "../registry"
+    },
+    {
+      "file": "src/runtime/registries/tool-registry.ts",
+      "from": "../types"
     },
     {
       "file": "src/runtime/registries/workflow-registry.ts",
