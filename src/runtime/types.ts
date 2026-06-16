@@ -7,6 +7,35 @@ export type RuntimeState =
   | "FAILED"
   | "RECOVERY";
 
+export type RuntimeObjectKind =
+  | "tool"
+  | "workflow"
+  | "agent"
+  | "knowledge";
+
+export interface RegistryRecord {
+  id: string;
+  version: string;
+  kind: RuntimeObjectKind;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ToolDefinition extends RegistryRecord {
+  name: string;
+  description?: string;
+}
+
+export interface AgentDefinition extends RegistryRecord {
+  name: string;
+  description?: string;
+}
+
+export interface KnowledgeDefinition extends RegistryRecord {
+  name: string;
+  description?: string;
+}
+
 export interface Goal {
   id: string;
   objective: string;
