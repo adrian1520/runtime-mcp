@@ -1,12 +1,12 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-06-16T19:51:48.115015+00:00",
+  "generated_at": "2026-06-18T06:16:01.801347+00:00",
   "summary": {
     "classes": 15,
     "interfaces": 24,
     "types": 23,
     "enums": 0,
-    "functions": 102,
+    "functions": 97,
     "exports": 51,
     "imports": 66
   },
@@ -369,11 +369,6 @@
       "file": "src/auth/bearer.ts"
     },
     {
-      "name": "buildOpenApi",
-      "kind": "method",
-      "file": "src/index.ts"
-    },
-    {
       "name": "fetch",
       "kind": "method",
       "file": "src/index.ts"
@@ -387,16 +382,6 @@
       "name": "requestId",
       "kind": "function",
       "file": "src/index.ts"
-    },
-    {
-      "name": "requestId",
-      "kind": "method",
-      "file": "src/index.ts"
-    },
-    {
-      "name": "async",
-      "kind": "method",
-      "file": "src/mcp/adapter.ts"
     },
     {
       "name": "createMcpServer",
@@ -476,11 +461,6 @@
     {
       "name": "json",
       "kind": "function",
-      "file": "src/routes/tools.ts"
-    },
-    {
-      "name": "verifyBearer",
-      "kind": "method",
       "file": "src/routes/tools.ts"
     },
     {
@@ -744,16 +724,6 @@
       "file": "src/tools/memory/index.ts"
     },
     {
-      "name": "sanitizeKey",
-      "kind": "method",
-      "file": "src/tools/memory/index.ts"
-    },
-    {
-      "name": "async",
-      "kind": "method",
-      "file": "src/tools/provenance/index.ts"
-    },
-    {
       "name": "registerProvenanceTools",
       "kind": "function",
       "file": "src/tools/provenance/index.ts"
@@ -772,6 +742,11 @@
       "name": "safeStringify",
       "kind": "method",
       "file": "src/tools/provenance/index.ts"
+    },
+    {
+      "name": "Boolean",
+      "kind": "method",
+      "file": "src/tools/repository/index.ts"
     },
     {
       "name": "contentsUrl",
