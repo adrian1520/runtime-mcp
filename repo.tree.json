@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-18T06:16:56.657990+00:00",
+  "generated_at": "2026-06-18T06:17:27.247959+00:00",
   "summary": {
-    "files": 59,
+    "files": 60,
     "directories": 22
   },
   "directories": [
@@ -284,6 +284,17 @@
       "sha256": "28aee29c6fbe40c3faab6706be5cf2fefdb303873ba96b380284c3036a55e0a5"
     },
     {
+      "path": "docs/adr/ADR-003-agent-manifest-schema.md",
+      "name": "ADR-003-agent-manifest-schema.md",
+      "directory": "docs/adr",
+      "extension": "md",
+      "language": "markdown",
+      "category": "knowledge",
+      "depth": 2,
+      "size": 308,
+      "sha256": "548cf729bb7b1ba4e9f0c32d993c73a7bce0dd2acbdb74593d0da87bb86ffa87"
+    },
+    {
       "path": "docs/repository-api.md",
       "name": "repository-api.md",
       "directory": "docs",
@@ -347,7 +358,7 @@
       "category": "config",
       "depth": 0,
       "size": 27599,
-      "sha256": "ff60553eda51981df5ecee6f29ad5512ef91e4d2638f4fb9fc89ea179cf76da1"
+      "sha256": "fc6877762f8416d11f2f7541c2061d6fe77792077095fc3d39f27feac6a4c173"
     },
     {
       "path": "src/agents/context-builder.ts",
