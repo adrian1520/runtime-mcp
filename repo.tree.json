@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-18T06:16:04.210916+00:00",
+  "generated_at": "2026-06-18T06:16:56.657990+00:00",
   "summary": {
-    "files": 57,
-    "directories": 20
+    "files": 59,
+    "directories": 22
   },
   "directories": [
     {
@@ -25,6 +25,16 @@
       "path": ".github/workflows",
       "depth": 2,
       "category": "workflow"
+    },
+    {
+      "path": "agents",
+      "depth": 1,
+      "category": "agents"
+    },
+    {
+      "path": "agents/runtime-mcp",
+      "depth": 2,
+      "category": "agents"
     },
     {
       "path": "contracts",
@@ -197,6 +207,28 @@
       "sha256": "e49fc16fe8c5e933b1fd286b557629c30a1d2b468f5dc20782dfc3d20e969d48"
     },
     {
+      "path": "agents/runtime-mcp/agent.json",
+      "name": "agent.json",
+      "directory": "agents/runtime-mcp",
+      "extension": "json",
+      "language": "json",
+      "category": "agents",
+      "depth": 2,
+      "size": 290,
+      "sha256": "70a6041f1c5ad1ba113a27d66f3d70c5067903bf111313d973ffe2898928a618"
+    },
+    {
+      "path": "agents/runtime-mcp/system.md",
+      "name": "system.md",
+      "directory": "agents/runtime-mcp",
+      "extension": "md",
+      "language": "markdown",
+      "category": "agents",
+      "depth": 2,
+      "size": 236,
+      "sha256": "a1f54597ba89a8a6850b78cb0ad1ce02e553bb17319bbda4d8744df717e8fd67"
+    },
+    {
       "path": "contracts/agent.contract.yaml",
       "name": "agent.contract.yaml",
       "directory": "contracts",
@@ -314,8 +346,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 28093,
-      "sha256": "6108ac8f3523e4a9792e574a09ef10722f191116516a2c4da565cc5a40223339"
+      "size": 27599,
+      "sha256": "ff60553eda51981df5ecee6f29ad5512ef91e4d2638f4fb9fc89ea179cf76da1"
     },
     {
       "path": "src/agents/context-builder.ts",
