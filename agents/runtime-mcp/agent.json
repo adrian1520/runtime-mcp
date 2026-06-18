@@ -1,0 +1,14 @@
+{
+  "id": "runtime-mcp",
+  "name": "Runtime MCP",
+  "version": "2.0.0-alpha",
+  "description": "Agent Runtime Platform bootstrap agent",
+  "entryWorkflow": "default",
+  "capabilities": {
+    "memory": true,
+    "github": true,
+    "python": true,
+    "ui": true,
+    "analysis": true
+  }
+}
