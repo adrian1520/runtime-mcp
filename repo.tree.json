@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-16T19:51:47.210401+00:00",
+  "generated_at": "2026-06-18T06:16:04.210916+00:00",
   "summary": {
-    "files": 56,
-    "directories": 19
+    "files": 57,
+    "directories": 20
   },
   "directories": [
     {
@@ -34,6 +34,11 @@
     {
       "path": "docs",
       "depth": 1,
+      "category": "knowledge"
+    },
+    {
+      "path": "docs/adr",
+      "depth": 2,
       "category": "knowledge"
     },
     {
@@ -236,6 +241,17 @@
       "sha256": "cb89c31abafaf58ac344fa7b18c959c67c46bf74897f2e89b0a3fddf714cf2ae"
     },
     {
+      "path": "docs/adr/ADR-002-agent-package-specification.md",
+      "name": "ADR-002-agent-package-specification.md",
+      "directory": "docs/adr",
+      "extension": "md",
+      "language": "markdown",
+      "category": "knowledge",
+      "depth": 2,
+      "size": 1130,
+      "sha256": "28aee29c6fbe40c3faab6706be5cf2fefdb303873ba96b380284c3036a55e0a5"
+    },
+    {
       "path": "docs/repository-api.md",
       "name": "repository-api.md",
       "directory": "docs",
@@ -299,7 +315,7 @@
       "category": "config",
       "depth": 0,
       "size": 28093,
-      "sha256": "709930f66706b1d268ff30df89cd076576670bd0bb2ec04f1db933810db2968c"
+      "sha256": "6108ac8f3523e4a9792e574a09ef10722f191116516a2c4da565cc5a40223339"
     },
     {
       "path": "src/agents/context-builder.ts",
@@ -321,7 +337,7 @@
       "category": "general",
       "depth": 2,
       "size": 160,
-      "sha256": "ae3bfc2c69155ae64a2d623be0165545d0a498d82e834591049c918adb25ca25"
+      "sha256": "bf1b334a35dc9c471b74f988ceba92b5fc8c47c9d120f072e7ab5e04d437dd61"
     },
     {
       "path": "src/agents/runtime-agent.ts",
@@ -343,7 +359,7 @@
       "category": "general",
       "depth": 2,
       "size": 226,
-      "sha256": "55d69c31050e480f24ce7b329a377b528d573a8590b43ecc3ca6aaf65eef7f54"
+      "sha256": "0c86e98ccc50e45841d280dae54a43453810244d78975772ce1125b0a3caae2c"
     },
     {
       "path": "src/agents/tool-catalog.ts",
@@ -354,7 +370,7 @@
       "category": "general",
       "depth": 2,
       "size": 169,
-      "sha256": "c39deef98ca1977f862253aa4f3308386968401bde9b799ff63dfdbdf9d063ca"
+      "sha256": "0acfbb92e6ba13dadcaa6a192b544cb890559a02e281f314b15bf2559b35e0a9"
     },
     {
       "path": "src/agents/types.ts",
@@ -365,7 +381,7 @@
       "category": "general",
       "depth": 2,
       "size": 539,
-      "sha256": "ee3da2e2ed6905370e7751569946a3326df2d217f8fe27e2cfb18e826501f748"
+      "sha256": "55b6e434b9ee14ff8bc3188a9ff2e81cb81bf10bda119028b07954e9d522d4db"
     },
     {
       "path": "src/auth/bearer.ts",
@@ -375,8 +391,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 695,
-      "sha256": "f281099601289c0557844de8470f9ff3164e32cf4d3610eab5343ba46fb44f52"
+      "size": 699,
+      "sha256": "2ed03c6483f2f6b136ef5282709eb8ceae4cede4ccb2509d08e7b4067d7fcbc2"
     },
     {
       "path": "src/contracts/tool.ts",
@@ -386,8 +402,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 912,
-      "sha256": "49b56ea873a3a876f561f77c3d03b2b778561906ecb14a59c9abc72385f2b21a"
+      "size": 768,
+      "sha256": "22cb4e3d6d24cfdc49700aa3949fdf74242f346aee49d57c267c427a2fbd82d6"
     },
     {
       "path": "src/index.ts",
@@ -397,8 +413,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 1,
-      "size": 3860,
-      "sha256": "aa599a63f548032fc4571072316aed520dce29c2971bf34947f52ae7e438793f"
+      "size": 3104,
+      "sha256": "9ae29a199e036770c3d75cce6dcc5a8861ddbd4148abffd8786b0f0f11dd02c5"
     },
     {
       "path": "src/mcp/adapter.ts",
@@ -408,8 +424,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 9679,
-      "sha256": "89ba4de228522e731a105ed02bbe3dbf5dcf8af409a9e3f6a57907cdf4b14d39"
+      "size": 9486,
+      "sha256": "6d84ea9f885deeaf8d03253c50d1ab859782640054c46a09f0fcab5abf835dcf"
     },
     {
       "path": "src/openapi.ts",
@@ -419,8 +435,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 1,
-      "size": 3133,
-      "sha256": "72be2ddbcb1b26e5ad69bff8a09d015eba1933f9f36adee61de4a4896247c479"
+      "size": 2713,
+      "sha256": "1cd8e998d8beca309b8b8fb220b3956d68e4a2a0954d12087c4f3ef7036e39a9"
     },
     {
       "path": "src/routes/resources.ts",
@@ -430,8 +446,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 6142,
-      "sha256": "09f7ea301c835080e96ecb5690061fa7c994197dbabc6fef2640d184f6cc8848"
+      "size": 5306,
+      "sha256": "d7dfdbd26c36d409d8ffc3af6114c3e983bd21be54dc082ac5acd1d6eb45cacc"
     },
     {
       "path": "src/routes/rpc.ts",
@@ -441,8 +457,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 2000,
-      "sha256": "da7f7ca2191465627f27a5b3b010c58112a4547332cee31e0227882052fa7ffc"
+      "size": 2204,
+      "sha256": "a1d75715fa0293d60bc8ee34ec94d35fe9447acb68e3950218cadc24778a2ae1"
     },
     {
       "path": "src/routes/tools.ts",
@@ -452,8 +468,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 4790,
-      "sha256": "55c19837b98fa5a4d992095d020cee647ef99b55eef2e16b31a075b0e48558ee"
+      "size": 4078,
+      "sha256": "23acd79347ae879356d63086d21d58a3bc5b497e44c8bba6dd5f85a24cc5eb40"
     },
     {
       "path": "src/routes/ui.html",
@@ -474,8 +490,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 933,
-      "sha256": "4dcc6f1afad343c7702fb9e23296d4d4e2cc3eb0a04d2a277229027d336c39b8"
+      "size": 936,
+      "sha256": "b5dab42a5678278811d8760cedeab45c7660735d83a76e53d4a9f0c70731248a"
     },
     {
       "path": "src/runtime/executor.ts",
@@ -485,8 +501,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 431,
-      "sha256": "efee3960a8c49433a0e379a58a3754f12e2075dac81a19a2692a77cd01b19a86"
+      "size": 433,
+      "sha256": "99545cd4a7611152857ba1f9e62f659f6eb469e8d2a1e9ce8e0366edf900e746"
     },
     {
       "path": "src/runtime/index.ts",
@@ -507,8 +523,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 772,
-      "sha256": "c43216f4bb9d7155f564eb09a7acc2269b6c30a5d5b9f1dab9403f3d9b306c75"
+      "size": 674,
+      "sha256": "3c9a915d5160012c991f0acb402e57e817d5125cc134f0297f0b153c54777fae"
     },
     {
       "path": "src/runtime/planner.ts",
@@ -518,8 +534,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 359,
-      "sha256": "afa86bab9135892256909057fba94fdcef1edf905d75f2af2aec0aec5f972eb3"
+      "size": 360,
+      "sha256": "1332a2144d425af8157f60322f22ca4f884d710af5d565bd3d710ef4f48ab9c2"
     },
     {
       "path": "src/runtime/provenance-recorder.ts",
@@ -529,8 +545,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 605,
-      "sha256": "95ebadca2cdd4740f393332632cc59d77d87d69fe86483f454d5b649cf10de02"
+      "size": 563,
+      "sha256": "7a527bf9d743c9ba7e6bf090ab1d8246915156272132827244102619a4e82290"
     },
     {
       "path": "src/runtime/recovery-manager.ts",
@@ -540,8 +556,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 1151,
-      "sha256": "e6012d0a80126a3ae8a4df41fd04017591c04ee8c1d8d9b2b64e30bbbf88cb27"
+      "size": 1095,
+      "sha256": "b9201f8eb0a308a6c30ac32329da525d456641689dc1246b4db0b7be24193e44"
     },
     {
       "path": "src/runtime/registries/agent-registry.ts",
@@ -551,8 +567,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 3,
-      "size": 709,
-      "sha256": "c7a041e1a17320ce9dbebf9198f0769c3000dc37cc4013a49db7747199d2cd25"
+      "size": 710,
+      "sha256": "707714c46cffdf8315be1fe2835456c2273608f541b0b8fe1979ef606f9e529d"
     },
     {
       "path": "src/runtime/registries/knowledge-registry.ts",
@@ -562,8 +578,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 3,
-      "size": 755,
-      "sha256": "c4d344f90459171dd2f1861789b159771df0d929650c119e73fec36545ff60fa"
+      "size": 756,
+      "sha256": "72df5dc9a85ce0b852b35a826e23923c62da5423626a765742e51ce242f34e51"
     },
     {
       "path": "src/runtime/registries/tool-registry.ts",
@@ -573,8 +589,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 3,
-      "size": 696,
-      "sha256": "3aa399938b4956dc2a8f3d966436397c6d77dda95f89f5fa791945b417594771"
+      "size": 697,
+      "sha256": "4a730abff43cb10ff55bc27656f968fab9da60acbc141b8ef9f469622084f33f"
     },
     {
       "path": "src/runtime/registries/workflow-registry.ts",
@@ -584,8 +600,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 3,
-      "size": 814,
-      "sha256": "7794ea1345b8c19900b515fbdf5c16ba9f88455772df9988d004302b8a1c497f"
+      "size": 757,
+      "sha256": "d22630d2978ed7b630322683f52eef1c999d9c70b8950881a4008bddc04bbbd0"
     },
     {
       "path": "src/runtime/registry.ts",
@@ -606,8 +622,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 691,
-      "sha256": "abbd39b8e2176ad6ccfc92fbab743c01c4eabd7ef26eefd656d4d7b29829daf6"
+      "size": 692,
+      "sha256": "00a39e5e8a7281d9eff2c8c5afc97549fdd7e30b34b02f2785ecfb4eb1188c88"
     },
     {
       "path": "src/runtime/task-graph.ts",
@@ -617,8 +633,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 539,
-      "sha256": "44a6359a07f81619f62d1a55bd66700265a882ea4abce046f456a165a65cc9da"
+      "size": 547,
+      "sha256": "1c9f361d0bc03003a7f5fa6d7e4364e01603cd60954f6f14b5e58c9dc9935bf7"
     },
     {
       "path": "src/runtime/types.ts",
@@ -628,8 +644,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 1975,
-      "sha256": "5f65b0a67c59250a492b0cc6eb20ff1ba458e355192a7df62dfd410fe5fb9655"
+      "size": 1966,
+      "sha256": "cfd93a1054ad73dde549df7f3dc7c32a1cbc54834acf756127b747d1fa47f591"
     },
     {
       "path": "src/runtime/workflow-engine.ts",
@@ -639,8 +655,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 6220,
-      "sha256": "66b81dc0f64892907324cce695fae9d8fa0531fa7235f83961c7fc65c0921bcd"
+      "size": 5561,
+      "sha256": "f0ab3f48c6d8d43003288fd6a6e1aa0bb6ea8b6f4e1b5f6881e438e13123fb2c"
     },
     {
       "path": "src/runtime/workflow.ts",
@@ -661,8 +677,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 1,
-      "size": 674,
-      "sha256": "46338562ddae2e93fdf2e3245f79684c04a55581a20ae97a335c1f9444a8e7e1"
+      "size": 625,
+      "sha256": "f6d266863b0fa8ead40bf993884f8a703ee74d2a6723cacdee6d587d0a420de4"
     },
     {
       "path": "src/tools/memory/index.ts",
@@ -672,8 +688,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 6306,
-      "sha256": "e5049d00f613c707d7a65fdcff8dee032474f78db01a3e27236f36970adfd7d9"
+      "size": 5502,
+      "sha256": "d45c219e09118a741ef7170a536e832f64574f89b12cc18d74be0a42d391646a"
     },
     {
       "path": "src/tools/provenance/index.ts",
@@ -683,8 +699,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 4359,
-      "sha256": "cf6fe568a7ea4500ecb1ad35e87b889559f3b8f41b9583d9975557c03e6ce782"
+      "size": 3591,
+      "sha256": "9c00dac3c05dfea25ac0f3b6d5c32ef5763dff33e072d55752706e9ebc0f7458"
     },
     {
       "path": "src/tools/repository/index.ts",
@@ -694,8 +710,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 9158,
-      "sha256": "e74e42fec6d23c249d431e07b6eca34cb5af9f406280afac3cd1df5cdf0e2e81"
+      "size": 9130,
+      "sha256": "43ecc9ad06d025cafc7612050d50de6a813f4b046794e5163102d7ec8035cfcf"
     },
     {
       "path": "tsconfig.json",
