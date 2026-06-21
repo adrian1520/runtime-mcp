@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-21T16:06:28.204228+00:00",
+  "generated_at": "2026-06-21T16:39:25.803423+00:00",
   "summary": {
-    "files": 76,
+    "files": 79,
     "directories": 23
   },
   "directories": [
@@ -421,6 +421,39 @@
       "sha256": "a037ca076bbffa641d420744e6df895daa17386c08a6254d3f75635eba48e141"
     },
     {
+      "path": "memory/future.refaktor.v6.provider.resolver.md",
+      "name": "future.refaktor.v6.provider.resolver.md",
+      "directory": "memory",
+      "extension": "md",
+      "language": "markdown",
+      "category": "general",
+      "depth": 1,
+      "size": 955,
+      "sha256": "4e36d784095ed293ef2acc378077e5393ebe670fc2c289ebc18a6e979e8ff2ac"
+    },
+    {
+      "path": "memory/future.refaktor.v7.package.format.md",
+      "name": "future.refaktor.v7.package.format.md",
+      "directory": "memory",
+      "extension": "md",
+      "language": "markdown",
+      "category": "general",
+      "depth": 1,
+      "size": 905,
+      "sha256": "f427538054d18c493d9ddf1daf9c838e49aef00e81b9eb17ad19a1c0e63d801f"
+    },
+    {
+      "path": "memory/future.refaktor.v8.security.model.md",
+      "name": "future.refaktor.v8.security.model.md",
+      "directory": "memory",
+      "extension": "md",
+      "language": "markdown",
+      "category": "general",
+      "depth": 1,
+      "size": 1120,
+      "sha256": "e3ba3ca34d80cfa9f0d894659e8a1300470e2b9b1a422bc6b784890e3e73938b"
+    },
+    {
       "path": "memory/index.md",
       "name": "index.md",
       "directory": "memory",
@@ -462,7 +495,7 @@
       "category": "config",
       "depth": 0,
       "size": 33576,
-      "sha256": "15233ce89d6fa5e321e90eb3d23e6285844f99951f96265b0c06bdbc7eafe2b9"
+      "sha256": "5b37aeb36e64dcedf6dba0b43f1af1bb1186d51cf99a73ef928df5109fdd5e83"
     },
     {
       "path": "src/agents/context-builder.ts",
