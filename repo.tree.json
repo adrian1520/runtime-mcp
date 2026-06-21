@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-18T06:17:27.247959+00:00",
+  "generated_at": "2026-06-21T11:13:26.192930+00:00",
   "summary": {
-    "files": 60,
-    "directories": 22
+    "files": 70,
+    "directories": 23
   },
   "directories": [
     {
@@ -89,6 +89,11 @@
     {
       "path": "src/runtime",
       "depth": 2,
+      "category": "runtime"
+    },
+    {
+      "path": "src/runtime/contracts",
+      "depth": 3,
       "category": "runtime"
     },
     {
@@ -203,8 +208,8 @@
       "language": "markdown",
       "category": "general",
       "depth": 0,
-      "size": 6103,
-      "sha256": "e49fc16fe8c5e933b1fd286b557629c30a1d2b468f5dc20782dfc3d20e969d48"
+      "size": 7582,
+      "sha256": "f62e4db1d92ee4973fbd3b37bfbb4d67f06cc226687423aecf42360bcbebd916"
     },
     {
       "path": "agents/runtime-mcp/agent.json",
@@ -295,6 +300,50 @@
       "sha256": "548cf729bb7b1ba4e9f0c32d993c73a7bce0dd2acbdb74593d0da87bb86ffa87"
     },
     {
+      "path": "docs/adr/ADR-004-runtime-core-v2.md",
+      "name": "ADR-004-runtime-core-v2.md",
+      "directory": "docs/adr",
+      "extension": "md",
+      "language": "markdown",
+      "category": "knowledge",
+      "depth": 2,
+      "size": 978,
+      "sha256": "4ecaf5745967c55c5e91d135b56b375eafac19b9062ad87253b242b9aa1566a2"
+    },
+    {
+      "path": "docs/architecture-runtime-core-v2.md",
+      "name": "architecture-runtime-core-v2.md",
+      "directory": "docs",
+      "extension": "md",
+      "language": "markdown",
+      "category": "knowledge",
+      "depth": 1,
+      "size": 940,
+      "sha256": "18faa72eb98f27ef5d3e88722cb6a240f14f5db46c1158465d0ddcc711087c1b"
+    },
+    {
+      "path": "docs/migration-runtime-core-v2.md",
+      "name": "migration-runtime-core-v2.md",
+      "directory": "docs",
+      "extension": "md",
+      "language": "markdown",
+      "category": "knowledge",
+      "depth": 1,
+      "size": 1096,
+      "sha256": "19a0d6bade55dabd6cb7c3ea165484798ee53ddc5b2e9c8c69acf41fea60f663"
+    },
+    {
+      "path": "docs/refactor-summary-runtime-core-v2.md",
+      "name": "refactor-summary-runtime-core-v2.md",
+      "directory": "docs",
+      "extension": "md",
+      "language": "markdown",
+      "category": "knowledge",
+      "depth": 1,
+      "size": 586,
+      "sha256": "0b121ea0f1b8955dc0f57d8fc16a4e0748d8eb935f0ada2f3e3670f78345de8d"
+    },
+    {
       "path": "docs/repository-api.md",
       "name": "repository-api.md",
       "directory": "docs",
@@ -358,7 +407,7 @@
       "category": "config",
       "depth": 0,
       "size": 27599,
-      "sha256": "fc6877762f8416d11f2f7541c2061d6fe77792077095fc3d39f27feac6a4c173"
+      "sha256": "2f9ff52058e0d462aec07b7e8c2ac6c3a96f3a2a768b349d1d416f744d69b621"
     },
     {
       "path": "src/agents/context-builder.ts",
@@ -467,8 +516,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 9486,
-      "sha256": "6d84ea9f885deeaf8d03253c50d1ab859782640054c46a09f0fcab5abf835dcf"
+      "size": 10046,
+      "sha256": "47bb2c54b3baef54d451774d4fbe78423b01524c819fa7d35b5aa8adbc0f36a5"
     },
     {
       "path": "src/openapi.ts",
@@ -526,6 +575,17 @@
       "sha256": "303fcb1e054b64809a0daa029cb0e08d3f7b04e3ff81cd47399932a669579cdf"
     },
     {
+      "path": "src/runtime/agent-runtime.ts",
+      "name": "agent-runtime.ts",
+      "directory": "src/runtime",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 2,
+      "size": 1014,
+      "sha256": "9df689fc5a51fdb089f3e88b80e3ffde7d7851aaa9c0496c3826193dff324e66"
+    },
+    {
       "path": "src/runtime/agent.ts",
       "name": "agent.ts",
       "directory": "src/runtime",
@@ -533,8 +593,63 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 936,
-      "sha256": "b5dab42a5678278811d8760cedeab45c7660735d83a76e53d4a9f0c70731248a"
+      "size": 934,
+      "sha256": "3c54fa9500bfc16a9910f04cad9d001a5bd82bb45ede9b86df6e4d7eb1a5b0e8"
+    },
+    {
+      "path": "src/runtime/contracts/execution-plan.ts",
+      "name": "execution-plan.ts",
+      "directory": "src/runtime/contracts",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 3,
+      "size": 139,
+      "sha256": "31a503579ba271d202f6414b64b1d7227fa62d0ad5481fc88ab9a63f4b999b95"
+    },
+    {
+      "path": "src/runtime/contracts/execution-result.ts",
+      "name": "execution-result.ts",
+      "directory": "src/runtime/contracts",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 3,
+      "size": 341,
+      "sha256": "b82ee50c69654a383d4ad1c6be3a936cd99a66a1355a72aedfbf88fa07033740"
+    },
+    {
+      "path": "src/runtime/contracts/goal.ts",
+      "name": "goal.ts",
+      "directory": "src/runtime/contracts",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 3,
+      "size": 122,
+      "sha256": "c53d0b007c8e1564f6868c3c11301ab012705700196b9ca43a83ea40d8adfa0a"
+    },
+    {
+      "path": "src/runtime/contracts/index.ts",
+      "name": "index.ts",
+      "directory": "src/runtime/contracts",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 3,
+      "size": 118,
+      "sha256": "60ce6b8e89557b4587b26c51291367be5b05811cb5bc29a3dc6e7094f0c82b32"
+    },
+    {
+      "path": "src/runtime/contracts/task.ts",
+      "name": "task.ts",
+      "directory": "src/runtime/contracts",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 3,
+      "size": 218,
+      "sha256": "cb516461094112b6d5ab36e4dcfa42ccc86c98d9296d36795cf19a4dc60156ad"
     },
     {
       "path": "src/runtime/executor.ts",
@@ -544,8 +659,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 433,
-      "sha256": "99545cd4a7611152857ba1f9e62f659f6eb469e8d2a1e9ce8e0366edf900e746"
+      "size": 2882,
+      "sha256": "cd3b33a25aa6e18cf3a52cfce17ce6b7c44c88411f73b1f612061bc3819faf41"
     },
     {
       "path": "src/runtime/index.ts",
@@ -555,8 +670,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 338,
-      "sha256": "0be1e518536e9927b731823402338bab383cf6b1ddd1087cf05dd6d709a8fbde"
+      "size": 481,
+      "sha256": "fee225b283b52cc327fea938eece00ba9d63bdb37d20444b1ee57cbb7b8f1d51"
     },
     {
       "path": "src/runtime/memory-store.ts",
@@ -566,8 +681,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 674,
-      "sha256": "3c9a915d5160012c991f0acb402e57e817d5125cc134f0297f0b153c54777fae"
+      "size": 1511,
+      "sha256": "ea5bc322ab01ca110d96b60fbdb6efa99b654fb05e2774e3874ccbe4bea2168a"
     },
     {
       "path": "src/runtime/planner.ts",
@@ -577,8 +692,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 360,
-      "sha256": "1332a2144d425af8157f60322f22ca4f884d710af5d565bd3d710ef4f48ab9c2"
+      "size": 1531,
+      "sha256": "64df1c08e0c7df8212b0871eb4fb2964b8bd536146600d27a71d6e498618fa90"
     },
     {
       "path": "src/runtime/provenance-recorder.ts",
@@ -588,8 +703,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 563,
-      "sha256": "7a527bf9d743c9ba7e6bf090ab1d8246915156272132827244102619a4e82290"
+      "size": 932,
+      "sha256": "9612f78d71720e8221e61ed94f92732f1f5a5615cc03c05d17c6738404a086a1"
     },
     {
       "path": "src/runtime/recovery-manager.ts",
@@ -599,8 +714,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 1095,
-      "sha256": "b9201f8eb0a308a6c30ac32329da525d456641689dc1246b4db0b7be24193e44"
+      "size": 1110,
+      "sha256": "cd8da19a11379a471426aae185e810054915315b9ad8072753d876362cfc0a61"
     },
     {
       "path": "src/runtime/registries/agent-registry.ts",
@@ -632,8 +747,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 3,
-      "size": 697,
-      "sha256": "4a730abff43cb10ff55bc27656f968fab9da60acbc141b8ef9f469622084f33f"
+      "size": 1290,
+      "sha256": "caf8679596dfda3cac24ae89a6c7943ceff509dc5cdc4f05cf7e555c136b5ad8"
     },
     {
       "path": "src/runtime/registries/workflow-registry.ts",
@@ -676,8 +791,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 547,
-      "sha256": "1c9f361d0bc03003a7f5fa6d7e4364e01603cd60954f6f14b5e58c9dc9935bf7"
+      "size": 563,
+      "sha256": "370c3fd7e9286cbbc5d47c9866bd1e46bc3bba2bafa4cb4e58bde07fb30aba26"
     },
     {
       "path": "src/runtime/types.ts",
@@ -687,8 +802,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 1966,
-      "sha256": "cfd93a1054ad73dde549df7f3dc7c32a1cbc54834acf756127b747d1fa47f591"
+      "size": 1881,
+      "sha256": "f47be9fb6bc004547d1dc25d0a1ec2a78aadc369d8f21d64234e182eec316c11"
     },
     {
       "path": "src/runtime/workflow-engine.ts",
@@ -698,8 +813,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 5561,
-      "sha256": "f0ab3f48c6d8d43003288fd6a6e1aa0bb6ea8b6f4e1b5f6881e438e13123fb2c"
+      "size": 5736,
+      "sha256": "49533d044dd26353bb3e1c1e9a20083947cb638df5cefd6b8deb472eba275781"
     },
     {
       "path": "src/runtime/workflow.ts",
@@ -709,8 +824,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 285,
-      "sha256": "b8ff5c10aa97de56ded109f5f35c173ae351b798242d9760a4ba01f13dd4f638"
+      "size": 289,
+      "sha256": "0f19b478b5aa917f93c2ca64a66cb0cd414df8c8eaaea4bda3c0a1f6e3e03175"
     },
     {
       "path": "src/server.ts",
@@ -753,8 +868,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 9130,
-      "sha256": "43ecc9ad06d025cafc7612050d50de6a813f4b046794e5163102d7ec8035cfcf"
+      "size": 13725,
+      "sha256": "e7cd05f642ee13d8f03b124124e77f222e5e41af22ca23f6db72dd718e5c41f9"
     },
     {
       "path": "tsconfig.json",
