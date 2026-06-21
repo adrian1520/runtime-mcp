@@ -1,4 +1,4 @@
-<!doctype html>
+export const widgetHtml = `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -45,4 +45,4 @@ window.addEventListener('message',event=>{if(event.source!==window.parent)return
 loadAll();
 </script>
 </body>
-</html>
+</html>`;

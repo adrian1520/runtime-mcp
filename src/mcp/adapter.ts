@@ -9,6 +9,7 @@ import {
 import { verifyBearer } from "../auth/bearer";
 import type { JsonSchema, ToolDefinition } from "../contracts/tool";
 import { server, type Env } from "../server";
+import { widgetHtml } from "../routes/widget-html";
 
 const OUTPUT_TEMPLATE = "ui://widget/result.html";
 
@@ -22,28 +23,6 @@ const repositoryQuerySchema: JsonSchema = {
   required: ["query"],
   additionalProperties: false,
 };
-
-const widgetHtml = `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Repository result</title>
-  </head>
-  <body>
-    <pre id="result" style="white-space: pre-wrap; overflow-wrap: anywhere;"></pre>
-    <script type="module">
-      const result = document.getElementById("result");
-      window.addEventListener("message", (event) => {
-        if (event.source !== window.parent) return;
-        const message = event.data;
-        if (message?.method !== "ui/notifications/tool-result") return;
-        const value = message.params?.structuredContent ?? message.params?.content ?? null;
-        result.textContent = JSON.stringify(value, null, 2);
-      });
-    </script>
-  </body>
-</html>`;
 
 const appMetadata = {
   ui: {
