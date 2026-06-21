@@ -2,7 +2,12 @@ import { server, type Env } from "../server";
 import { TaskGraph } from "./task-graph";
 import { MemoryStore } from "./memory-store";
 import { ProvenanceRecorder } from "./provenance-recorder";
-import type { ExecutionPlan, ExecutionResult, Task, TaskExecutionResult } from "./contracts";
+import type {
+  ExecutionPlan,
+  ExecutionResult,
+  Task,
+  TaskExecutionResult,
+} from "./contracts";
 
 export class Executor {
   constructor(
@@ -62,12 +67,18 @@ export class Executor {
     requestId: string,
   ): Promise<TaskExecutionResult> {
     try {
-      const output = task.tool && env
-        ? await this.runTool(task.tool, task.input ?? {}, env, requestId)
-        : { skipped: !task.tool, description: task.description };
+      const output =
+        task.tool && env
+          ? await this.runTool(task.tool, task.input ?? {}, env, requestId)
+          : { skipped: !task.tool, description: task.description };
 
       if (env) {
-        await this.memory.put(env, requestId, `runtime/${plan.goal.id}/tasks/${task.id}`, output);
+        await this.memory.put(
+          env,
+          requestId,
+          `runtime/${plan.goal.id}/tasks/${task.id}`,
+          output,
+        );
         await this.provenance.append(env, requestId, "task_executed", {
           goalId: plan.goal.id,
           taskId: task.id,

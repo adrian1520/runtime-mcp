@@ -43,6 +43,8 @@ export class ToolRegistry implements RuntimeRegistry<ToolCapability> {
   }
 
   async listCapabilities(): Promise<string[]> {
-    return [...new Set([...this.tools.values()].flatMap((tool) => tool.capabilities))].sort();
+    return [
+      ...new Set([...this.tools.values()].flatMap((tool) => tool.capabilities)),
+    ].sort();
   }
 }

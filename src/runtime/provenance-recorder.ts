@@ -10,9 +10,15 @@ export class ProvenanceRecorder {
   private async run(tool: string, args: unknown, env: Env, requestId: string) {
     if (this.lazyExecutor) {
       const { Executor } = await import("./executor");
-      return new Executor(undefined, undefined).runTool(tool, args, env, requestId);
+      return new Executor(undefined, undefined).runTool(
+        tool,
+        args,
+        env,
+        requestId,
+      );
     }
-    if (!this.executor) throw new Error("ProvenanceRecorder requires an Executor");
+    if (!this.executor)
+      throw new Error("ProvenanceRecorder requires an Executor");
     return this.executor.runTool(tool, args, env, requestId);
   }
 

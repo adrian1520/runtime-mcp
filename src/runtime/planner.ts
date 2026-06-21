@@ -18,8 +18,16 @@ export class Planner {
 
     if (objective.includes("audit") && objective.includes("repository")) {
       return this.withSequentialDependencies([
-        { id: "scan-index", description: "Scan repository index", tool: "repository.index" },
-        { id: "analyze-structure", description: "Analyze repository structure", tool: "repository.symbols" },
+        {
+          id: "scan-index",
+          description: "Scan repository index",
+          tool: "repository.index",
+        },
+        {
+          id: "analyze-structure",
+          description: "Analyze repository structure",
+          tool: "repository.symbols",
+        },
         { id: "generate-report", description: "Generate audit report" },
       ]);
     }
@@ -27,17 +35,26 @@ export class Planner {
     const base = slug(goal.objective) || "goal";
     return this.withSequentialDependencies([
       { id: `${base}-plan`, description: `Plan work for: ${goal.objective}` },
-      { id: `${base}-execute`, description: `Execute work for: ${goal.objective}` },
-      { id: `${base}-validate`, description: `Validate result for: ${goal.objective}` },
+      {
+        id: `${base}-execute`,
+        description: `Execute work for: ${goal.objective}`,
+      },
+      {
+        id: `${base}-validate`,
+        description: `Validate result for: ${goal.objective}`,
+      },
     ]);
   }
 
   private withSequentialDependencies(
-    tasks: Array<Omit<Task, "dependsOn" | "status"> & Partial<Pick<Task, "dependsOn">>>,
+    tasks: Array<
+      Omit<Task, "dependsOn" | "status"> & Partial<Pick<Task, "dependsOn">>
+    >,
   ): Task[] {
     return tasks.map((task, index) => ({
       ...task,
-      dependsOn: task.dependsOn ?? (index === 0 ? [] : [tasks[index - 1]?.id ?? ""]),
+      dependsOn:
+        task.dependsOn ?? (index === 0 ? [] : [tasks[index - 1]?.id ?? ""]),
       status: "pending",
     }));
   }

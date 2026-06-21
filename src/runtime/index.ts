@@ -9,5 +9,11 @@ export * from "./provenance-recorder";
 export * from "./recovery-manager";
 export * from "./workflow-engine";
 export * from "./agent";
-export type { Goal as RuntimeGoal, Task, TaskStatus, ExecutionPlan, TaskExecutionResult } from "./contracts";
+export type {
+  Goal as RuntimeGoal,
+  Task,
+  TaskStatus,
+  ExecutionPlan,
+  TaskExecutionResult,
+} from "./contracts";
 export * from "./agent-runtime";

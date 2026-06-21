@@ -18,7 +18,12 @@ export class AgentRuntime {
     this.executor = new Executor();
     this.memory = new MemoryStore(this.executor);
     this.provenance = new ProvenanceRecorder(this.executor);
-    this.workflow = new WorkflowEngine(this.planner, this.executor, this.memory, this.provenance);
+    this.workflow = new WorkflowEngine(
+      this.planner,
+      this.executor,
+      this.memory,
+      this.provenance,
+    );
   }
 
   async run(goal: Goal, env?: Env, requestId?: string) {
