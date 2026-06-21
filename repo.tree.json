@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-21T18:04:25.570214+00:00",
+  "generated_at": "2026-06-21T18:06:03.793082+00:00",
   "summary": {
-    "files": 82,
+    "files": 83,
     "directories": 23
   },
   "directories": [
@@ -399,6 +399,17 @@
       "sha256": "65259ada1e19a0c45838d0f30d6c883689949f8a626f882ff0b6ede1e15c14b1"
     },
     {
+      "path": "memory/future.refaktor.v12.implementation.roadmap.md",
+      "name": "future.refaktor.v12.implementation.roadmap.md",
+      "directory": "memory",
+      "extension": "md",
+      "language": "markdown",
+      "category": "general",
+      "depth": 1,
+      "size": 1575,
+      "sha256": "817ecd9e14c401341bcd9a8af57a06b75a686ff4b3558323398ec276ad76e5c4"
+    },
+    {
       "path": "memory/future.refaktor.v2.architecture.md",
       "name": "future.refaktor.v2.architecture.md",
       "directory": "memory",
@@ -528,7 +539,7 @@
       "category": "config",
       "depth": 0,
       "size": 33576,
-      "sha256": "56c801c57afb160e35f6e55e3e1249b686ec6d73e3cfb84b9ed4443e9cb21972"
+      "sha256": "7dfa6f0165d476640deb074afb2f3ebe3f2a91bd215ccd28bdc6fed4a23935bf"
     },
     {
       "path": "src/agents/context-builder.ts",
