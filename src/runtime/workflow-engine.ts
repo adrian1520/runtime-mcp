@@ -4,6 +4,7 @@ import { Executor } from "./executor";
 import { MemoryStore } from "./memory-store";
 import { ProvenanceRecorder } from "./provenance-recorder";
 import { RecoveryManager } from "./recovery-manager";
+import { Planner } from "./planner";
 
 import type {
   Goal,
@@ -17,11 +18,17 @@ import type {
 import type { Env } from "../server";
 
 export class WorkflowEngine {
-  readonly workflow = new Workflow();
-  readonly executor = new Executor();
-  readonly memory = new MemoryStore();
-  readonly provenance = new ProvenanceRecorder();
+  readonly workflow: Workflow;
   readonly recovery = new RecoveryManager();
+
+  constructor(
+    planner = new Planner(),
+    readonly executor = new Executor(),
+    readonly memory = new MemoryStore(executor),
+    readonly provenance = new ProvenanceRecorder(executor),
+  ) {
+    this.workflow = new Workflow(planner);
+  }
 
   private async updateStatus(
     workflowId: string,
@@ -34,7 +41,7 @@ export class WorkflowEngine {
       workflowId,
       state,
       updatedAt: new Date().toISOString(),
-      lastTask,
+      ...(lastTask ? { lastTask } : {}),
     };
 
     await this.memory.put(

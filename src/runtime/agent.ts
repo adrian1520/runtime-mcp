@@ -14,7 +14,7 @@ export class Agent {
   ): Promise<ExecutionResult> {
     try {
       this.state.transition("PLANNING");
-      const graph = await this.engine.start(goal, env, requestId);
+      const graph = await this.engine.run(goal, env, requestId);
       this.state.transition("EXECUTION");
       this.state.transition("VALIDATION");
       this.state.transition("COMPLETE");

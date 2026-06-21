@@ -1,3 +1,5 @@
+import repoIndex from "../../../repo.index.json" with { type: "json" };
+import repoTree from "../../../repo.tree.json" with { type: "json" };
 import { z } from "zod";
 import type { ToolRegistry } from "../../contracts/tool";
 
@@ -40,6 +42,11 @@ const saveSchema = z.object({
 
 type ReadArgs = z.infer<typeof readSchema>;
 type SaveArgs = z.infer<typeof saveSchema>;
+
+const repositoryPathSchema = z.object({ path: z.string().min(1).max(512) });
+const repositoryReadSchema = z.object({ path: z.string().min(1).max(512), ref: z.string().min(1).max(255).optional() });
+const repositorySearchSchema = z.object({ query: z.string().min(1).max(200), limit: z.number().int().min(1).max(50).optional() });
+const emptySchema = z.object({}).strict();
 
 class RepositoryError extends Error {
   readonly code: string;
@@ -181,6 +188,80 @@ async function findExistingFile(
 }
 
 export function registerRepositoryTools(registry: ToolRegistry<Env>) {
+
+  registry["repository.index"] = {
+    description: "Return the generated repository index summary and symbol inventory",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    validate: (args) => emptySchema.parse(args),
+    execute: async () => ({ ok: true, index: repoIndex }),
+  };
+
+  registry["repository.files"] = {
+    description: "List repository files from repo.tree.json without loading file contents",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    validate: (args) => emptySchema.parse(args),
+    execute: async () => ({
+      ok: true,
+      files: (repoTree as { files?: unknown[] }).files ?? [],
+      summary: (repoTree as { summary?: unknown }).summary,
+    }),
+  };
+
+  registry["repository.symbols"] = {
+    description: "List indexed repository symbols from repo.index.json",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    validate: (args) => emptySchema.parse(args),
+    execute: async () => ({
+      ok: true,
+      summary: (repoIndex as { summary?: unknown }).summary,
+      classes: (repoIndex as { classes?: unknown[] }).classes ?? [],
+      interfaces: (repoIndex as { interfaces?: unknown[] }).interfaces ?? [],
+      functions: (repoIndex as { functions?: unknown[] }).functions ?? [],
+      exports: (repoIndex as { exports?: unknown[] }).exports ?? [],
+    }),
+  };
+
+  registry["repository.dependencies"] = {
+    description: "Return import/dependency information from repo.index.json",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    validate: (args) => emptySchema.parse(args),
+    execute: async () => ({
+      ok: true,
+      imports: (repoIndex as { imports?: unknown[] }).imports ?? [],
+    }),
+  };
+
+  registry["repository.read"] = {
+    description: "Read a repository file by path using GitHub contents API",
+    inputSchema: { type: "object", properties: { path: { type: "string" }, ref: { type: "string" } }, required: ["path"], additionalProperties: false },
+    validate: (args) => repositoryReadSchema.parse(args),
+    execute: async (args, { env }) => {
+      const config = repositoryConfig(env);
+      const ref = args.ref || config.branch;
+      const url = contentsUrl(config.owner, config.repo, args.path);
+      const response = await githubRequest(env, `${url}?ref=${encodeURIComponent(ref)}`);
+      if (response.status === 404) return { ok: true, found: false, path: args.path, ref, content: null };
+      if (!response.ok) throw await githubError(response, "Failed to read repository file");
+      const file = (await response.json()) as GitHubContent;
+      if (file.encoding !== "base64" || typeof file.content !== "string") throw new RepositoryError("UNSUPPORTED_REPOSITORY_CONTENT", "The requested path is not a readable repository file");
+      return { ok: true, found: true, path: file.path || args.path, ref, sha: file.sha, content: decodeBase64(file.content), url: file.html_url };
+    },
+  };
+
+  registry["repository.search"] = {
+    description: "Search indexed file and symbol metadata without loading the repository",
+    inputSchema: { type: "object", properties: { query: { type: "string" }, limit: { type: "integer" } }, required: ["query"], additionalProperties: false },
+    validate: (args) => repositorySearchSchema.parse(args),
+    execute: async (args) => {
+      const query = args.query.toLowerCase();
+      const limit = args.limit ?? 20;
+      const files = ((repoTree as { files?: Array<{ path?: string }> }).files ?? []).filter((file) => file.path?.toLowerCase().includes(query));
+      const buckets = ["classes", "interfaces", "types", "functions", "exports"] as const;
+      const symbols = buckets.flatMap((bucket) => ((repoIndex as unknown as Record<string, Array<Record<string, unknown>> | undefined>)[bucket] ?? []).map((item) => ({ kind: bucket, ...item }))).filter((item) => JSON.stringify(item).toLowerCase().includes(query));
+      return { ok: true, files: files.slice(0, limit), symbols: symbols.slice(0, limit), limit };
+    },
+  };
+
   registry.raw_read = {
     description:
       "Read the raw text of a file from the repository memory folder",

@@ -214,3 +214,46 @@ result view that can be replaced by a richer widget later without changing the
 worker execution layer. Tool results include model-visible `structuredContent`
 and text content, while all tool calls continue to use the existing worker
 implementations.
+
+## Runtime Core v2
+
+`runtime-mcp` now exposes an Agent Runtime architecture in addition to the MCP
+server surface. The runtime owns planning, execution, workflow orchestration,
+memory updates, provenance events, and tool routing while external reasoning
+models continue to connect through MCP.
+
+```text
+User Goal
+    │
+    ▼
+AgentRuntime
+    │
+    ├── ContextBuilder
+    ├── Planner
+    ├── Executor
+    ├── WorkflowEngine
+    ├── MemoryStore
+    ├── ProvenanceRecorder
+    └── ToolRegistry
+```
+
+Key entrypoints:
+
+- `src/runtime/contracts/*` defines goals, tasks, execution plans, and execution results.
+- `src/runtime/planner.ts` creates sequential dependency graphs with room for DAG expansion.
+- `src/runtime/executor.ts` resolves tasks, executes tools, stores outputs, and records provenance.
+- `src/runtime/agent-runtime.ts` is the primary runtime orchestration entrypoint.
+- `src/runtime/workflow-engine.ts` provides workflow execution, checkpointing, retries/recovery hooks, and resumability.
+
+Repository tools exposed through `/mcp`:
+
+- `repository.files`
+- `repository.read`
+- `repository.search`
+- `repository.symbols`
+- `repository.index`
+- `repository.dependencies`
+
+`repository.query`, `raw_read`, and `raw_save` remain available for compatibility.
+See `docs/architecture-runtime-core-v2.md`, `docs/migration-runtime-core-v2.md`,
+`docs/refactor-summary-runtime-core-v2.md`, and `docs/adr/ADR-004-runtime-core-v2.md`.

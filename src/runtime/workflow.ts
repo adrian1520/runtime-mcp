@@ -1,6 +1,6 @@
 import { Planner } from "./planner";
 import { TaskGraph } from "./task-graph";
-import type { Goal } from "./types";
+import type { Goal } from "./contracts";
 
 export class Workflow {
   constructor(readonly planner = new Planner()) {}

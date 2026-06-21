@@ -1,3 +1,5 @@
+import type { Goal } from "./contracts";
+
 export type RuntimeState =
   | "DISCOVERY"
   | "PLANNING"
@@ -32,19 +34,7 @@ export interface KnowledgeDefinition extends RegistryRecord {
   description?: string;
 }
 
-export interface Goal {
-  id: string;
-  objective: string;
-  metadata?: Record<string, unknown>;
-}
-
-export interface TaskNode {
-  id: string;
-  name: string;
-  tool?: string;
-  input?: unknown;
-  dependsOn: string[];
-}
+export type { Goal, Task as TaskNode, ExecutionPlan } from "./contracts";
 
 export interface ExecutionContext {
   requestId: string;
@@ -75,7 +65,7 @@ export interface ExecutionResult {
 export interface WorkflowDefinition {
   workflowId: string;
   goal: Goal;
-  tasks: TaskNode[];
+  tasks: import("./contracts").Task[];
 }
 
 export interface RecoveryState {
