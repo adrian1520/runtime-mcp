@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-06-18T06:17:25.399427+00:00",
+  "generated_at": "2026-06-21T13:55:19.309748+00:00",
   "summary": {
-    "classes": 15,
-    "interfaces": 24,
-    "types": 23,
+    "classes": 16,
+    "interfaces": 28,
+    "types": 24,
     "enums": 0,
-    "functions": 97,
-    "exports": 51,
-    "imports": 66
+    "functions": 122,
+    "exports": 57,
+    "imports": 87
   },
   "classes": [
     {
@@ -19,6 +19,11 @@
     {
       "name": "AgentRegistry",
       "file": "src/runtime/registries/agent-registry.ts",
+      "exported": true
+    },
+    {
+      "name": "AgentRuntime",
+      "file": "src/runtime/agent-runtime.ts",
       "exported": true
     },
     {
@@ -114,13 +119,23 @@
       "exported": true
     },
     {
+      "name": "ExecutionPlan",
+      "file": "src/runtime/contracts/execution-plan.ts",
+      "exported": true
+    },
+    {
       "name": "ExecutionResult",
       "file": "src/runtime/types.ts",
       "exported": true
     },
     {
+      "name": "ExecutionResult",
+      "file": "src/runtime/contracts/execution-result.ts",
+      "exported": true
+    },
+    {
       "name": "Goal",
-      "file": "src/runtime/types.ts",
+      "file": "src/runtime/contracts/goal.ts",
       "exported": true
     },
     {
@@ -164,13 +179,23 @@
       "exported": true
     },
     {
-      "name": "TaskNode",
-      "file": "src/runtime/types.ts",
+      "name": "Task",
+      "file": "src/runtime/contracts/task.ts",
+      "exported": true
+    },
+    {
+      "name": "TaskExecutionResult",
+      "file": "src/runtime/contracts/execution-result.ts",
       "exported": true
     },
     {
       "name": "TaskResult",
       "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "ToolCapability",
+      "file": "src/runtime/registries/tool-registry.ts",
       "exported": true
     },
     {
@@ -306,6 +331,11 @@
       "exported": false
     },
     {
+      "name": "TaskStatus",
+      "file": "src/runtime/contracts/task.ts",
+      "exported": true
+    },
+    {
       "name": "ToolContext",
       "file": "src/contracts/tool.ts",
       "exported": true
@@ -322,7 +352,7 @@
     },
     {
       "name": "html",
-      "file": "src/mcp/adapter.ts",
+      "file": "src/routes/widget-html.ts",
       "exported": false
     }
   ],
@@ -464,9 +494,99 @@
       "file": "src/routes/tools.ts"
     },
     {
+      "name": "buildTree",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "callTool",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "icon",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "loadAll",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "loadAll",
+      "kind": "method",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "log",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "pathOf",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "readSelected",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "renderGraph",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "renderTimeline",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "renderTree",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "safeJson",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "setStatus",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "unwrap",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "walk",
+      "kind": "function",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "run",
+      "kind": "method",
+      "file": "src/runtime/agent-runtime.ts"
+    },
+    {
       "name": "execute",
       "kind": "method",
       "file": "src/runtime/agent.ts"
+    },
+    {
+      "name": "execute",
+      "kind": "method",
+      "file": "src/runtime/executor.ts"
+    },
+    {
+      "name": "executeTask",
+      "kind": "method",
+      "file": "src/runtime/executor.ts"
     },
     {
       "name": "runTool",
@@ -494,12 +614,32 @@
       "file": "src/runtime/planner.ts"
     },
     {
+      "name": "createPlan",
+      "kind": "method",
+      "file": "src/runtime/planner.ts"
+    },
+    {
+      "name": "slug",
+      "kind": "function",
+      "file": "src/runtime/planner.ts"
+    },
+    {
+      "name": "withSequentialDependencies",
+      "kind": "method",
+      "file": "src/runtime/planner.ts"
+    },
+    {
       "name": "append",
       "kind": "method",
       "file": "src/runtime/provenance-recorder.ts"
     },
     {
       "name": "query",
+      "kind": "method",
+      "file": "src/runtime/provenance-recorder.ts"
+    },
+    {
+      "name": "run",
       "kind": "method",
       "file": "src/runtime/provenance-recorder.ts"
     },
@@ -564,6 +704,11 @@
       "file": "src/runtime/registries/tool-registry.ts"
     },
     {
+      "name": "findByCapability",
+      "kind": "method",
+      "file": "src/runtime/registries/tool-registry.ts"
+    },
+    {
       "name": "get",
       "kind": "method",
       "file": "src/runtime/registries/tool-registry.ts"
@@ -574,12 +719,22 @@
       "file": "src/runtime/registries/tool-registry.ts"
     },
     {
+      "name": "listCapabilities",
+      "kind": "method",
+      "file": "src/runtime/registries/tool-registry.ts"
+    },
+    {
       "name": "register",
       "kind": "method",
       "file": "src/runtime/registries/tool-registry.ts"
     },
     {
       "name": "remove",
+      "kind": "method",
+      "file": "src/runtime/registries/tool-registry.ts"
+    },
+    {
+      "name": "unregister",
       "kind": "method",
       "file": "src/runtime/registries/tool-registry.ts"
     },
@@ -872,8 +1027,36 @@
       "file": "src/openapi.ts"
     },
     {
+      "name": "AgentRuntime",
+      "file": "src/runtime/agent-runtime.ts"
+    },
+    {
       "name": "Agent",
       "file": "src/runtime/agent.ts"
+    },
+    {
+      "name": "ExecutionPlan",
+      "file": "src/runtime/contracts/execution-plan.ts"
+    },
+    {
+      "name": "ExecutionResult",
+      "file": "src/runtime/contracts/execution-result.ts"
+    },
+    {
+      "name": "TaskExecutionResult",
+      "file": "src/runtime/contracts/execution-result.ts"
+    },
+    {
+      "name": "Goal",
+      "file": "src/runtime/contracts/goal.ts"
+    },
+    {
+      "name": "Task",
+      "file": "src/runtime/contracts/task.ts"
+    },
+    {
+      "name": "TaskStatus",
+      "file": "src/runtime/contracts/task.ts"
     },
     {
       "name": "Executor",
@@ -902,6 +1085,10 @@
     {
       "name": "KnowledgeRegistry",
       "file": "src/runtime/registries/knowledge-registry.ts"
+    },
+    {
+      "name": "ToolCapability",
+      "file": "src/runtime/registries/tool-registry.ts"
     },
     {
       "name": "ToolRegistry",
@@ -944,10 +1131,6 @@
       "file": "src/runtime/types.ts"
     },
     {
-      "name": "Goal",
-      "file": "src/runtime/types.ts"
-    },
-    {
       "name": "KnowledgeDefinition",
       "file": "src/runtime/types.ts"
     },
@@ -965,10 +1148,6 @@
     },
     {
       "name": "RuntimeState",
-      "file": "src/runtime/types.ts"
-    },
-    {
-      "name": "TaskNode",
       "file": "src/runtime/types.ts"
     },
     {
@@ -1063,6 +1242,10 @@
     },
     {
       "file": "src/mcp/adapter.ts",
+      "from": "../routes/widget-html"
+    },
+    {
+      "file": "src/mcp/adapter.ts",
       "from": "../server"
     },
     {
@@ -1090,6 +1273,10 @@
       "from": "../server"
     },
     {
+      "file": "src/routes/resources.ts",
+      "from": "./widget-html"
+    },
+    {
       "file": "src/routes/rpc.ts",
       "from": "../auth/bearer"
     },
@@ -1110,6 +1297,34 @@
       "from": "zod"
     },
     {
+      "file": "src/runtime/agent-runtime.ts",
+      "from": "../server"
+    },
+    {
+      "file": "src/runtime/agent-runtime.ts",
+      "from": "./contracts"
+    },
+    {
+      "file": "src/runtime/agent-runtime.ts",
+      "from": "./executor"
+    },
+    {
+      "file": "src/runtime/agent-runtime.ts",
+      "from": "./memory-store"
+    },
+    {
+      "file": "src/runtime/agent-runtime.ts",
+      "from": "./planner"
+    },
+    {
+      "file": "src/runtime/agent-runtime.ts",
+      "from": "./provenance-recorder"
+    },
+    {
+      "file": "src/runtime/agent-runtime.ts",
+      "from": "./workflow-engine"
+    },
+    {
       "file": "src/runtime/agent.ts",
       "from": "../server"
     },
@@ -1126,8 +1341,40 @@
       "from": "./workflow-engine"
     },
     {
+      "file": "src/runtime/contracts/execution-plan.ts",
+      "from": "./goal"
+    },
+    {
+      "file": "src/runtime/contracts/execution-plan.ts",
+      "from": "./task"
+    },
+    {
+      "file": "src/runtime/contracts/execution-result.ts",
+      "from": "./execution-plan"
+    },
+    {
+      "file": "src/runtime/contracts/execution-result.ts",
+      "from": "./task"
+    },
+    {
       "file": "src/runtime/executor.ts",
       "from": "../server"
+    },
+    {
+      "file": "src/runtime/executor.ts",
+      "from": "./contracts"
+    },
+    {
+      "file": "src/runtime/executor.ts",
+      "from": "./memory-store"
+    },
+    {
+      "file": "src/runtime/executor.ts",
+      "from": "./provenance-recorder"
+    },
+    {
+      "file": "src/runtime/executor.ts",
+      "from": "./task-graph"
     },
     {
       "file": "src/runtime/memory-store.ts",
@@ -1139,7 +1386,7 @@
     },
     {
       "file": "src/runtime/planner.ts",
-      "from": "./types"
+      "from": "./contracts"
     },
     {
       "file": "src/runtime/provenance-recorder.ts",
@@ -1199,7 +1446,11 @@
     },
     {
       "file": "src/runtime/task-graph.ts",
-      "from": "./types"
+      "from": "./contracts"
+    },
+    {
+      "file": "src/runtime/types.ts",
+      "from": "./contracts"
     },
     {
       "file": "src/runtime/workflow-engine.ts",
@@ -1212,6 +1463,10 @@
     {
       "file": "src/runtime/workflow-engine.ts",
       "from": "./memory-store"
+    },
+    {
+      "file": "src/runtime/workflow-engine.ts",
+      "from": "./planner"
     },
     {
       "file": "src/runtime/workflow-engine.ts",
@@ -1235,15 +1490,15 @@
     },
     {
       "file": "src/runtime/workflow.ts",
+      "from": "./contracts"
+    },
+    {
+      "file": "src/runtime/workflow.ts",
       "from": "./planner"
     },
     {
       "file": "src/runtime/workflow.ts",
       "from": "./task-graph"
-    },
-    {
-      "file": "src/runtime/workflow.ts",
-      "from": "./types"
     },
     {
       "file": "src/server.ts",
@@ -1276,6 +1531,14 @@
     {
       "file": "src/tools/provenance/index.ts",
       "from": "zod"
+    },
+    {
+      "file": "src/tools/repository/index.ts",
+      "from": "../../../repo.index.json"
+    },
+    {
+      "file": "src/tools/repository/index.ts",
+      "from": "../../../repo.tree.json"
     },
     {
       "file": "src/tools/repository/index.ts",
