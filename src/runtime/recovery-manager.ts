@@ -5,7 +5,7 @@ import type { Checkpoint, WorkflowDefinition, RecoveryState } from "./types";
 import type { Env } from "../server";
 
 export class RecoveryManager {
-  readonly memory = new MemoryStore();
+  readonly memory = new MemoryStore(undefined, true);
 
   async resume(
     env: Env,

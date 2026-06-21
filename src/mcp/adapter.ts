@@ -107,6 +107,12 @@ const toolAnnotations: Record<
     destructiveHint: true,
     openWorldHint: true,
   },
+  "repository.files": { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
+  "repository.read": { readOnlyHint: true, destructiveHint: false, openWorldHint: true },
+  "repository.search": { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
+  "repository.symbols": { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
+  "repository.index": { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
+  "repository.dependencies": { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
 };
 
 const genericObjectOutputSchema = {
