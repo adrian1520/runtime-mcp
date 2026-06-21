@@ -1,4 +1,5 @@
 import type { Env } from "../server";
+import { widgetHtml } from "./widget-html";
 
 function json(data: unknown, init?: ResponseInit): Response {
   return new Response(JSON.stringify(data, null, 2), {
@@ -61,10 +62,8 @@ export async function handleResourcesRoute(
    *  - /ui/widget/result.html
    *  - /resources/ui/widget/result.html
    *
-   * Implementation: fetch the committed raw HTML from the repository's
-   * raw.githubusercontent URL. For private repositories you can replace this
-   * with a repository API fetch using GITHUB_TOKEN or embed the HTML at
-   * build time.
+   * Implementation: serve the committed dashboard HTML shared with the MCP
+   * resource template so Apps SDK and direct HTTP UI paths stay in sync.
    */
 
   const uiPaths = new Set([
@@ -74,45 +73,14 @@ export async function handleResourcesRoute(
   ]);
 
   if (uiPaths.has(url.pathname) && request.method === "GET") {
-    try {
-      const rawUrl =
-        "https://raw.githubusercontent.com/adrian1520/runtime-mcp/main/src/routes/ui.html";
-
-      const fetched = await fetch(rawUrl);
-
-      if (!fetched.ok) {
-        throw new Error(`Failed to fetch UI (${fetched.status})`);
-      }
-
-      const html = await fetched.text();
-
-      return new Response(html, {
-        headers: {
-          "content-type": "text/html; profile=mcp-app; charset=utf-8",
-          "cache-control": "no-cache",
-          "access-control-allow-origin": "*",
-          "access-control-allow-methods": "GET, OPTIONS",
-        },
-      });
-    } catch (error: any) {
-      return json(
-        {
-          ok: false,
-
-          error: {
-            code: "UI_FETCH_ERROR",
-            message: error?.message ?? "Failed to load UI widget",
-          },
-
-          requestId,
-
-          ts: Date.now(),
-        },
-        {
-          status: 500,
-        },
-      );
-    }
+    return new Response(widgetHtml, {
+      headers: {
+        "content-type": "text/html; profile=mcp-app; charset=utf-8",
+        "cache-control": "no-cache",
+        "access-control-allow-origin": "*",
+        "access-control-allow-methods": "GET, OPTIONS",
+      },
+    });
   }
 
   /*
