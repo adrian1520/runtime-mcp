@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-21T15:38:26.598917+00:00",
+  "generated_at": "2026-06-21T15:39:01.502404+00:00",
   "summary": {
-    "files": 72,
+    "files": 73,
     "directories": 23
   },
   "directories": [
@@ -375,6 +375,17 @@
       "depth": 1,
       "size": 3421,
       "sha256": "790dce20ab01c02ff9ae3d24ac623e807e9091501573c3a9b13e97736bd8e289"
+    },
+    {
+      "path": "memory/future.refaktor.v2.architecture.md",
+      "name": "future.refaktor.v2.architecture.md",
+      "directory": "memory",
+      "extension": "md",
+      "language": "markdown",
+      "category": "general",
+      "depth": 1,
+      "size": 1025,
+      "sha256": "1a848c8e1fbccb205271655bab1edc89a1e306a7ee68dc6285a0e3f1e8160bc8"
     },
     {
       "path": "memory/index.md",
