@@ -1,48 +1,146 @@
-<!doctype html>
-<html lang="en">
+// src/routes/widget-html.ts
+export const widgetHtml = `<!doctype html>
+<html lang="pl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Runtime-MCP multi-panel dashboard widget" />
-  <title>Runtime-MCP Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runtime-MCP</title>
   <style>
-    :root{color-scheme:dark;--bg:#090e1a;--panel:#111827;--panel2:#172033;--line:#263348;--muted:#94a3b8;--text:#e5eefb;--accent:#60a5fa;--ok:#34d399;--warn:#fbbf24;--bad:#fb7185;--purple:#a78bfa;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--sans:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}*{box-sizing:border-box}html,body{height:100%;margin:0}body{background:radial-gradient(circle at top left,#13213a 0,#090e1a 34rem);color:var(--text);font-family:var(--sans);font-size:13px;overflow:hidden}.app{display:grid;grid-template-rows:auto 1fr;height:100vh}.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1rem;border-bottom:1px solid var(--line);background:rgba(9,14,26,.88);backdrop-filter:blur(14px)}.brand{display:flex;align-items:center;gap:.7rem}.logo{display:grid;place-items:center;width:2rem;height:2rem;border-radius:.65rem;background:linear-gradient(135deg,var(--accent),var(--purple));box-shadow:0 0 28px rgba(96,165,250,.35);font-weight:800}.brand h1{font-size:1rem;margin:0}.brand p{margin:.05rem 0 0;color:var(--muted);font-size:.75rem}.actions{display:flex;align-items:center;gap:.5rem}.status{display:inline-flex;align-items:center;gap:.4rem;color:var(--muted);white-space:nowrap}.dot{width:.55rem;height:.55rem;border-radius:99px;background:var(--warn);box-shadow:0 0 12px currentColor}.dot.ok{background:var(--ok)}.dot.bad{background:var(--bad)}button,input,select{font:inherit}button{border:1px solid var(--line);background:#162033;color:var(--text);border-radius:.55rem;padding:.45rem .65rem;cursor:pointer}button:hover{border-color:var(--accent);background:#1e2b44}button.primary{background:linear-gradient(135deg,#2563eb,#7c3aed);border-color:transparent}.layout{display:grid;grid-template-columns:minmax(250px,22%) 1fr;min-height:0}.sidebar{border-right:1px solid var(--line);background:rgba(17,24,39,.83);display:grid;grid-template-rows:auto auto 1fr;min-width:0}.search{padding:.75rem;border-bottom:1px solid var(--line)}.search input{width:100%;padding:.6rem .7rem;border-radius:.6rem;border:1px solid var(--line);background:#0b1220;color:var(--text);outline:none}.search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(96,165,250,.15)}.roots{display:flex;flex-wrap:wrap;gap:.35rem;padding:.55rem .75rem;border-bottom:1px solid var(--line)}.chip{font-family:var(--mono);font-size:.7rem;color:#cbd5e1;border:1px solid var(--line);background:#101827;border-radius:99px;padding:.2rem .45rem}.tree{overflow:auto;padding:.55rem .35rem}.tree ul{list-style:none;margin:0;padding-left:1rem}.node{display:flex;align-items:center;gap:.35rem;min-width:0;padding:.22rem .35rem;border-radius:.35rem;cursor:pointer;user-select:none}.node:hover,.node.selected{background:#1e2b44}.node-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.twisty{width:1rem;color:var(--muted);text-align:center}.file-icon{width:1rem;text-align:center}.content{display:grid;grid-template-rows:auto 1fr;min-width:0;min-height:0}.tabs{display:flex;gap:.35rem;padding:.55rem .7rem;border-bottom:1px solid var(--line);background:rgba(15,23,42,.65)}.tab[aria-selected="true"]{border-color:var(--accent);background:#1e2b44;color:#dbeafe}.panels{position:relative;min-height:0;overflow:hidden}.panel{display:none;height:100%;overflow:auto;padding:1rem}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:1rem}.card{background:rgba(17,24,39,.9);border:1px solid var(--line);border-radius:.85rem;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,0,.18)}.card h2{margin:0;padding:.8rem .9rem;border-bottom:1px solid var(--line);font-size:.9rem;display:flex;align-items:center;justify-content:space-between}.card-body{padding:.9rem}.metric-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem}.metric{padding:.8rem;border:1px solid var(--line);border-radius:.7rem;background:#0b1220}.metric b{display:block;font-size:1.35rem}.metric span{color:var(--muted);font-size:.72rem}.viewer{height:calc(100vh - 9rem);display:grid;grid-template-rows:auto 1fr}.filebar{display:flex;justify-content:space-between;gap:.7rem;align-items:center;color:var(--muted);padding:.65rem .8rem;border-bottom:1px solid var(--line);font-family:var(--mono)}pre{margin:0;white-space:pre;overflow:auto;font-family:var(--mono);font-size:.78rem;line-height:1.55}.code{padding:1rem;background:#070b13;height:100%}.console{height:calc(100vh - 9rem);display:grid;grid-template-rows:auto 1fr auto}.log{padding:.8rem;overflow:auto;background:#070b13}.entry{border-left:3px solid var(--accent);padding:.55rem .7rem;margin:0 0 .65rem;background:#0c1424;border-radius:.35rem}.entry small{display:block;color:var(--muted);margin-bottom:.25rem}.console-form{display:flex;gap:.55rem;padding:.75rem;border-top:1px solid var(--line)}.console-form select{background:#0b1220;color:var(--text);border:1px solid var(--line);border-radius:.55rem;padding:.45rem}.console-form input{flex:1;background:#0b1220;color:var(--text);border:1px solid var(--line);border-radius:.55rem;padding:.5rem}.graph{min-height:420px;display:grid;place-items:center}.graph svg{max-width:100%;height:auto}.edge{stroke:#40516d;stroke-width:2}.g-node rect{fill:#111827;stroke:#60a5fa;stroke-width:1.5;rx:12}.g-node text{fill:#e5eefb;font-size:13px}.timeline{position:relative;padding-left:1.3rem}.timeline:before{content:"";position:absolute;left:.35rem;top:.35rem;bottom:.35rem;width:2px;background:#334155}.event{position:relative;margin:0 0 .8rem;padding:.7rem .8rem;background:#0c1424;border:1px solid var(--line);border-radius:.65rem}.event:before{content:"";position:absolute;left:-1.18rem;top:.9rem;width:.55rem;height:.55rem;border-radius:99px;background:var(--accent);box-shadow:0 0 0 4px #0c1424}.event h3{margin:0 0 .25rem;font-size:.82rem}.event p{margin:.2rem 0;color:#cbd5e1}.muted{color:var(--muted)}.empty{color:var(--muted);padding:1rem;text-align:center}.error{color:var(--bad)}@media(max-width:860px){body{overflow:auto}.app{height:auto;min-height:100vh}.layout{grid-template-columns:1fr}.sidebar{height:45vh;border-right:0;border-bottom:1px solid var(--line)}.grid{grid-template-columns:1fr}.viewer,.console{height:62vh}.metric-row{grid-template-columns:repeat(2,1fr)}}
+    :root {
+      --bg: #0a0f1c;
+      --panel: #111827;
+      --accent: #60a5fa;
+      --text: #e5eefb;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 16px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    h2 { margin: 0 0 12px 0; font-size: 1.1rem; }
+    button {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #1e2937;
+      color: white;
+      border: 1px solid #475569;
+      cursor: pointer;
+    }
+    button:hover { background: #334155; }
+    button.primary { background: #2563eb; border-color: transparent; }
+    pre {
+      background: #02060f;
+      padding: 12px;
+      border-radius: 8px;
+      overflow: auto;
+      max-height: 400px;
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+    .status { padding: 8px; border-radius: 6px; margin: 8px 0; font-size: 13px; }
+    .success { background: rgba(52,211,153,0.15); color: #34d399; }
+    .error { background: rgba(251,113,133,0.15); color: #fb7185; }
   </style>
 </head>
 <body>
-<div class="app">
-  <header class="topbar"><div class="brand"><div class="logo">RM</div><div><h1>Runtime-MCP Dashboard</h1><p>Repo Explorer · Agent Console · Workflow Graph · Provenance Timeline</p></div></div><div class="actions"><span class="status"><span id="statusDot" class="dot"></span><span id="statusText">Initializing</span></span><button id="refreshBtn" class="primary">Refresh</button></div></header>
-  <div class="layout">
-    <aside class="sidebar"><div class="search"><input id="searchBox" type="search" placeholder="Search files or symbols..." aria-label="Search files or symbols" /></div><div class="roots" id="roots"></div><nav class="tree" id="tree" aria-label="Repository files"><div class="empty">Loading repository.files…</div></nav></aside>
-    <main class="content"><div class="tabs" role="tablist"><button class="tab" data-panel="explorer" aria-selected="true">Repo Explorer</button><button class="tab" data-panel="console">Agent Console</button><button class="tab" data-panel="graph">Workflow Graph</button><button class="tab" data-panel="timeline">Provenance Timeline</button></div>
-      <div class="panels"><section id="explorer" class="panel active"><div class="grid"><article class="card"><h2>Repository Overview <span class="muted" id="repoSummary">—</span></h2><div class="card-body"><div class="metric-row"><div class="metric"><b id="fileCount">0</b><span>files</span></div><div class="metric"><b id="folderCount">0</b><span>folders</span></div><div class="metric"><b id="symbolCount">0</b><span>symbols</span></div><div class="metric"><b id="memoryCount">0</b><span>memory keys</span></div></div></div></article><article class="card viewer"><div class="filebar"><span id="selectedPath">Select a file</span><button id="readBtn">Read file</button></div><pre id="fileContent" class="code muted">Choose a file from the explorer to preview repository.read output.</pre></article></div></section>
-      <section id="console" class="panel"><article class="card console"><h2>Agent Console <span class="muted">existing Runtime-MCP tools only</span></h2><div id="consoleLog" class="log"></div><form id="consoleForm" class="console-form"><select id="toolSelect"><option>repository.index</option><option>repository.files</option><option>repository.symbols</option><option>memory_list</option><option>memory_get</option><option>memory_exists</option><option>provenance_query</option></select><input id="toolArgs" placeholder='JSON args, e.g. {"prefix":""}' /><button>Run</button></form></article></section>
-      <section id="graph" class="panel"><article class="card"><h2>Workflow Graph <button id="graphRefresh">Rebuild</button></h2><div class="card-body graph" id="graphBody"></div></article></section>
-      <section id="timeline" class="panel"><article class="card"><h2>Provenance Timeline <button id="timelineRefresh">Load events</button></h2><div class="card-body"><div id="timelineBody" class="timeline"></div></div></article></section></div>
-    </main>
+  <div class="card">
+    <h2>🔧 Runtime-MCP Panel</h2>
+    <div id="status" class="status">Gotowy...</div>
+    
+    <div style="display:flex; gap:10px; margin:12px 0;">
+      <button id="loadBtn" class="primary">📊 Załaduj dane</button>
+      <button id="clearBtn">🧹 Wyczyść</button>
+    </div>
+
+    <pre id="output">Kliknij przycisk, aby pobrać informacje o repozytorium i pamięci.</pre>
   </div>
-</div>
-<script type="module">
-const state={files:[],symbols:null,memories:[],provenance:[],selected:null,expanded:new Set(['src','src/runtime','src/agents','src/contracts','docs']),lastResult:null};
-const $=(id)=>document.getElementById(id); const esc=(s)=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function setStatus(kind,text){$('statusDot').className='dot '+(kind||'');$('statusText').textContent=text}
-async function callTool(name,args={}){ if(window.openai?.callTool) return await window.openai.callTool(name,args); window.parent?.postMessage({method:'tools/call',params:{name,args}},'*'); throw new Error('window.openai.callTool is unavailable in this host'); }
-function unwrap(r){return r?.structuredContent??r?.content?.[0]?.text&&safeJson(r.content[0].text)??r}
-function safeJson(t){try{return JSON.parse(t)}catch{return t}}
-function pathOf(f){return typeof f==='string'?f:(f.path||f.name||f.file||'')}
-function icon(path,dir=false){if(dir)return '📁'; const ext=path.split('.').pop(); return ({ts:'TS',js:'JS',json:'{}',md:'MD',html:'🌐',css:'🎨',yml:'⚙️',yaml:'⚙️'}[ext]||'📄')}
-function buildTree(files){const root={children:new Map(),files:[]}; for(const item of files){const p=pathOf(item); if(!p)continue; let node=root; const parts=p.split('/'); parts.forEach((part,i)=>{if(i===parts.length-1){node.children.set(part,{name:part,path:p,file:item,children:null})}else{if(!node.children.has(part))node.children.set(part,{name:part,path:parts.slice(0,i+1).join('/'),children:new Map()}); node=node.children.get(part)}})} return root}
-function renderTree(){const q=$('searchBox').value.toLowerCase().trim(); const root=buildTree(state.files); const roots=['src/','runtime/','agents/','contracts/','docs/']; $('roots').innerHTML=roots.map(r=>'<span class="chip">'+r+'</span>').join(''); let folders=0; function walk(node){let html='<ul>'; [...node.children.values()].sort((a,b)=>(!!b.children-!!a.children)||a.name.localeCompare(b.name)).forEach(n=>{const isDir=!!n.children; if(isDir)folders++; const match=!q||n.path.toLowerCase().includes(q); const child=isDir?walk(n):''; if(!match && !child.includes('data-match="1"')) return; const open=q||state.expanded.has(n.path); html+='<li data-match="1"><div class="node '+(state.selected===n.path?'selected':'')+'" data-path="'+esc(n.path)+'" data-dir="'+isDir+'"><span class="twisty">'+(isDir?(open?'▾':'▸'):'')+'</span><span class="file-icon">'+icon(n.path,isDir)+'</span><span class="node-name">'+esc(n.name)+'</span></div>'+(isDir&&open?child:'')+'</li>'}); return html+'</ul>'} $('tree').innerHTML=walk(root)||'<div class="empty">No files found</div>'; $('folderCount').textContent=folders; $('fileCount').textContent=state.files.length}
-async function loadAll(){setStatus('', 'Loading tools'); try{const [files,index,mem,prov]=await Promise.allSettled([callTool('repository.files',{}),callTool('repository.symbols',{}),callTool('memory_list',{prefix:'',limit:25}),callTool('provenance_query',{prefix:'',limit:25})]); if(files.status==='fulfilled'){const v=unwrap(files.value); state.files=v.files||[]; $('repoSummary').textContent=v.summary?JSON.stringify(v.summary):'repository.files'} if(index.status==='fulfilled'){state.symbols=unwrap(index.value); const s=state.symbols; $('symbolCount').textContent=(s.classes?.length||0)+(s.interfaces?.length||0)+(s.functions?.length||0)+(s.exports?.length||0)} if(mem.status==='fulfilled'){const v=unwrap(mem.value); state.memories=v.keys||[]; $('memoryCount').textContent=v.count??state.memories.length} if(prov.status==='fulfilled'){state.provenance=unwrap(prov.value).items||[]} renderTree(); renderGraph(); renderTimeline(); setStatus('ok','Connected')}catch(e){setStatus('bad','Limited host'); log('error',e.message)} }
-async function readSelected(){if(!state.selected)return; $('selectedPath').textContent=state.selected; $('fileContent').textContent='Loading repository.read…'; try{const v=unwrap(await callTool('repository.read',{path:state.selected})); $('fileContent').textContent=v.content??JSON.stringify(v,null,2)}catch(e){$('fileContent').textContent=e.message; $('fileContent').classList.add('error')}}
-function log(kind,msg,obj){const el=document.createElement('div'); el.className='entry'; el.innerHTML='<small>'+new Date().toISOString()+' · '+esc(kind)+'</small><pre>'+esc(typeof msg==='string'?msg:JSON.stringify(msg,null,2))+(obj?'\n'+esc(JSON.stringify(obj,null,2)):'')+'</pre>'; $('consoleLog').prepend(el)}
-function renderGraph(){const nodes=['Goal','Planner','Executor','Tools','Memory','Provenance']; const links=[[0,1],[1,2],[2,3],[2,4],[2,5]]; const pos=[[80,190],[240,110],[410,190],[590,80],[590,190],[590,300]]; let svg='<svg viewBox="0 0 720 380" role="img" aria-label="Runtime workflow graph"><defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#40516d"/></marker></defs>'; links.forEach(([a,b])=>svg+='<line class="edge" x1="'+(pos[a][0]+70)+'" y1="'+(pos[a][1]+22)+'" x2="'+pos[b][0]+'" y2="'+(pos[b][1]+22)+'" marker-end="url(#arrow)"/>'); nodes.forEach((n,i)=>svg+='<g class="g-node"><rect x="'+pos[i][0]+'" y="'+pos[i][1]+'" width="140" height="44"/><text x="'+(pos[i][0]+70)+'" y="'+(pos[i][1]+27)+'" text-anchor="middle">'+n+'</text></g>'); $('graphBody').innerHTML=svg+'</svg>'}
-function renderTimeline(){const items=state.provenance; $('timelineBody').innerHTML=items.length?items.map((e,i)=>'<div class="event"><h3>'+esc(e.type||e.event||e.key||'Provenance event '+(i+1))+'</h3><p>'+esc(e.ts||e.timestamp||'')+'</p><pre>'+esc(JSON.stringify(e,null,2))+'</pre></div>').join(''):'<div class="empty">No provenance events returned by provenance_query.</div>'}
-document.addEventListener('click',e=>{const tab=e.target.closest('.tab'); if(tab){document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected','false')); tab.setAttribute('aria-selected','true'); document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); $(tab.dataset.panel).classList.add('active')} const node=e.target.closest('.node'); if(node){const p=node.dataset.path;if(node.dataset.dir==='true'){state.expanded[state.expanded.has(p)?'delete':'add'](p); renderTree()}else{state.selected=p; renderTree(); readSelected()}}});
-$('searchBox').addEventListener('input',renderTree); $('readBtn').addEventListener('click',readSelected); $('refreshBtn').addEventListener('click',loadAll); $('graphRefresh').addEventListener('click',renderGraph); $('timelineRefresh').addEventListener('click',async()=>{const v=unwrap(await callTool('provenance_query',{prefix:'',limit:50})); state.provenance=v.items||[]; renderTimeline()});
-$('consoleForm').addEventListener('submit',async e=>{e.preventDefault(); const name=$('toolSelect').value; let args={}; try{args=$('toolArgs').value.trim()?JSON.parse($('toolArgs').value):{}}catch(err){return log('invalid JSON',err.message)} log('invoke',name,args); try{const v=unwrap(await callTool(name,args)); log('result',v)}catch(err){log('error',err.message)}});
-window.addEventListener('message',event=>{if(event.source!==window.parent)return; const m=event.data; if(m?.method==='ui/notifications/tool-result'){state.lastResult=m.params?.structuredContent??m.params?.content; log('host result',state.lastResult)}});
-loadAll();
-</script>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    function setStatus(text, isError = false) {
+      const el = $('status');
+      el.textContent = text;
+      el.className = 'status ' + (isError ? 'error' : 'success');
+    }
+
+    function log(msg) {
+      const out = $('output');
+      const time = new Date().toLocaleTimeString('pl-PL');
+      out.textContent += \`[\${time}] \${msg}\\n\`;
+      out.scrollTop = out.scrollHeight;
+    }
+
+    async function callTool(name, args = {}) {
+      try {
+        if (window.openai && window.openai.callTool) {
+          return await window.openai.callTool(name, args);
+        }
+        if (window.parent) {
+          window.parent.postMessage({method: "tools/call", params: {name, args}}, "*");
+          return {status: "sent"};
+        }
+        return {error: "Brak hosta MCP"};
+      } catch (e) {
+        return {error: e.message};
+      }
+    }
+
+    async function load() {
+      const btn = $('loadBtn');
+      btn.disabled = true;
+      setStatus("Ładowanie...");
+
+      try {
+        const [files, memory] = await Promise.allSettled([
+          callTool('repository.files', {limit: 40}),
+          callTool('memory_list', {limit: 15})
+        ]);
+
+        let result = "=== STATUS ===\\n\\n";
+
+        if (files.status === 'fulfilled') {
+          result += \`Plików: \${files.value?.files?.length || 0}\\n\`;
+        } else {
+          result += "Plików: BŁĄD\\n";
+        }
+
+        if (memory.status === 'fulfilled') {
+          result += \`Memory: \${memory.value?.count || memory.value?.keys?.length || 0}\\n\`;
+        } else {
+          result += "Memory: BŁĄD\\n";
+        }
+
+        $('output').textContent = result;
+        setStatus("Załadowano pomyślnie", false);
+        log("Dane pobrane pomyślnie");
+
+      } catch (e) {
+        setStatus("Błąd: " + e.message, true);
+        log("BŁĄD: " + e.message);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    $('loadBtn').onclick = load;
+    $('clearBtn').onclick = () => { $('output').textContent = ''; log('Konsola wyczyszczona'); };
+
+    // Auto load
+    window.onload = () => setTimeout(load, 700);
+  </script>
 </body>
-</html>
+</html>`;
