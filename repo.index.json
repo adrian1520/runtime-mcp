@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-06-30T21:45:50.535146+00:00",
+  "generated_at": "2026-06-30T22:27:44.430736+00:00",
   "summary": {
     "classes": 16,
     "interfaces": 28,
-    "types": 24,
+    "types": 26,
     "enums": 0,
-    "functions": 119,
-    "exports": 58,
-    "imports": 92
+    "functions": 127,
+    "exports": 59,
+    "imports": 96
   },
   "classes": [
     {
@@ -242,6 +242,11 @@
     },
     {
       "name": "Env",
+      "file": "scripts/update-server.ts",
+      "exported": true
+    },
+    {
+      "name": "Env",
       "file": "src/server.ts",
       "exported": true
     },
@@ -346,6 +351,11 @@
       "exported": true
     },
     {
+      "name": "ToolModule",
+      "file": "scripts/update-server.ts",
+      "exported": false
+    },
+    {
       "name": "ToolRegistry",
       "file": "src/contracts/tool.ts",
       "exported": true
@@ -358,6 +368,46 @@
   ],
   "enums": [],
   "functions": [
+    {
+      "name": "capitalize",
+      "kind": "function",
+      "file": "scripts/update-server.ts"
+    },
+    {
+      "name": "discoverTools",
+      "kind": "function",
+      "file": "scripts/update-server.ts"
+    },
+    {
+      "name": "exists",
+      "kind": "function",
+      "file": "scripts/update-server.ts"
+    },
+    {
+      "name": "generateImports",
+      "kind": "function",
+      "file": "scripts/update-server.ts"
+    },
+    {
+      "name": "generateRegistrations",
+      "kind": "function",
+      "file": "scripts/update-server.ts"
+    },
+    {
+      "name": "generateServer",
+      "kind": "function",
+      "file": "scripts/update-server.ts"
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file": "scripts/update-server.ts"
+    },
+    {
+      "name": "main",
+      "kind": "method",
+      "file": "scripts/update-server.ts"
+    },
     {
       "name": "build",
       "kind": "method",
@@ -956,6 +1006,10 @@
   ],
   "exports": [
     {
+      "name": "Env",
+      "file": "scripts/update-server.ts"
+    },
+    {
       "name": "ContextBuilder",
       "file": "src/agents/context-builder.ts"
     },
@@ -1189,6 +1243,22 @@
     }
   ],
   "imports": [
+    {
+      "file": "scripts/update-server.ts",
+      "from": "${tool.importPath}"
+    },
+    {
+      "file": "scripts/update-server.ts",
+      "from": "./contracts/tool"
+    },
+    {
+      "file": "scripts/update-server.ts",
+      "from": "node:fs"
+    },
+    {
+      "file": "scripts/update-server.ts",
+      "from": "node:path"
+    },
     {
       "file": "src/agents/session-manager.ts",
       "from": "./types"
