@@ -1,6 +1,6 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-30T19:45:06.981380+00:00",
+  "generated_at": "2026-06-30T19:46:01.926870+00:00",
   "summary": {
     "files": 83,
     "directories": 23
@@ -714,8 +714,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 4731,
-      "sha256": "53232b1300423edb019ac847af287288c4c00c189590502da8a13eb4ace44f54"
+      "size": 5187,
+      "sha256": "8d31df29ce6113ae4ac7a66a75170b6940e32f80cc5f15a7082b7064355e1d7d"
     },
     {
       "path": "src/runtime/agent-runtime.ts",
