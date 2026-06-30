@@ -1,12 +1,12 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-06-21T18:06:02.748640+00:00",
+  "generated_at": "2026-06-30T19:46:01.026873+00:00",
   "summary": {
     "classes": 16,
     "interfaces": 28,
     "types": 24,
     "enums": 0,
-    "functions": 122,
+    "functions": 114,
     "exports": 57,
     "imports": 87
   },
@@ -494,28 +494,18 @@
       "file": "src/routes/tools.ts"
     },
     {
-      "name": "buildTree",
-      "kind": "function",
-      "file": "src/routes/widget-html.ts"
-    },
-    {
       "name": "callTool",
       "kind": "function",
       "file": "src/routes/widget-html.ts"
     },
     {
-      "name": "icon",
-      "kind": "function",
-      "file": "src/routes/widget-html.ts"
-    },
-    {
-      "name": "loadAll",
-      "kind": "function",
-      "file": "src/routes/widget-html.ts"
-    },
-    {
-      "name": "loadAll",
+      "name": "callTool",
       "kind": "method",
+      "file": "src/routes/widget-html.ts"
+    },
+    {
+      "name": "loadData",
+      "kind": "function",
       "file": "src/routes/widget-html.ts"
     },
     {
@@ -524,33 +514,8 @@
       "file": "src/routes/widget-html.ts"
     },
     {
-      "name": "pathOf",
-      "kind": "function",
-      "file": "src/routes/widget-html.ts"
-    },
-    {
-      "name": "readSelected",
-      "kind": "function",
-      "file": "src/routes/widget-html.ts"
-    },
-    {
-      "name": "renderGraph",
-      "kind": "function",
-      "file": "src/routes/widget-html.ts"
-    },
-    {
-      "name": "renderTimeline",
-      "kind": "function",
-      "file": "src/routes/widget-html.ts"
-    },
-    {
-      "name": "renderTree",
-      "kind": "function",
-      "file": "src/routes/widget-html.ts"
-    },
-    {
-      "name": "safeJson",
-      "kind": "function",
+      "name": "log",
+      "kind": "method",
       "file": "src/routes/widget-html.ts"
     },
     {
@@ -559,13 +524,8 @@
       "file": "src/routes/widget-html.ts"
     },
     {
-      "name": "unwrap",
-      "kind": "function",
-      "file": "src/routes/widget-html.ts"
-    },
-    {
-      "name": "walk",
-      "kind": "function",
+      "name": "setStatus",
+      "kind": "method",
       "file": "src/routes/widget-html.ts"
     },
     {
