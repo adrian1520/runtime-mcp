@@ -1,6 +1,6 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-30T21:23:18.150441+00:00",
+  "generated_at": "2026-06-30T21:44:57.716528+00:00",
   "summary": {
     "files": 84,
     "directories": 24
@@ -708,8 +708,8 @@
       "language": "unknown",
       "category": "general",
       "depth": 2,
-      "size": 4126,
-      "sha256": "1c8fa8bb52b1549798cec4c8fa09e4d9105c0a718b14420dd07d2cc2ddc2ddcb"
+      "size": 4104,
+      "sha256": "745cf57235da8f5b88f68f1dfad819d47b01dcc0b916ed7f960684df3e202de4"
     },
     {
       "path": "src/routes/widget-html.ts",
@@ -994,8 +994,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 1673,
-      "sha256": "39eeb93daf814899d32943902e41a230a45f6db8d1827e6f1772f6b1df94b057"
+      "size": 1600,
+      "sha256": "74c08a3772f34ba17bea7a1c43d9c99e3f02490268c8aab068b4842f0d3c77c1"
     },
     {
       "path": "src/tools/memory/index.ts",
