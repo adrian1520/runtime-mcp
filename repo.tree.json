@@ -1,6 +1,6 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-30T21:18:06.307577+00:00",
+  "generated_at": "2026-06-30T21:23:18.150441+00:00",
   "summary": {
     "files": 84,
     "directories": 24
@@ -840,8 +840,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 3082,
-      "sha256": "be21a7951684639f54cdbafd0fed773edaf578c036a2fa298985791adadb9216"
+      "size": 2987,
+      "sha256": "5ed1a7a7e5e49657394cfa5835d2aae4f31cfbf6e6c6669526d300ec5338a500"
     },
     {
       "path": "src/runtime/provenance-recorder.ts",
@@ -994,8 +994,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 1032,
-      "sha256": "f0d5220cce1ad9fd9207ff767020eadcc470c4d53eaf835a4e1c104a8384baf6"
+      "size": 1673,
+      "sha256": "39eeb93daf814899d32943902e41a230a45f6db8d1827e6f1772f6b1df94b057"
     },
     {
       "path": "src/tools/memory/index.ts",
