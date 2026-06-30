@@ -1,12 +1,12 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-06-30T21:03:09.477482+00:00",
+  "generated_at": "2026-06-30T21:45:50.535146+00:00",
   "summary": {
     "classes": 16,
     "interfaces": 28,
     "types": 24,
     "enums": 0,
-    "functions": 117,
+    "functions": 119,
     "exports": 58,
     "imports": 92
   },
@@ -584,6 +584,11 @@
       "file": "src/runtime/planner.ts"
     },
     {
+      "name": "validateGoal",
+      "kind": "method",
+      "file": "src/runtime/planner.ts"
+    },
+    {
       "name": "withSequentialDependencies",
       "kind": "method",
       "file": "src/runtime/planner.ts"
@@ -792,6 +797,11 @@
       "name": "create",
       "kind": "method",
       "file": "src/runtime/workflow.ts"
+    },
+    {
+      "name": "registerAgentTools",
+      "kind": "method",
+      "file": "src/server.ts"
     },
     {
       "name": "registerMemoryTools",
@@ -1485,6 +1495,10 @@
     },
     {
       "file": "src/server.ts",
+      "from": "./tools/agent"
+    },
+    {
+      "file": "src/server.ts",
       "from": "./tools/memory"
     },
     {
@@ -1502,10 +1516,6 @@
     {
       "file": "src/tools/agent/index.ts",
       "from": "../../runtime/agent-runtime"
-    },
-    {
-      "file": "src/tools/agent/index.ts",
-      "from": "../../runtime/contracts"
     },
     {
       "file": "src/tools/agent/index.ts",
