@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-06-30T19:47:32.697533+00:00",
+  "generated_at": "2026-06-30T21:03:09.477482+00:00",
   "summary": {
     "classes": 16,
     "interfaces": 28,
     "types": 24,
     "enums": 0,
-    "functions": 114,
-    "exports": 57,
-    "imports": 87
+    "functions": 117,
+    "exports": 58,
+    "imports": 92
   },
   "classes": [
     {
@@ -809,6 +809,21 @@
       "file": "src/server.ts"
     },
     {
+      "name": "execute",
+      "kind": "method",
+      "file": "src/tools/agent/index.ts"
+    },
+    {
+      "name": "registerAgentTools",
+      "kind": "function",
+      "file": "src/tools/agent/index.ts"
+    },
+    {
+      "name": "validate",
+      "kind": "method",
+      "file": "src/tools/agent/index.ts"
+    },
+    {
       "name": "keyOf",
       "kind": "function",
       "file": "src/tools/memory/index.ts"
@@ -1147,6 +1162,10 @@
       "file": "src/server.ts"
     },
     {
+      "name": "registerAgentTools",
+      "file": "src/tools/agent/index.ts"
+    },
+    {
       "name": "registerMemoryTools",
       "file": "src/tools/memory/index.ts"
     },
@@ -1475,6 +1494,26 @@
     {
       "file": "src/server.ts",
       "from": "./tools/repository"
+    },
+    {
+      "file": "src/tools/agent/index.ts",
+      "from": "../../contracts/tool"
+    },
+    {
+      "file": "src/tools/agent/index.ts",
+      "from": "../../runtime/agent-runtime"
+    },
+    {
+      "file": "src/tools/agent/index.ts",
+      "from": "../../runtime/contracts"
+    },
+    {
+      "file": "src/tools/agent/index.ts",
+      "from": "../../server"
+    },
+    {
+      "file": "src/tools/agent/index.ts",
+      "from": "zod"
     },
     {
       "file": "src/tools/memory/index.ts",
