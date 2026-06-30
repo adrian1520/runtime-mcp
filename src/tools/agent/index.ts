@@ -37,9 +37,7 @@ const inputSchema = {
   additionalProperties: false,
 } as const;
 
-export function registerAgentTools(
-  registry: ToolRegistry<Env>,
-): void {
+export function registerAgentTools(registry: ToolRegistry<Env>): void {
   const tool: ToolDefinition<Env> = {
     description: "Execute Agent Runtime workflow.",
 
@@ -53,19 +51,13 @@ export function registerAgentTools(
       const runtime = new AgentRuntime();
 
       try {
-        return await runtime.run(
-          args.goal,
-          context.env,
-          context.requestId,
-        );
+        return await runtime.run(args.goal, context.env, context.requestId);
       } catch (error) {
         return {
           success: false,
           requestId: context.requestId,
           error:
-            error instanceof Error
-              ? error.message
-              : "Unknown runtime error",
+            error instanceof Error ? error.message : "Unknown runtime error",
         };
       }
     },
