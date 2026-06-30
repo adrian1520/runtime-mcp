@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-30T22:21:09.610517+00:00",
+  "generated_at": "2026-06-30T22:31:36.293756+00:00",
   "summary": {
-    "files": 85,
+    "files": 86,
     "directories": 25
   },
   "directories": [
@@ -198,6 +198,17 @@
       "depth": 2,
       "size": 4766,
       "sha256": "de46d7574e2023bcf9af774ed014d250e0173b4404bf71c8d46b9955c584527c"
+    },
+    {
+      "path": ".github/workflows/generate-server.yml",
+      "name": "generate-server.yml",
+      "directory": ".github/workflows",
+      "extension": "yml",
+      "language": "yaml",
+      "category": "workflow",
+      "depth": 2,
+      "size": 1317,
+      "sha256": "02f9e8ad83515f4cab895eb304a34929064d11c932dea3c192f9e670a6d6d083"
     },
     {
       "path": ".gitignore",
@@ -548,8 +559,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 33756,
-      "sha256": "61d3a017f9b2fa9d25897fca8283df1682cfc0f2b0974b59855a1ffc6a1a3b8a"
+      "size": 35244,
+      "sha256": "ab7ec97e312e422e175fb361dd2236f517877595fda598331b2caa7b4c5a8baa"
     },
     {
       "path": "scripts/update-server.ts",
