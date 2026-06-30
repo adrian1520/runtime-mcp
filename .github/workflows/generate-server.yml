@@ -1,0 +1,62 @@
+name: Generate Server Registry
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - "src/tools/**"
+      - "scripts/update-server.ts"
+
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - "src/tools/**"
+      - "scripts/update-server.ts"
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-server-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    name: Generate src/server.ts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate server.ts
+        run: npm run server:generate
+
+      - name: Verify generated file
+        run: git diff -- src/server.ts
+
+      - name: Commit generated server.ts
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(runtime): regenerate server.ts"
+          commit_user_name: Runtime MCP Bot
+          commit_user_email: actions@github.com
+          commit_author: Runtime MCP Bot <actions@github.com>
+          file_pattern: src/server.ts
