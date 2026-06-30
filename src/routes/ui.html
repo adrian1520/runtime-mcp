@@ -1,146 +1,284 @@
 // src/routes/widget-html.ts
+
 export const widgetHtml = `<!doctype html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Runtime-MCP</title>
-  <style>
-    :root {
-      --bg: #0a0f1c;
-      --panel: #111827;
-      --accent: #60a5fa;
-      --text: #e5eefb;
-      --muted: #94a3b8;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 16px;
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, sans-serif;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    .card {
-      background: var(--panel);
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-    h2 { margin: 0 0 12px 0; font-size: 1.1rem; }
-    button {
-      padding: 8px 16px;
-      border-radius: 8px;
-      background: #1e2937;
-      color: white;
-      border: 1px solid #475569;
-      cursor: pointer;
-    }
-    button:hover { background: #334155; }
-    button.primary { background: #2563eb; border-color: transparent; }
-    pre {
-      background: #02060f;
-      padding: 12px;
-      border-radius: 8px;
-      overflow: auto;
-      max-height: 400px;
-      font-size: 13px;
-      white-space: pre-wrap;
-    }
-    .status { padding: 8px; border-radius: 6px; margin: 8px 0; font-size: 13px; }
-    .success { background: rgba(52,211,153,0.15); color: #34d399; }
-    .error { background: rgba(251,113,133,0.15); color: #fb7185; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Runtime MCP</title>
+
+<style>
+:root{
+    --bg:#0a0f1c;
+    --panel:#111827;
+    --border:#334155;
+    --text:#e5eefb;
+    --muted:#94a3b8;
+    --primary:#2563eb;
+    --success:#22c55e;
+    --danger:#ef4444;
+}
+
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    padding:16px;
+    background:var(--bg);
+    color:var(--text);
+    font-family:system-ui,sans-serif;
+}
+
+.card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+}
+
+button{
+    padding:8px 14px;
+    border-radius:8px;
+    border:1px solid #475569;
+    background:#1e2937;
+    color:white;
+    cursor:pointer;
+}
+
+button.primary{
+    background:var(--primary);
+    border:none;
+}
+
+button:disabled{
+    opacity:.5;
+}
+
+.status{
+    margin:12px 0;
+    padding:8px;
+    border-radius:6px;
+}
+
+.success{
+    background:rgba(34,197,94,.15);
+    color:var(--success);
+}
+
+.error{
+    background:rgba(239,68,68,.15);
+    color:var(--danger);
+}
+
+pre{
+    background:#02060f;
+    padding:12px;
+    border-radius:8px;
+    overflow:auto;
+    white-space:pre-wrap;
+    max-height:500px;
+    font-size:13px;
+}
+</style>
+
 </head>
+
 <body>
-  <div class="card">
-    <h2>🔧 Runtime-MCP Panel</h2>
-    <div id="status" class="status">Gotowy...</div>
-    
-    <div style="display:flex; gap:10px; margin:12px 0;">
-      <button id="loadBtn" class="primary">📊 Załaduj dane</button>
-      <button id="clearBtn">🧹 Wyczyść</button>
-    </div>
 
-    <pre id="output">Kliknij przycisk, aby pobrać informacje o repozytorium i pamięci.</pre>
-  </div>
+<div class="card">
 
-  <script>
-    const $ = id => document.getElementById(id);
+<h2>🔧 Runtime MCP Inspector</h2>
 
-    function setStatus(text, isError = false) {
-      const el = $('status');
-      el.textContent = text;
-      el.className = 'status ' + (isError ? 'error' : 'success');
+<div id="status" class="status">
+Gotowy
+</div>
+
+<div style="display:flex;gap:10px;margin:12px 0">
+<button id="refresh" class="primary">
+Odśwież
+</button>
+
+<button id="clear">
+Wyczyść
+</button>
+</div>
+
+<pre id="output"></pre>
+
+</div>
+
+<script>
+
+const $ = id => document.getElementById(id);
+
+const logs=[];
+
+function renderLogs(){
+    $("output").textContent=logs.join("\\n");
+}
+
+function log(msg){
+
+    logs.push(
+        "["+
+        new Date().toLocaleTimeString("pl-PL")+
+        "] "+
+        msg
+    );
+
+    renderLogs();
+}
+
+function setStatus(text,error=false){
+
+    const el=$("status");
+
+    el.textContent=text;
+    el.className="status "+(error?"error":"success");
+}
+
+async function callTool(name,args={}){
+
+    if(!window.openai?.callTool){
+        throw new Error(
+            "window.openai.callTool() unavailable"
+        );
     }
 
-    function log(msg) {
-      const out = $('output');
-      const time = new Date().toLocaleTimeString('pl-PL');
-      out.textContent += \`[\${time}] \${msg}\\n\`;
-      out.scrollTop = out.scrollHeight;
+    const result=await window.openai.callTool(
+        name,
+        args
+    );
+
+    if(result?.error){
+
+        throw new Error(
+            result.error.message ??
+            "Tool failed"
+        );
     }
 
-    async function callTool(name, args = {}) {
-      try {
-        if (window.openai && window.openai.callTool) {
-          return await window.openai.callTool(name, args);
-        }
-        if (window.parent) {
-          window.parent.postMessage({method: "tools/call", params: {name, args}}, "*");
-          return {status: "sent"};
-        }
-        return {error: "Brak hosta MCP"};
-      } catch (e) {
-        return {error: e.message};
-      }
-    }
+    return (
+        result.result ??
+        result.structuredContent ??
+        result
+    );
+}
 
-    async function load() {
-      const btn = $('loadBtn');
-      btn.disabled = true;
-      setStatus("Ładowanie...");
+async function refresh(){
 
-      try {
-        const [files, memory] = await Promise.allSettled([
-          callTool('repository.files', {limit: 40}),
-          callTool('memory_list', {limit: 15})
+    $("refresh").disabled=true;
+
+    setStatus("Ładowanie...");
+
+    logs.length=0;
+
+    try{
+
+        const [
+            repo,
+            tools
+        ]=await Promise.all([
+
+            callTool(
+                "repository.files",
+                {}
+            ),
+
+            callTool(
+                "tools/list",
+                {}
+            )
+
         ]);
 
-        let result = "=== STATUS ===\\n\\n";
+        log("Połączono z Runtime MCP");
 
-        if (files.status === 'fulfilled') {
-          result += \`Plików: \${files.value?.files?.length || 0}\\n\`;
-        } else {
-          result += "Plików: BŁĄD\\n";
+        log("");
+
+        log("=== REPOSITORY ===");
+
+        log(
+            "Files: "+
+            (repo.summary?.files ??
+            repo.files?.length ??
+            "?")
+        );
+
+        log(
+            "Directories: "+
+            (repo.summary?.directories ??
+            "?")
+        );
+
+        log("");
+
+        log("=== TOOLS ===");
+
+        const list=
+            tools.tools ??
+            [];
+
+        for(const tool of list){
+
+            log("• "+tool.name);
+
         }
 
-        if (memory.status === 'fulfilled') {
-          result += \`Memory: \${memory.value?.count || memory.value?.keys?.length || 0}\\n\`;
-        } else {
-          result += "Memory: BŁĄD\\n";
-        }
+        log("");
 
-        $('output').textContent = result;
-        setStatus("Załadowano pomyślnie", false);
-        log("Dane pobrane pomyślnie");
+        log(
+            "Loaded "+
+            list.length+
+            " tools"
+        );
 
-      } catch (e) {
-        setStatus("Błąd: " + e.message, true);
-        log("BŁĄD: " + e.message);
-      } finally {
-        btn.disabled = false;
-      }
+        setStatus(
+            "Połączono",
+            false
+        );
+
+    }
+    catch(err){
+
+        console.error(err);
+
+        setStatus(
+            err.message,
+            true
+        );
+
+        log(
+            "ERROR: "+
+            err.message
+        );
+
+    }
+    finally{
+
+        $("refresh").disabled=false;
+
     }
 
-    $('loadBtn').onclick = load;
-    $('clearBtn').onclick = () => { $('output').textContent = ''; log('Konsola wyczyszczona'); };
+}
 
-    // Auto load
-    window.onload = () => setTimeout(load, 700);
-  </script>
+$("refresh").onclick=refresh;
+
+$("clear").onclick=()=>{
+
+    logs.length=0;
+
+    renderLogs();
+
+};
+
+window.onload=()=>{
+
+    refresh();
+
+};
+
+</script>
+
 </body>
 </html>`;
