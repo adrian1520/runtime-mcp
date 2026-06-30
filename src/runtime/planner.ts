@@ -24,10 +24,7 @@ export class Planner {
 
     const objective = goal.objective.trim().toLowerCase();
 
-    if (
-      objective.includes("audit") &&
-      objective.includes("repository")
-    ) {
+    if (objective.includes("audit") && objective.includes("repository")) {
       return this.withSequentialDependencies([
         {
           id: "scan-index",
@@ -51,10 +48,7 @@ export class Planner {
       ]);
     }
 
-    if (
-      objective.includes("search") ||
-      objective.includes("find")
-    ) {
+    if (objective.includes("search") || objective.includes("find")) {
       return this.withSequentialDependencies([
         {
           id: "search",
@@ -67,10 +61,7 @@ export class Planner {
       ]);
     }
 
-    if (
-      objective.includes("read") ||
-      objective.includes("open")
-    ) {
+    if (objective.includes("read") || objective.includes("open")) {
       return this.withSequentialDependencies([
         {
           id: "read-file",
@@ -111,25 +102,19 @@ export class Planner {
       throw new Error("Goal.id is required.");
     }
 
-    if (
-      typeof goal.objective !== "string" ||
-      goal.objective.trim() === ""
-    ) {
+    if (typeof goal.objective !== "string" || goal.objective.trim() === "") {
       throw new Error("Goal.objective is required.");
     }
   }
 
   private withSequentialDependencies(
     tasks: Array<
-      Omit<Task, "dependsOn" | "status"> &
-        Partial<Pick<Task, "dependsOn">>
+      Omit<Task, "dependsOn" | "status"> & Partial<Pick<Task, "dependsOn">>
     >,
   ): Task[] {
     return tasks.map((task, index) => ({
       ...task,
-      dependsOn:
-        task.dependsOn ??
-        (index === 0 ? [] : [tasks[index - 1]!.id]),
+      dependsOn: task.dependsOn ?? (index === 0 ? [] : [tasks[index - 1]!.id]),
       status: "pending",
     }));
   }
