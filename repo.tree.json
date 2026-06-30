@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-30T21:44:57.716528+00:00",
+  "generated_at": "2026-06-30T22:21:09.610517+00:00",
   "summary": {
-    "files": 84,
-    "directories": 24
+    "files": 85,
+    "directories": 25
   },
   "directories": [
     {
@@ -53,6 +53,11 @@
     },
     {
       "path": "memory",
+      "depth": 1,
+      "category": "general"
+    },
+    {
+      "path": "scripts",
       "depth": 1,
       "category": "general"
     },
@@ -543,8 +548,19 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 33568,
-      "sha256": "7531a1354c7e0f2ecf50845591ef6151facec532e1155d8fd627bacb86aae261"
+      "size": 33756,
+      "sha256": "61d3a017f9b2fa9d25897fca8283df1682cfc0f2b0974b59855a1ffc6a1a3b8a"
+    },
+    {
+      "path": "scripts/update-server.ts",
+      "name": "update-server.ts",
+      "directory": "scripts",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 1,
+      "size": 2789,
+      "sha256": "15ef74e45b43e02c26f8072899c26940607bb63b2038811ae2eec095aa60a9ee"
     },
     {
       "path": "src/agents/context-builder.ts",
