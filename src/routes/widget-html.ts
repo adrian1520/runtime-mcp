@@ -1,25 +1,26 @@
+// src/routes/widget-html.ts
 export const widgetHtml = `<!doctype html>
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Runtime-MCP</title>
   <style>
     :root {
-      color-scheme: dark;
       --bg: #0a0f1c;
       --panel: #111827;
       --accent: #60a5fa;
       --text: #e5eefb;
       --muted: #94a3b8;
+      --success: #34d399;
+      --error: #fb7185;
     }
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin:0; padding:0; }
     body {
-      margin: 0;
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
-      padding: 12px;
+      padding: 16px;
       line-height: 1.5;
       font-size: 14px;
     }
@@ -29,78 +30,94 @@ export const widgetHtml = `<!doctype html>
       border-radius: 12px;
       padding: 16px;
       margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
-    h2 { margin: 0 0 12px 0; font-size: 1.1rem; }
+    h2 {
+      margin-bottom: 12px;
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     button {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      border: 1px solid #475569;
       background: #1e2937;
       color: white;
-      border: 1px solid #475569;
-      padding: 8px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 13px;
     }
-    button:hover { background: #334155; border-color: var(--accent); }
-    button.primary { background: #2563eb; border-color: transparent; }
+    button:hover { background: #334155; }
+    button.primary {
+      background: linear-gradient(90deg, #2563eb, #3b82f6);
+      border-color: transparent;
+    }
     pre {
-      background: #0f172a;
-      padding: 12px;
+      background: #02060f;
+      padding: 14px;
       border-radius: 8px;
       overflow: auto;
+      max-height: 380px;
       font-size: 13px;
-      max-height: 420px;
       white-space: pre-wrap;
+      border: 1px solid #1e2937;
     }
-    .status { font-size: 13px; margin: 8px 0; }
-    .error { color: #fb7185; }
-    .success { color: #34d399; }
+    .status {
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+    .success { background: rgba(52, 211, 153, 0.15); color: var(--success); }
+    .error { background: rgba(251, 113, 133, 0.15); color: var(--error); }
   </style>
 </head>
 <body>
   <div class="card">
-    <h2>🔧 Runtime-MCP Dashboard</h2>
-    <div class="status" id="status">Inicjalizacja...</div>
+    <h2>🔧 Runtime-MCP Control Panel</h2>
     
-    <button id="loadBtn" class="primary">Odśwież dane repo + pamięci</button>
-    <button id="clearBtn">Wyczyść</button>
+    <div id="status" class="status">Gotowy do działania...</div>
+    
+    <div style="display:flex; gap:8px; margin-bottom:12px;">
+      <button id="loadBtn" class="primary">📊 Załaduj dane</button>
+      <button id="clearBtn">🧹 Wyczyść</button>
+    </div>
 
-    <pre id="output">Kliknij przycisk aby załadować dane...</pre>
+    <pre id="output">Kliknij "Załaduj dane" aby sprawdzić repozytorium i pamięć agenta.</pre>
   </div>
 
   <script type="module">
     const $ = id => document.getElementById(id);
     let isLoading = false;
 
+    function setStatus(msg, type = 'info') {
+      const el = $('status');
+      el.textContent = msg;
+      el.className = 'status ' + (type === 'success' ? 'success' : type === 'error' ? 'error' : '');
+    }
+
     function log(text, type = 'info') {
       const output = $('output');
-      const timestamp = new Date().toLocaleTimeString('pl-PL');
-      const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : 'ℹ️';
-      output.textContent += \`[\${timestamp}] \${prefix} \${text}\\n\`;
+      const time = new Date().toLocaleTimeString('pl-PL');
+      const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : '→';
+      output.textContent += \`[\${time}] \${prefix} \${text}\\n\`;
       output.scrollTop = output.scrollHeight;
     }
 
-    function setStatus(text, isError = false) {
-      const statusEl = $('status');
-      statusEl.textContent = text;
-      statusEl.className = 'status ' + (isError ? 'error' : 'success');
-    }
-
-    async function safeCallTool(name, args = {}) {
+    async function callTool(name, args = {}) {
       try {
         if (window.openai?.callTool) {
           return await window.openai.callTool(name, args);
         }
         if (window.parent) {
-          window.parent.postMessage({
-            method: 'tools/call',
-            params: { name, args }
-          }, '*');
-          return { status: 'sent' };
+          window.parent.postMessage({ method: 'tools/call', params: { name, args }}, '*');
+          return { note: "Wysłano do hosta" };
         }
-        return { error: "Brak MCP hosta" };
-      } catch (err) {
-        console.error(err);
-        return { error: err.message || 'Nieznany błąd' };
+        throw new Error("Brak wsparcia MCP w tym środowisku");
+      } catch (e) {
+        console.error(e);
+        return { error: e.message };
       }
     }
 
@@ -108,56 +125,54 @@ export const widgetHtml = `<!doctype html>
       if (isLoading) return;
       isLoading = true;
       $('loadBtn').disabled = true;
-      
-      setStatus('Ładowanie danych...');
-      log('Rozpoczęto ładowanie...', 'info');
+
+      setStatus("Ładowanie...", "info");
+      log("Rozpoczynanie ładowania...", "info");
 
       try {
-        const results = await Promise.allSettled([
-          safeCallTool('repository.files', { limit: 50 }),
-          safeCallTool('memory_list', { prefix: '', limit: 15 })
+        const [repoRes, memRes] = await Promise.allSettled([
+          callTool('repository.files', { limit: 30 }),
+          callTool('memory_list', { prefix: '', limit: 12 })
         ]);
 
-        let summary = '';
+        let summary = "=== PODSUMOWANIE ===\\n\\n";
 
-        if (results[0].status === 'fulfilled') {
-          const files = results[0].value?.files || results[0].value || [];
-          summary += \`Plików: \${files.length || 0}\\n\`;
+        if (repoRes.status === 'fulfilled') {
+          const count = repoRes.value?.files?.length || 0;
+          summary += \`📁 Plików w repo: \${count}\\n\`;
         } else {
-          summary += '❌ repository.files — błąd\\n';
+          summary += "📁 repository.files — błąd\\n";
         }
 
-        if (results[1].status === 'fulfilled') {
-          const mem = results[1].value || {};
-          summary += \`Memory keys: \${mem.count || mem.keys?.length || 0}\\n\`;
+        if (memRes.status === 'fulfilled') {
+          const count = memRes.value?.count || memRes.value?.keys?.length || 0;
+          summary += \`💾 Kluczy pamięci: \${count}\\n\`;
         } else {
-          summary += '❌ memory_list — błąd\\n';
+          summary += "💾 memory_list — błąd\\n";
         }
 
-        $('output').textContent = summary || 'Brak danych';
-        setStatus('✅ Dane załadowane', false);
-        log('Zakończono pomyślnie', 'success');
+        $('output').textContent = summary;
+        setStatus("✅ Dane załadowane pomyślnie", "success");
+        log("Zakończono sukcesem", "success");
 
-      } catch (e) {
-        setStatus('Błąd ładowania: ' + e.message, true);
-        log('Błąd: ' + e.message, 'error');
+      } catch (err) {
+        setStatus("Błąd: " + err.message, "error");
+        log("Błąd: " + err.message, "error");
       } finally {
         isLoading = false;
         $('loadBtn').disabled = false;
       }
     }
 
-    // Event listeners
+    // Inicjalizacja
     $('loadBtn').addEventListener('click', loadData);
     $('clearBtn').addEventListener('click', () => {
       $('output').textContent = '';
-      log('Wyczyszczono konsolę', 'info');
+      log('Konsola wyczyszczona', 'info');
     });
 
-    // Auto load po załadowaniu
-    window.addEventListener('load', () => {
-      setTimeout(loadData, 800);
-    });
+    // Auto-load z opóźnieniem
+    window.addEventListener('load', () => setTimeout(loadData, 600));
   </script>
 </body>
 </html>`;
