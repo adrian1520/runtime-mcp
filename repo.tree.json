@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-30T19:47:31.037654+00:00",
+  "generated_at": "2026-06-30T21:03:11.922162+00:00",
   "summary": {
-    "files": 83,
-    "directories": 23
+    "files": 84,
+    "directories": 24
   },
   "directories": [
     {
@@ -104,6 +104,11 @@
     {
       "path": "src/tools",
       "depth": 2,
+      "category": "general"
+    },
+    {
+      "path": "src/tools/agent",
+      "depth": 3,
       "category": "general"
     },
     {
@@ -539,7 +544,7 @@
       "category": "config",
       "depth": 0,
       "size": 32710,
-      "sha256": "f917972b66cfaede753ed321ea139235e28abbc8168f1c78890c83fed6039b2b"
+      "sha256": "be9f86bc19a48391bf34414ae5173735f54689a5afbbdf162a19e7fd69b09cb6"
     },
     {
       "path": "src/agents/context-builder.ts",
@@ -980,6 +985,17 @@
       "depth": 1,
       "size": 625,
       "sha256": "f6d266863b0fa8ead40bf993884f8a703ee74d2a6723cacdee6d587d0a420de4"
+    },
+    {
+      "path": "src/tools/agent/index.ts",
+      "name": "index.ts",
+      "directory": "src/tools/agent",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 3,
+      "size": 1069,
+      "sha256": "b198977d8afef19164a15b6669281dffac8aaad9f04909252fafafc4caf7096e"
     },
     {
       "path": "src/tools/memory/index.ts",
