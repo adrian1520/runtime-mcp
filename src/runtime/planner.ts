@@ -2,6 +2,7 @@ import type { ExecutionPlan, Goal, Task } from "./contracts";
 
 function slug(value: string): string {
   return value
+    .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
@@ -10,13 +11,23 @@ function slug(value: string): string {
 
 export class Planner {
   async createPlan(goal: Goal): Promise<ExecutionPlan> {
-    return { goal, tasks: this.build(goal) };
+    this.validateGoal(goal);
+
+    return {
+      goal,
+      tasks: this.build(goal),
+    };
   }
 
   build(goal: Goal): Task[] {
-    const objective = goal.objective.toLowerCase();
+    this.validateGoal(goal);
 
-    if (objective.includes("audit") && objective.includes("repository")) {
+    const objective = goal.objective.trim().toLowerCase();
+
+    if (
+      objective.includes("audit") &&
+      objective.includes("repository")
+    ) {
       return this.withSequentialDependencies([
         {
           id: "scan-index",
@@ -24,37 +35,101 @@ export class Planner {
           tool: "repository.index",
         },
         {
-          id: "analyze-structure",
-          description: "Analyze repository structure",
+          id: "analyze-symbols",
+          description: "Analyze repository symbols",
           tool: "repository.symbols",
         },
-        { id: "generate-report", description: "Generate audit report" },
+        {
+          id: "analyze-dependencies",
+          description: "Analyze dependencies",
+          tool: "repository.dependencies",
+        },
+        {
+          id: "generate-report",
+          description: "Generate repository report",
+        },
       ]);
     }
 
-    const base = slug(goal.objective) || "goal";
+    if (
+      objective.includes("search") ||
+      objective.includes("find")
+    ) {
+      return this.withSequentialDependencies([
+        {
+          id: "search",
+          description: `Search: ${goal.objective}`,
+          tool: "repository.search",
+          input: {
+            query: goal.objective,
+          },
+        },
+      ]);
+    }
+
+    if (
+      objective.includes("read") ||
+      objective.includes("open")
+    ) {
+      return this.withSequentialDependencies([
+        {
+          id: "read-file",
+          description: goal.objective,
+          tool: "repository.read",
+        },
+      ]);
+    }
+
+    const base = slug(goal.objective);
+
     return this.withSequentialDependencies([
-      { id: `${base}-plan`, description: `Plan work for: ${goal.objective}` },
+      {
+        id: `${base}-plan`,
+        description: `Plan work for "${goal.objective}"`,
+      },
       {
         id: `${base}-execute`,
-        description: `Execute work for: ${goal.objective}`,
+        description: `Execute "${goal.objective}"`,
       },
       {
         id: `${base}-validate`,
-        description: `Validate result for: ${goal.objective}`,
+        description: `Validate "${goal.objective}"`,
       },
     ]);
   }
 
+  private validateGoal(goal: Goal): void {
+    if (!goal) {
+      throw new Error("Goal is required.");
+    }
+
+    if (typeof goal !== "object") {
+      throw new Error("Goal must be an object.");
+    }
+
+    if (typeof goal.id !== "string" || goal.id.trim() === "") {
+      throw new Error("Goal.id is required.");
+    }
+
+    if (
+      typeof goal.objective !== "string" ||
+      goal.objective.trim() === ""
+    ) {
+      throw new Error("Goal.objective is required.");
+    }
+  }
+
   private withSequentialDependencies(
     tasks: Array<
-      Omit<Task, "dependsOn" | "status"> & Partial<Pick<Task, "dependsOn">>
+      Omit<Task, "dependsOn" | "status"> &
+        Partial<Pick<Task, "dependsOn">>
     >,
   ): Task[] {
     return tasks.map((task, index) => ({
       ...task,
       dependsOn:
-        task.dependsOn ?? (index === 0 ? [] : [tasks[index - 1]?.id ?? ""]),
+        task.dependsOn ??
+        (index === 0 ? [] : [tasks[index - 1]!.id]),
       status: "pending",
     }));
   }
