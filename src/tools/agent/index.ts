@@ -22,9 +22,7 @@ const validator = z.object({
   goal: z.unknown(),
 });
 
-export function registerAgentTools(
-  registry: ToolRegistry<Env>,
-): void {
+export function registerAgentTools(registry: ToolRegistry<Env>): void {
   const tool: ToolDefinition<Env> = {
     description: "Execute Agent Runtime goal.",
 
@@ -39,11 +37,7 @@ export function registerAgentTools(
 
       const goal = args.goal as Goal;
 
-      return runtime.run(
-        goal,
-        context.env,
-        context.requestId,
-      );
+      return runtime.run(goal, context.env, context.requestId);
     },
   };
 
