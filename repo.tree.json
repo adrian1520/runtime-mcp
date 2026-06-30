@@ -1,6 +1,6 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-30T21:03:11.922162+00:00",
+  "generated_at": "2026-06-30T21:07:17.193928+00:00",
   "summary": {
     "files": 84,
     "directories": 24
@@ -543,8 +543,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 32710,
-      "sha256": "be9f86bc19a48391bf34414ae5173735f54689a5afbbdf162a19e7fd69b09cb6"
+      "size": 33568,
+      "sha256": "7531a1354c7e0f2ecf50845591ef6151facec532e1155d8fd627bacb86aae261"
     },
     {
       "path": "src/agents/context-builder.ts",
@@ -983,8 +983,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 1,
-      "size": 625,
-      "sha256": "f6d266863b0fa8ead40bf993884f8a703ee74d2a6723cacdee6d587d0a420de4"
+      "size": 709,
+      "sha256": "a321d5f5e83f273ce7481a69d5406b110bc5e9f78278833c142359caf705b96b"
     },
     {
       "path": "src/tools/agent/index.ts",
@@ -994,8 +994,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 1069,
-      "sha256": "b198977d8afef19164a15b6669281dffac8aaad9f04909252fafafc4caf7096e"
+      "size": 1032,
+      "sha256": "f0d5220cce1ad9fd9207ff767020eadcc470c4d53eaf835a4e1c104a8384baf6"
     },
     {
       "path": "src/tools/memory/index.ts",
