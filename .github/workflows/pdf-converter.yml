@@ -1,0 +1,100 @@
+name: PDF to Markdown & PNG Converter
+
+on:
+  push:
+    paths:
+      - 'pdf/**'
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  convert-pdf:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc imagemagick ghostscript
+          # Configure ImageMagick to handle PDFs
+          sudo sed -i 's/rights="none"/rights="read|write"/' /etc/ImageMagick-6/policy.xml
+
+      - name: Create output directories
+        run: |
+          mkdir -p markdown
+          mkdir -p png
+
+      - name: Convert PDFs to Markdown and extract images
+        run: |
+          for pdf_file in pdf/*.pdf; do
+            if [ -f "$pdf_file" ]; then
+              filename=$(basename "$pdf_file" .pdf)
+              
+              # Convert PDF to Markdown
+              echo "Converting $filename to Markdown..."
+              pandoc "$pdf_file" -o "markdown/${filename}.md"
+              
+              # Extract images from PDF as PNG
+              echo "Extracting images from $filename..."
+              convert -density 150 "$pdf_file" "png/${filename}-%d.png"
+              
+              echo "✓ Processed: $filename"
+            fi
+          done
+
+      - name: Check for changes
+        id: verify
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit changes
+        if: steps.verify.outputs.changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add markdown/ png/
+          git commit -m "🤖 Auto-convert: PDF to Markdown and PNG
+
+- Converted PDFs from /pdf/ directory
+- Generated Markdown files in /markdown/
+- Extracted images as PNG in /png/
+
+Triggered by: ${{ github.event.head_commit.message }}"
+          git push
+
+      - name: Upload artifacts
+        if: steps.verify.outputs.changes == 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: converted-files
+          path: |
+            markdown/
+            png/
+          retention-days: 30
+
+      - name: Summary
+        run: |
+          echo "## Conversion Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -d "markdown" ] && [ "$(ls -A markdown/)" ]; then
+            echo "### 📄 Markdown files:" >> $GITHUB_STEP_SUMMARY
+            ls -1 markdown/ | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -d "png" ] && [ "$(ls -A png/)" ]; then
+            echo "### 🖼️ PNG files:" >> $GITHUB_STEP_SUMMARY
+            ls -1 png/ | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
+          fi
