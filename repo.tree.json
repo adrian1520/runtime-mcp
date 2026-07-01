@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-06-30T22:31:36.293756+00:00",
+  "generated_at": "2026-07-01T04:33:24.532249+00:00",
   "summary": {
-    "files": 86,
+    "files": 87,
     "directories": 25
   },
   "directories": [
@@ -209,6 +209,17 @@
       "depth": 2,
       "size": 1317,
       "sha256": "02f9e8ad83515f4cab895eb304a34929064d11c932dea3c192f9e670a6d6d083"
+    },
+    {
+      "path": ".github/workflows/pdf-converter.yml",
+      "name": "pdf-converter.yml",
+      "directory": ".github/workflows",
+      "extension": "yml",
+      "language": "yaml",
+      "category": "workflow",
+      "depth": 2,
+      "size": 2971,
+      "sha256": "322dff05a17e02606718362d57c3cb9efec900c857ff3260aeae21562ea0dbb3"
     },
     {
       "path": ".gitignore",
@@ -560,7 +571,7 @@
       "category": "config",
       "depth": 0,
       "size": 35244,
-      "sha256": "ab7ec97e312e422e175fb361dd2236f517877595fda598331b2caa7b4c5a8baa"
+      "sha256": "6fbb8825f4a4fedd2d516c0bd8d687d5536ca744ede75976c1ad350e8a208ddb"
     },
     {
       "path": "scripts/update-server.ts",
