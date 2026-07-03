@@ -17,3 +17,5 @@ export type {
   TaskExecutionResult,
 } from "./contracts";
 export * from "./agent-runtime";
+
+export * from "./capabilities";
