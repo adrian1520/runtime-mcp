@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-07-01T04:33:25.589575+00:00",
+  "generated_at": "2026-07-03T04:14:45.977809+00:00",
   "summary": {
-    "classes": 16,
-    "interfaces": 28,
+    "classes": 19,
+    "interfaces": 31,
     "types": 26,
     "enums": 0,
-    "functions": 127,
-    "exports": 59,
-    "imports": 96
+    "functions": 144,
+    "exports": 65,
+    "imports": 102
   },
   "classes": [
     {
@@ -27,6 +27,11 @@
       "exported": true
     },
     {
+      "name": "CapabilityRegistry",
+      "file": "src/runtime/capabilities/capability-registry.ts",
+      "exported": true
+    },
+    {
       "name": "Executor",
       "file": "src/runtime/executor.ts",
       "exported": true
@@ -34,6 +39,11 @@
     {
       "name": "KnowledgeRegistry",
       "file": "src/runtime/registries/knowledge-registry.ts",
+      "exported": true
+    },
+    {
+      "name": "McpRegistry",
+      "file": "src/mcps/mcp-registry.ts",
       "exported": true
     },
     {
@@ -49,6 +59,11 @@
     {
       "name": "ProvenanceRecorder",
       "file": "src/runtime/provenance-recorder.ts",
+      "exported": true
+    },
+    {
+      "name": "ProviderRegistry",
+      "file": "src/providers/provider-registry.ts",
       "exported": true
     },
     {
@@ -104,6 +119,11 @@
       "exported": true
     },
     {
+      "name": "CapabilityDescriptor",
+      "file": "src/runtime/capabilities/capability.ts",
+      "exported": true
+    },
+    {
       "name": "Checkpoint",
       "file": "src/runtime/types.ts",
       "exported": true
@@ -141,6 +161,16 @@
     {
       "name": "KnowledgeDefinition",
       "file": "src/runtime/types.ts",
+      "exported": true
+    },
+    {
+      "name": "McpManifest",
+      "file": "src/mcps/manifest.ts",
+      "exported": true
+    },
+    {
+      "name": "Provider",
+      "file": "src/providers/provider.ts",
       "exported": true
     },
     {
@@ -514,9 +544,69 @@
       "file": "src/mcp/adapter.ts"
     },
     {
+      "name": "exists",
+      "kind": "method",
+      "file": "src/mcps/mcp-registry.ts"
+    },
+    {
+      "name": "get",
+      "kind": "method",
+      "file": "src/mcps/mcp-registry.ts"
+    },
+    {
+      "name": "list",
+      "kind": "method",
+      "file": "src/mcps/mcp-registry.ts"
+    },
+    {
+      "name": "register",
+      "kind": "method",
+      "file": "src/mcps/mcp-registry.ts"
+    },
+    {
+      "name": "remove",
+      "kind": "method",
+      "file": "src/mcps/mcp-registry.ts"
+    },
+    {
       "name": "buildOpenApi",
       "kind": "function",
       "file": "src/openapi.ts"
+    },
+    {
+      "name": "exists",
+      "kind": "method",
+      "file": "src/providers/provider-registry.ts"
+    },
+    {
+      "name": "get",
+      "kind": "method",
+      "file": "src/providers/provider-registry.ts"
+    },
+    {
+      "name": "list",
+      "kind": "method",
+      "file": "src/providers/provider-registry.ts"
+    },
+    {
+      "name": "register",
+      "kind": "method",
+      "file": "src/providers/provider-registry.ts"
+    },
+    {
+      "name": "remove",
+      "kind": "method",
+      "file": "src/providers/provider-registry.ts"
+    },
+    {
+      "name": "resolve",
+      "kind": "method",
+      "file": "src/providers/provider-registry.ts"
+    },
+    {
+      "name": "execute",
+      "kind": "method",
+      "file": "src/providers/provider.ts"
     },
     {
       "name": "handleResourcesRoute",
@@ -587,6 +677,31 @@
       "name": "execute",
       "kind": "method",
       "file": "src/runtime/agent.ts"
+    },
+    {
+      "name": "exists",
+      "kind": "method",
+      "file": "src/runtime/capabilities/capability-registry.ts"
+    },
+    {
+      "name": "get",
+      "kind": "method",
+      "file": "src/runtime/capabilities/capability-registry.ts"
+    },
+    {
+      "name": "list",
+      "kind": "method",
+      "file": "src/runtime/capabilities/capability-registry.ts"
+    },
+    {
+      "name": "register",
+      "kind": "method",
+      "file": "src/runtime/capabilities/capability-registry.ts"
+    },
+    {
+      "name": "remove",
+      "kind": "method",
+      "file": "src/runtime/capabilities/capability-registry.ts"
     },
     {
       "name": "execute",
@@ -1062,8 +1177,24 @@
       "file": "src/contracts/tool.ts"
     },
     {
+      "name": "McpManifest",
+      "file": "src/mcps/manifest.ts"
+    },
+    {
+      "name": "McpRegistry",
+      "file": "src/mcps/mcp-registry.ts"
+    },
+    {
       "name": "buildOpenApi",
       "file": "src/openapi.ts"
+    },
+    {
+      "name": "ProviderRegistry",
+      "file": "src/providers/provider-registry.ts"
+    },
+    {
+      "name": "Provider",
+      "file": "src/providers/provider.ts"
     },
     {
       "name": "AgentRuntime",
@@ -1072,6 +1203,14 @@
     {
       "name": "Agent",
       "file": "src/runtime/agent.ts"
+    },
+    {
+      "name": "CapabilityRegistry",
+      "file": "src/runtime/capabilities/capability-registry.ts"
+    },
+    {
+      "name": "CapabilityDescriptor",
+      "file": "src/runtime/capabilities/capability.ts"
     },
     {
       "name": "ExecutionPlan",
@@ -1320,12 +1459,28 @@
       "from": "@modelcontextprotocol/sdk/types.js"
     },
     {
+      "file": "src/mcps/mcp-registry.ts",
+      "from": "../runtime/registry"
+    },
+    {
+      "file": "src/mcps/mcp-registry.ts",
+      "from": "./manifest"
+    },
+    {
       "file": "src/openapi.ts",
       "from": "./contracts/tool"
     },
     {
       "file": "src/openapi.ts",
       "from": "./server"
+    },
+    {
+      "file": "src/providers/provider-registry.ts",
+      "from": "../runtime/registry"
+    },
+    {
+      "file": "src/providers/provider-registry.ts",
+      "from": "./provider"
     },
     {
       "file": "src/routes/resources.ts",
@@ -1398,6 +1553,14 @@
     {
       "file": "src/runtime/agent.ts",
       "from": "./workflow-engine"
+    },
+    {
+      "file": "src/runtime/capabilities/capability-registry.ts",
+      "from": "../registry"
+    },
+    {
+      "file": "src/runtime/capabilities/capability-registry.ts",
+      "from": "./capability"
     },
     {
       "file": "src/runtime/contracts/execution-plan.ts",
