@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-01T04:33:24.532249+00:00",
+  "generated_at": "2026-07-03T02:42:06.884277+00:00",
   "summary": {
-    "files": 87,
-    "directories": 25
+    "files": 97,
+    "directories": 28
   },
   "directories": [
     {
@@ -87,6 +87,16 @@
       "category": "general"
     },
     {
+      "path": "src/mcps",
+      "depth": 2,
+      "category": "general"
+    },
+    {
+      "path": "src/providers",
+      "depth": 2,
+      "category": "general"
+    },
+    {
       "path": "src/routes",
       "depth": 2,
       "category": "general"
@@ -94,6 +104,11 @@
     {
       "path": "src/runtime",
       "depth": 2,
+      "category": "runtime"
+    },
+    {
+      "path": "src/runtime/capabilities",
+      "depth": 3,
       "category": "runtime"
     },
     {
@@ -571,7 +586,7 @@
       "category": "config",
       "depth": 0,
       "size": 35244,
-      "sha256": "6fbb8825f4a4fedd2d516c0bd8d687d5536ca744ede75976c1ad350e8a208ddb"
+      "sha256": "ad88efd446ce76a5c1ca9ac7b4facdde3f3fb77abac3bba79b2186de437aa246"
     },
     {
       "path": "scripts/update-server.ts",
@@ -680,8 +695,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 1,
-      "size": 3104,
-      "sha256": "9ae29a199e036770c3d75cce6dcc5a8861ddbd4148abffd8786b0f0f11dd02c5"
+      "size": 3198,
+      "sha256": "68db3dd1d35b16c99435a5a4b672a0db132dde17bad09ce3d8fffca6e4457f2b"
     },
     {
       "path": "src/mcp/adapter.ts",
@@ -695,6 +710,50 @@
       "sha256": "d2057c050164ee42a6be3d8526494899f5133f2ad42790ee3441e58dba496ae4"
     },
     {
+      "path": "src/mcps/index.ts",
+      "name": "index.ts",
+      "directory": "src/mcps",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 79,
+      "sha256": "b46aedfe46447608882ec55bbdea02d206292f665bb9640978eb67b9f6c523ec"
+    },
+    {
+      "path": "src/mcps/manifest.ts",
+      "name": "manifest.ts",
+      "directory": "src/mcps",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 154,
+      "sha256": "efa76a404874cc8bde99e482bdf35587c08f5ec398ba611d496b54ca824dc4ae"
+    },
+    {
+      "path": "src/mcps/mcp-registry.ts",
+      "name": "mcp-registry.ts",
+      "directory": "src/mcps",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 682,
+      "sha256": "6fd24aaa836a999650a1a775059e02cc406ad7ecf03224c43b09b3c0c68fb47f"
+    },
+    {
+      "path": "src/mcps/types.ts",
+      "name": "types.ts",
+      "directory": "src/mcps",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 47,
+      "sha256": "6f74da7344514b3e3118034a93361372bac8a21f69007bd3af188f5ab0b11894"
+    },
+    {
       "path": "src/openapi.ts",
       "name": "openapi.ts",
       "directory": "src",
@@ -704,6 +763,39 @@
       "depth": 1,
       "size": 2713,
       "sha256": "1cd8e998d8beca309b8b8fb220b3956d68e4a2a0954d12087c4f3ef7036e39a9"
+    },
+    {
+      "path": "src/providers/index.ts",
+      "name": "index.ts",
+      "directory": "src/providers",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 81,
+      "sha256": "ffe7b99876f29fd0d976b5238283aafe870692c6b6b52232cef9022cb7aab4c2"
+    },
+    {
+      "path": "src/providers/provider-registry.ts",
+      "name": "provider-registry.ts",
+      "directory": "src/providers",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 910,
+      "sha256": "b562b2a6e4713791bcd91b1ae224589d7da2e23069820f4f175f64b5dee7574b"
+    },
+    {
+      "path": "src/providers/provider.ts",
+      "name": "provider.ts",
+      "directory": "src/providers",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 135,
+      "sha256": "e56ef4b064f802b5f5ea4aeac27ad366ee920c26a9c1e535e232310d159ad5f0"
     },
     {
       "path": "src/routes/resources.ts",
@@ -783,6 +875,39 @@
       "sha256": "3c54fa9500bfc16a9910f04cad9d001a5bd82bb45ede9b86df6e4d7eb1a5b0e8"
     },
     {
+      "path": "src/runtime/capabilities/capability-registry.ts",
+      "name": "capability-registry.ts",
+      "directory": "src/runtime/capabilities",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 3,
+      "size": 787,
+      "sha256": "4c70685121536be804f5e779bfc359778aca9b2205720f7960ccbded0a173a23"
+    },
+    {
+      "path": "src/runtime/capabilities/capability.ts",
+      "name": "capability.ts",
+      "directory": "src/runtime/capabilities",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 3,
+      "size": 99,
+      "sha256": "66976a5aaade4cde66d7d5338cf68fea49eef0f5372b4876ec27a90150763e2c"
+    },
+    {
+      "path": "src/runtime/capabilities/index.ts",
+      "name": "index.ts",
+      "directory": "src/runtime/capabilities",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "runtime",
+      "depth": 3,
+      "size": 97,
+      "sha256": "39744a7035fac138462e20a837c3104c2b1e1b09fa2ac35a885d3aae5504d24b"
+    },
+    {
       "path": "src/runtime/contracts/execution-plan.ts",
       "name": "execution-plan.ts",
       "directory": "src/runtime/contracts",
@@ -856,8 +981,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 492,
-      "sha256": "c7d436f95eb6aeacd78e5c12700869bf8800a93409bb12a76e61bac819e282e3"
+      "size": 525,
+      "sha256": "e2ddc4a5e67362fe7c86be6f539d5d0a6ccbcf26aaf659fb913e7f44d9f5976c"
     },
     {
       "path": "src/runtime/memory-store.ts",
