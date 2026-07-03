@@ -1,9 +1,7 @@
 import type { RuntimeRegistry } from "../registry";
 import type { CapabilityDescriptor } from "./capability";
 
-export class CapabilityRegistry
-  implements RuntimeRegistry<CapabilityDescriptor>
-{
+export class CapabilityRegistry implements RuntimeRegistry<CapabilityDescriptor> {
   private readonly capabilities = new Map<string, CapabilityDescriptor>();
 
   async register(definition: CapabilityDescriptor): Promise<void> {
