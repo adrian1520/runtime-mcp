@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-15T15:32:04.960778+00:00",
+  "generated_at": "2026-07-15T15:33:16.782206+00:00",
   "summary": {
-    "files": 101,
+    "files": 105,
     "directories": 30
   },
   "directories": [
@@ -577,6 +577,39 @@
       "sha256": "505182d8f99bded3c672d2c2c0791d3acbf3eeaffd41bb9a82945e0e8980376b"
     },
     {
+      "path": "memory/pdf-framework/execution.py",
+      "name": "execution.py",
+      "directory": "memory/pdf-framework",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 924,
+      "sha256": "c8848bfca395f1a9803c3c83c0bb4b2ba4370ef75707c4e5d6dc1cc29c753066"
+    },
+    {
+      "path": "memory/pdf-framework/export.py",
+      "name": "export.py",
+      "directory": "memory/pdf-framework",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 361,
+      "sha256": "83fbb82fae380881b1b690a1d89d475a60c3ca4529942f0f0b386b87f6573240"
+    },
+    {
+      "path": "memory/pdf-framework/framework_core.py",
+      "name": "framework_core.py",
+      "directory": "memory/pdf-framework",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 684,
+      "sha256": "63b67e90a60f4dc9b830e056b8a1a7379c3bb7e1bba75530dfed08168bdf378f"
+    },
+    {
       "path": "memory/pdf-framework/models.py",
       "name": "models.py",
       "directory": "memory/pdf-framework",
@@ -597,6 +630,17 @@
       "depth": 2,
       "size": 1724,
       "sha256": "c7b22f4d12aa3aaf1c61482661d33735d3a85c4c34b804edc1a849b4e028d949"
+    },
+    {
+      "path": "memory/pdf-framework/validation.py",
+      "name": "validation.py",
+      "directory": "memory/pdf-framework",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 551,
+      "sha256": "0a90dc4fd2410875f1d36a44a7ce6be1856fbc86600ab3f73e2ef818937d7d6a"
     },
     {
       "path": "package-lock.json",
@@ -629,7 +673,7 @@
       "category": "config",
       "depth": 0,
       "size": 41003,
-      "sha256": "a74a95f9349d751568e31d9e6ee85707ba8c58e189550d4052e183a6c541f7bd"
+      "sha256": "e9673d73431d71e16fdab9d50a951f0d641debe9854a541750159bfab26bdf0e"
     },
     {
       "path": "scripts/update-server.ts",
