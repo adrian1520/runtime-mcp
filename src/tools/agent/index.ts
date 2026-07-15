@@ -7,11 +7,15 @@ import type { Env } from "../../server";
 const GoalSchema = z.object({
   id: z.string().min(1, "Goal.id is required"),
   objective: z.string().min(1, "Goal.objective is required"),
+  constraints: z.array(z.string()).default([]),
+  context: z.record(z.unknown()).default({}),
 });
 
 const Validator = z.object({
   goal: GoalSchema,
 });
+
+type AgentRunArgs = z.infer<typeof Validator>;
 
 const inputSchema = {
   type: "object",
@@ -38,7 +42,7 @@ const inputSchema = {
 } as const;
 
 export function registerAgentTools(registry: ToolRegistry<Env>): void {
-  const tool: ToolDefinition<Env> = {
+  const tool: ToolDefinition<Env, AgentRunArgs> = {
     description: "Execute Agent Runtime workflow.",
 
     inputSchema,

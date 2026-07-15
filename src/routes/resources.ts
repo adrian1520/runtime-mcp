@@ -1,5 +1,6 @@
 import type { Env } from "../server";
 import { widgetHtml } from "./widget-html";
+import { getPdfResource, pdfResources } from "../pdf-project/catalog";
 
 function json(data: unknown, init?: ResponseInit): Response {
   return new Response(JSON.stringify(data, null, 2), {
@@ -109,6 +110,14 @@ export async function handleResourcesRoute(
 
           description: "Immutable provenance audit events",
         },
+
+        ...pdfResources.map((resource) => ({
+          id: resource.uri,
+
+          type: resource.mimeType,
+
+          description: resource.description,
+        })),
       ],
 
       capabilities: {
@@ -117,6 +126,8 @@ export async function handleResourcesRoute(
         provenance: true,
 
         pagination: true,
+
+        pdfFramework: true,
       },
 
       requestId,
@@ -125,6 +136,61 @@ export async function handleResourcesRoute(
     });
   }
 
+
+
+  /*
+   * GET /resources/pdf-framework?uri=<resource-uri>
+   * Static PDF framework project resources for clients that do not use MCP
+   * readResource directly.
+   */
+
+  if (url.pathname === "/resources/pdf-framework" && request.method === "GET") {
+    const uri = url.searchParams.get("uri");
+
+    if (!uri) {
+      return json({
+        ok: true,
+
+        resources: pdfResources.map((resource) => ({
+          uri: resource.uri,
+          name: resource.name,
+          mimeType: resource.mimeType,
+          description: resource.description,
+        })),
+
+        requestId,
+
+        ts: Date.now(),
+      });
+    }
+
+    const resource = getPdfResource(uri);
+
+    if (!resource) {
+      return json(
+        {
+          ok: false,
+          error: {
+            code: "PDF_RESOURCE_NOT_FOUND",
+            message: `Unknown PDF framework resource: ${uri}`,
+          },
+          requestId,
+          ts: Date.now(),
+        },
+        { status: 404 },
+      );
+    }
+
+    return json({
+      ok: true,
+
+      resource,
+
+      requestId,
+
+      ts: Date.now(),
+    });
+  }
   /*
    * GET /resources/memory
    */
