@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-03T02:42:06.884277+00:00",
+  "generated_at": "2026-07-15T15:13:22.150456+00:00",
   "summary": {
-    "files": 97,
-    "directories": 28
+    "files": 98,
+    "directories": 29
   },
   "directories": [
     {
@@ -88,6 +88,11 @@
     },
     {
       "path": "src/mcps",
+      "depth": 2,
+      "category": "general"
+    },
+    {
+      "path": "src/pdf-project",
       "depth": 2,
       "category": "general"
     },
@@ -585,8 +590,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 35244,
-      "sha256": "ad88efd446ce76a5c1ca9ac7b4facdde3f3fb77abac3bba79b2186de437aa246"
+      "size": 38991,
+      "sha256": "4fd725741ddd3934d8128102d833966e5cf86f3c5b7afe2c500db10c13c6a28d"
     },
     {
       "path": "scripts/update-server.ts",
@@ -706,8 +711,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 9391,
-      "sha256": "d2057c050164ee42a6be3d8526494899f5133f2ad42790ee3441e58dba496ae4"
+      "size": 10407,
+      "sha256": "1efb1f24996a340097b35b5b78d123167ae141df947418b8914f23c83b1bb094"
     },
     {
       "path": "src/mcps/index.ts",
@@ -765,6 +770,17 @@
       "sha256": "1cd8e998d8beca309b8b8fb220b3956d68e4a2a0954d12087c4f3ef7036e39a9"
     },
     {
+      "path": "src/pdf-project/catalog.ts",
+      "name": "catalog.ts",
+      "directory": "src/pdf-project",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 13437,
+      "sha256": "c1eec0c8893e071b603730f29e9b41cda7185a6481975c67c46a82e5439dbf7c"
+    },
+    {
       "path": "src/providers/index.ts",
       "name": "index.ts",
       "directory": "src/providers",
@@ -805,8 +821,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 4607,
-      "sha256": "2a7582edf6022dec0735d3a1c3144d83cb880fa3befa0a67fef573faf6de272c"
+      "size": 5957,
+      "sha256": "14051ea65d98fb2ca7fd6a426ebd34698f3b5b3173094456c1ebc5d531932172"
     },
     {
       "path": "src/routes/rpc.ts",
@@ -882,8 +898,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 3,
-      "size": 787,
-      "sha256": "4c70685121536be804f5e779bfc359778aca9b2205720f7960ccbded0a173a23"
+      "size": 785,
+      "sha256": "d3c06df1c70fcf8ca0cdb4a962a029a96cb53bbd9cc67f7525143c7492eef52d"
     },
     {
       "path": "src/runtime/capabilities/capability.ts",
@@ -1157,8 +1173,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 1600,
-      "sha256": "74c08a3772f34ba17bea7a1c43d9c99e3f02490268c8aab068b4842f0d3c77c1"
+      "size": 1756,
+      "sha256": "2a8234991488b463bcb790f4a5923c7e7ba9c23029dc778c731dab94b6c61ee9"
     },
     {
       "path": "src/tools/memory/index.ts",
