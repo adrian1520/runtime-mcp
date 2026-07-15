@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-15T15:31:26.418750+00:00",
+  "generated_at": "2026-07-15T15:32:04.960778+00:00",
   "summary": {
-    "files": 99,
+    "files": 101,
     "directories": 30
   },
   "directories": [
@@ -566,6 +566,17 @@
       "sha256": "70358e9254944a7e56bad33455eaab350b0569995474f7d840edf5cdd3e8b6f2"
     },
     {
+      "path": "memory/pdf-framework/backends.py",
+      "name": "backends.py",
+      "directory": "memory/pdf-framework",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 1141,
+      "sha256": "505182d8f99bded3c672d2c2c0791d3acbf3eeaffd41bb9a82945e0e8980376b"
+    },
+    {
       "path": "memory/pdf-framework/models.py",
       "name": "models.py",
       "directory": "memory/pdf-framework",
@@ -575,6 +586,17 @@
       "depth": 2,
       "size": 841,
       "sha256": "3b9f955a90ad4a978044d75859c853e9fc312c4ea0a1c2f4cb2ccbbcc1605036"
+    },
+    {
+      "path": "memory/pdf-framework/plugins.py",
+      "name": "plugins.py",
+      "directory": "memory/pdf-framework",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 1724,
+      "sha256": "c7b22f4d12aa3aaf1c61482661d33735d3a85c4c34b804edc1a849b4e028d949"
     },
     {
       "path": "package-lock.json",
@@ -606,8 +628,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 38991,
-      "sha256": "4fd725741ddd3934d8128102d833966e5cf86f3c5b7afe2c500db10c13c6a28d"
+      "size": 41003,
+      "sha256": "a74a95f9349d751568e31d9e6ee85707ba8c58e189550d4052e183a6c541f7bd"
     },
     {
       "path": "scripts/update-server.ts",
