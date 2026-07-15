@@ -10,6 +10,7 @@ import { verifyBearer } from "../auth/bearer";
 import type { JsonSchema, ToolDefinition } from "../contracts/tool";
 import { server, type Env } from "../server";
 import { widgetHtml } from "../routes/widget-html";
+import { getPdfResource, pdfProjectContext, pdfResources } from "../pdf-project/catalog";
 
 const OUTPUT_TEMPLATE = "ui://widget/result.html";
 
@@ -251,8 +252,13 @@ function createMcpServer(env: Env, requestId: string): Server {
         resources: {},
         tools: {},
       },
-      instructions:
+      instructions: [
+        "This MCP is a project environment for a production PDF framework.",
+        "It never executes framework code; ChatGPT must copy resources into Python Tool and run them there.",
+        `Project context: ${JSON.stringify(pdfProjectContext)}`,
+        "Start by reading pdf-framework://skills/build_pdf_framework, pdf-framework://skills/process_pdf, or pdf-framework://skills/extend_framework as appropriate.",
         "Use repository.query to read a repository memory file by path, or call any registered worker tool directly.",
+      ].join("\n"),
     },
   );
 
@@ -263,25 +269,44 @@ function createMcpServer(env: Env, requestId: string): Server {
         uri: OUTPUT_TEMPLATE,
         mimeType: "text/html;profile=mcp-app",
       },
+      ...pdfResources.map((resource) => ({
+        name: resource.name,
+        uri: resource.uri,
+        mimeType: resource.mimeType,
+        description: resource.description,
+      })),
     ],
   }));
 
   mcp.setRequestHandler(ReadResourceRequestSchema, async (request) => {
-    if (request.params.uri !== OUTPUT_TEMPLATE) {
+    if (request.params.uri === OUTPUT_TEMPLATE) {
+      return {
+        contents: [
+          {
+            uri: OUTPUT_TEMPLATE,
+            mimeType: "text/html;profile=mcp-app",
+            text: widgetHtml,
+            _meta: {
+              ui: {
+                prefersBorder: false,
+              },
+            },
+          },
+        ],
+      };
+    }
+
+    const pdfResource = getPdfResource(request.params.uri);
+    if (!pdfResource) {
       throw new Error(`Unknown resource: ${request.params.uri}`);
     }
 
     return {
       contents: [
         {
-          uri: OUTPUT_TEMPLATE,
-          mimeType: "text/html;profile=mcp-app",
-          text: widgetHtml,
-          _meta: {
-            ui: {
-              prefersBorder: false,
-            },
-          },
+          uri: pdfResource.uri,
+          mimeType: pdfResource.mimeType,
+          text: pdfResource.text,
         },
       ],
     };
