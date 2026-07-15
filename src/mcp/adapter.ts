@@ -10,7 +10,11 @@ import { verifyBearer } from "../auth/bearer";
 import type { JsonSchema, ToolDefinition } from "../contracts/tool";
 import { server, type Env } from "../server";
 import { widgetHtml } from "../routes/widget-html";
-import { getPdfResource, pdfProjectContext, pdfResources } from "../pdf-project/catalog";
+import {
+  getPdfResource,
+  pdfProjectContext,
+  pdfResources,
+} from "../pdf-project/catalog";
 
 const OUTPUT_TEMPLATE = "ui://widget/result.html";
 

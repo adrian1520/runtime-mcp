@@ -255,13 +255,22 @@ export const pdfProjectContext = {
     executionPolicy: "Framework code is never executed by MCP",
     dependencies: ["python>=3.11", "pypdf", "pytest"],
   },
-  modules: modules.map((name) => ({ name, version, uri: `pdf-framework://source/${name}` })),
+  modules: modules.map((name) => ({
+    name,
+    version,
+    uri: `pdf-framework://source/${name}`,
+  })),
   plugins: ["metadata", "text", "validate"],
   backends: ["pypdf"],
   configuration: { defaultBackend: "pypdf", defaultExport: "json" },
   memory: {
     currentVersion: version,
-    completedStages: ["mcp-resource-catalog", "skills", "project-context", "source-modules"],
+    completedStages: [
+      "mcp-resource-catalog",
+      "skills",
+      "project-context",
+      "source-modules",
+    ],
     decisions: [
       "MCP stores code and context only; Python Tool performs all execution.",
       "Resources are versioned by project context and stable URI names.",
@@ -269,7 +278,12 @@ export const pdfProjectContext = {
     ],
     dependencyGraph: {
       "framework_core.py": ["models.py", "execution.py", "export.py"],
-      "execution.py": ["models.py", "plugins.py", "backends.py", "validation.py"],
+      "execution.py": [
+        "models.py",
+        "plugins.py",
+        "backends.py",
+        "validation.py",
+      ],
       "plugins.py": ["models.py"],
       "backends.py": ["models.py", "pypdf"],
       "validation.py": ["models.py"],
@@ -285,7 +299,8 @@ const contextResource: PdfResource = {
   uri: "pdf-framework://context/project",
   name: "PDF framework project context",
   mimeType: "application/json",
-  description: "Automatically consumable project manifest, module versions, plugins, backends, config, and memory summary.",
+  description:
+    "Automatically consumable project manifest, module versions, plugins, backends, config, and memory summary.",
   text: JSON.stringify(pdfProjectContext, null, 2),
 };
 
@@ -293,7 +308,8 @@ const allSourceResource: PdfResource = {
   uri: "pdf-framework://source/all",
   name: "Complete PDF framework source repository",
   mimeType: "application/json",
-  description: "All versioned Python modules in one resource for bulk retrieval into Python Tool.",
+  description:
+    "All versioned Python modules in one resource for bulk retrieval into Python Tool.",
   text: JSON.stringify({ version, modules: moduleSources }, null, 2),
 };
 

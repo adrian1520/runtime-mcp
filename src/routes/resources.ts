@@ -136,8 +136,6 @@ export async function handleResourcesRoute(
     });
   }
 
-
-
   /*
    * GET /resources/pdf-framework?uri=<resource-uri>
    * Static PDF framework project resources for clients that do not use MCP
