@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-15T15:33:16.782206+00:00",
+  "generated_at": "2026-07-15T15:38:30.297550+00:00",
   "summary": {
-    "files": 105,
+    "files": 108,
     "directories": 30
   },
   "directories": [
@@ -632,6 +632,39 @@
       "sha256": "c7b22f4d12aa3aaf1c61482661d33735d3a85c4c34b804edc1a849b4e028d949"
     },
     {
+      "path": "memory/pdf-framework/session.py",
+      "name": "session.py",
+      "directory": "memory/pdf-framework",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 532,
+      "sha256": "b8285379af68b723f7905e239b087731d425f5ac4016e6ddc0efba0283ef4981"
+    },
+    {
+      "path": "memory/pdf-framework/tests.py",
+      "name": "tests.py",
+      "directory": "memory/pdf-framework",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 515,
+      "sha256": "7038d0ea1493c58e2415715e366ca4b0457e7d630c52b718b4f18785641486a8"
+    },
+    {
+      "path": "memory/pdf-framework/utils.py",
+      "name": "utils.py",
+      "directory": "memory/pdf-framework",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 482,
+      "sha256": "540189bc1f81af611e687a560904bff5a9c3e28401b06589ca9426ea5dde2fc9"
+    },
+    {
       "path": "memory/pdf-framework/validation.py",
       "name": "validation.py",
       "directory": "memory/pdf-framework",
@@ -673,7 +706,7 @@
       "category": "config",
       "depth": 0,
       "size": 41003,
-      "sha256": "e9673d73431d71e16fdab9d50a951f0d641debe9854a541750159bfab26bdf0e"
+      "sha256": "bb465f7e958d08094201d530280394e52b094af0373fe5a5e1ddf9889d1f15d4"
     },
     {
       "path": "scripts/update-server.ts",
