@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-15T15:13:22.150456+00:00",
+  "generated_at": "2026-07-15T15:31:26.418750+00:00",
   "summary": {
-    "files": 98,
-    "directories": 29
+    "files": 99,
+    "directories": 30
   },
   "directories": [
     {
@@ -54,6 +54,11 @@
     {
       "path": "memory",
       "depth": 1,
+      "category": "general"
+    },
+    {
+      "path": "memory/pdf-framework",
+      "depth": 2,
       "category": "general"
     },
     {
@@ -561,6 +566,17 @@
       "sha256": "70358e9254944a7e56bad33455eaab350b0569995474f7d840edf5cdd3e8b6f2"
     },
     {
+      "path": "memory/pdf-framework/models.py",
+      "name": "models.py",
+      "directory": "memory/pdf-framework",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 841,
+      "sha256": "3b9f955a90ad4a978044d75859c853e9fc312c4ea0a1c2f4cb2ccbbcc1605036"
+    },
+    {
       "path": "package-lock.json",
       "name": "package-lock.json",
       "directory": "",
@@ -711,8 +727,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 10407,
-      "sha256": "1efb1f24996a340097b35b5b78d123167ae141df947418b8914f23c83b1bb094"
+      "size": 10414,
+      "sha256": "03cf5e42134f316fc591d00aa7bfbfb1f58214b6fe93952f34c8d718147c9bb0"
     },
     {
       "path": "src/mcps/index.ts",
@@ -777,8 +793,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 13437,
-      "sha256": "c1eec0c8893e071b603730f29e9b41cda7185a6481975c67c46a82e5439dbf7c"
+      "size": 13532,
+      "sha256": "0ba013659174c8d0f7f59d9fa1aefdba180352a3ba496a9403148aa48850cfd0"
     },
     {
       "path": "src/providers/index.ts",
@@ -821,8 +837,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 5957,
-      "sha256": "14051ea65d98fb2ca7fd6a426ebd34698f3b5b3173094456c1ebc5d531932172"
+      "size": 5955,
+      "sha256": "16c7aea01aa0d4cb539c771ba7ec3be0b29f42f21f3783d9c6d123dd0c824404"
     },
     {
       "path": "src/routes/rpc.ts",
