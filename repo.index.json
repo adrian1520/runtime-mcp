@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-07-03T04:15:28.448102+00:00",
+  "generated_at": "2026-07-15T15:31:36.098590+00:00",
   "summary": {
-    "classes": 19,
+    "classes": 30,
     "interfaces": 31,
-    "types": 26,
+    "types": 28,
     "enums": 0,
-    "functions": 144,
-    "exports": 65,
-    "imports": 102
+    "functions": 146,
+    "exports": 67,
+    "imports": 104
   },
   "classes": [
     {
@@ -25,6 +25,11 @@
       "name": "AgentRuntime",
       "file": "src/runtime/agent-runtime.ts",
       "exported": true
+    },
+    {
+      "name": "BackendRegistry",
+      "file": "src/pdf-project/catalog.ts",
+      "exported": false
     },
     {
       "name": "CapabilityRegistry",
@@ -52,9 +57,34 @@
       "exported": true
     },
     {
+      "name": "MetadataPlugin",
+      "file": "src/pdf-project/catalog.ts",
+      "exported": false
+    },
+    {
+      "name": "PdfFramework",
+      "file": "src/pdf-project/catalog.ts",
+      "exported": false
+    },
+    {
+      "name": "PipelineExecutor",
+      "file": "src/pdf-project/catalog.ts",
+      "exported": false
+    },
+    {
       "name": "Planner",
       "file": "src/runtime/planner.ts",
       "exported": true
+    },
+    {
+      "name": "Plugin",
+      "file": "src/pdf-project/catalog.ts",
+      "exported": false
+    },
+    {
+      "name": "PluginRegistry",
+      "file": "src/pdf-project/catalog.ts",
+      "exported": false
     },
     {
       "name": "ProvenanceRecorder",
@@ -67,6 +97,11 @@
       "exported": true
     },
     {
+      "name": "PyPdfBackend",
+      "file": "src/pdf-project/catalog.ts",
+      "exported": false
+    },
+    {
       "name": "RecoveryManager",
       "file": "src/runtime/recovery-manager.ts",
       "exported": true
@@ -74,6 +109,11 @@
     {
       "name": "RepositoryError",
       "file": "src/tools/repository/index.ts",
+      "exported": false
+    },
+    {
+      "name": "ResultValidator",
+      "file": "src/pdf-project/catalog.ts",
       "exported": false
     },
     {
@@ -87,9 +127,19 @@
       "exported": true
     },
     {
+      "name": "TextPlugin",
+      "file": "src/pdf-project/catalog.ts",
+      "exported": false
+    },
+    {
       "name": "ToolRegistry",
       "file": "src/runtime/registries/tool-registry.ts",
       "exported": true
+    },
+    {
+      "name": "ValidationPlugin",
+      "file": "src/pdf-project/catalog.ts",
+      "exported": false
     },
     {
       "name": "Workflow",
@@ -105,6 +155,11 @@
       "name": "WorkflowRegistry",
       "file": "src/runtime/registries/workflow-registry.ts",
       "exported": true
+    },
+    {
+      "name": "class",
+      "file": "src/pdf-project/catalog.ts",
+      "exported": false
     }
   ],
   "interfaces": [
@@ -266,6 +321,11 @@
   ],
   "types": [
     {
+      "name": "AgentRunArgs",
+      "file": "src/tools/agent/index.ts",
+      "exported": false
+    },
+    {
       "name": "BearerAuthResult",
       "file": "src/auth/bearer.ts",
       "exported": true
@@ -344,6 +404,11 @@
       "name": "OpenApiSchema",
       "file": "src/openapi.ts",
       "exported": false
+    },
+    {
+      "name": "PdfResource",
+      "file": "src/pdf-project/catalog.ts",
+      "exported": true
     },
     {
       "name": "ReadArgs",
@@ -572,6 +637,16 @@
       "name": "buildOpenApi",
       "kind": "function",
       "file": "src/openapi.ts"
+    },
+    {
+      "name": "Path",
+      "kind": "method",
+      "file": "src/pdf-project/catalog.ts"
+    },
+    {
+      "name": "getPdfResource",
+      "kind": "function",
+      "file": "src/pdf-project/catalog.ts"
     },
     {
       "name": "exists",
@@ -1189,6 +1264,14 @@
       "file": "src/openapi.ts"
     },
     {
+      "name": "PdfResource",
+      "file": "src/pdf-project/catalog.ts"
+    },
+    {
+      "name": "getPdfResource",
+      "file": "src/pdf-project/catalog.ts"
+    },
+    {
       "name": "ProviderRegistry",
       "file": "src/providers/provider-registry.ts"
     },
@@ -1440,6 +1523,10 @@
     },
     {
       "file": "src/mcp/adapter.ts",
+      "from": "../pdf-project/catalog"
+    },
+    {
+      "file": "src/mcp/adapter.ts",
       "from": "../routes/widget-html"
     },
     {
@@ -1481,6 +1568,10 @@
     {
       "file": "src/providers/provider-registry.ts",
       "from": "./provider"
+    },
+    {
+      "file": "src/routes/resources.ts",
+      "from": "../pdf-project/catalog"
     },
     {
       "file": "src/routes/resources.ts",
