@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-16T13:35:32.816260+00:00",
+  "generated_at": "2026-07-16T13:43:29.705454+00:00",
   "summary": {
-    "files": 110,
-    "directories": 33
+    "files": 135,
+    "directories": 39
   },
   "directories": [
     {
@@ -22,6 +22,16 @@
       "category": "general"
     },
     {
+      "path": ".github/actions",
+      "depth": 2,
+      "category": "general"
+    },
+    {
+      "path": ".github/actions/pdf-backend",
+      "depth": 3,
+      "category": "general"
+    },
+    {
       "path": ".github/workflows",
       "depth": 2,
       "category": "workflow"
@@ -35,6 +45,21 @@
       "path": "agents/runtime-mcp",
       "depth": 2,
       "category": "agents"
+    },
+    {
+      "path": "backend",
+      "depth": 1,
+      "category": "general"
+    },
+    {
+      "path": "backend/common",
+      "depth": 2,
+      "category": "general"
+    },
+    {
+      "path": "backend/pdf",
+      "depth": 2,
+      "category": "general"
     },
     {
       "path": "contracts",
@@ -157,6 +182,11 @@
       "category": "general"
     },
     {
+      "path": "src/tools/github-actions",
+      "depth": 3,
+      "category": "general"
+    },
+    {
       "path": "src/tools/memory",
       "depth": 3,
       "category": "general"
@@ -194,6 +224,17 @@
       "depth": 2,
       "size": 595,
       "sha256": "1f48c52f209a971b8e7eae4120144d28fcf8ee38a7778a7b4d8cf1ab356617d2"
+    },
+    {
+      "path": ".github/actions/pdf-backend/action.yml",
+      "name": "action.yml",
+      "directory": ".github/actions/pdf-backend",
+      "extension": "yml",
+      "language": "yaml",
+      "category": "config",
+      "depth": 3,
+      "size": 1302,
+      "sha256": "4c87b3e0e0b8804ed2bb5e86b0e47e70251a10937711aa5db136669839beb20b"
     },
     {
       "path": ".github/workflows/auto-fix.yml",
@@ -240,6 +281,17 @@
       "sha256": "de46d7574e2023bcf9af774ed014d250e0173b4404bf71c8d46b9955c584527c"
     },
     {
+      "path": ".github/workflows/example-pdf-render.yml",
+      "name": "example-pdf-render.yml",
+      "directory": ".github/workflows",
+      "extension": "yml",
+      "language": "yaml",
+      "category": "workflow",
+      "depth": 2,
+      "size": 446,
+      "sha256": "ecbe1bedd268d4456fbc377285ce2a7baa0222241960cc212f59c4482a2d541a"
+    },
+    {
       "path": ".github/workflows/generate-server.yml",
       "name": "generate-server.yml",
       "directory": ".github/workflows",
@@ -260,6 +312,17 @@
       "depth": 2,
       "size": 2971,
       "sha256": "322dff05a17e02606718362d57c3cb9efec900c857ff3260aeae21562ea0dbb3"
+    },
+    {
+      "path": ".github/workflows/runtime-pdf-backend.yml",
+      "name": "runtime-pdf-backend.yml",
+      "directory": ".github/workflows",
+      "extension": "yml",
+      "language": "yaml",
+      "category": "workflow",
+      "depth": 2,
+      "size": 2425,
+      "sha256": "398734318b5004604bb013e929e95a6254e3a2867e9639ca6a7f32739e9efaf5"
     },
     {
       "path": ".gitignore",
@@ -304,6 +367,215 @@
       "depth": 2,
       "size": 236,
       "sha256": "a1f54597ba89a8a6850b78cb0ad1ce02e553bb17319bbda4d8744df717e8fd67"
+    },
+    {
+      "path": "backend/__init__.py",
+      "name": "__init__.py",
+      "directory": "backend",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 1,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/common/__init__.py",
+      "name": "__init__.py",
+      "directory": "backend/common",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/common/artifacts.py",
+      "name": "artifacts.py",
+      "directory": "backend/common",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 456,
+      "sha256": "7a8f32bca78df8cce65539c680553edf685a3421be4da302978154acb9ed5880"
+    },
+    {
+      "path": "backend/common/filesystem.py",
+      "name": "filesystem.py",
+      "directory": "backend/common",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 781,
+      "sha256": "1d5e04ba4a20b1793db8811cf2af301845ad1e40f7e488f5a7803e3aca60fde3"
+    },
+    {
+      "path": "backend/common/logging.py",
+      "name": "logging.py",
+      "directory": "backend/common",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 581,
+      "sha256": "a78052a61cbe27e25076a18c9f2ea6d18f7fbdf401541e6cf82e4f9fdc917f90"
+    },
+    {
+      "path": "backend/common/validation.py",
+      "name": "validation.py",
+      "directory": "backend/common",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 1529,
+      "sha256": "d8cdcd96d54d658ad97b4ce8bc24b3c53bd35d29e69b0e0186078469296fd676"
+    },
+    {
+      "path": "backend/pdf/__init__.py",
+      "name": "__init__.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/pdf/_shared.py",
+      "name": "_shared.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 455,
+      "sha256": "2432872b22c23ac862ee05020bfbf53199627e496f778c6bf961977ff10a4d28"
+    },
+    {
+      "path": "backend/pdf/crop.py",
+      "name": "crop.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 787,
+      "sha256": "ddb3f6a365bb8d55c08fc669cd154096e9b50264c411d47ae0be4318e873a0de"
+    },
+    {
+      "path": "backend/pdf/image_to_pdf.py",
+      "name": "image_to_pdf.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 504,
+      "sha256": "a134d93e69a96296b6e7f86b748636ee55dc4bba2366ee3ab60e9c15aeab2e24"
+    },
+    {
+      "path": "backend/pdf/merge.py",
+      "name": "merge.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 572,
+      "sha256": "34a7fb72cd4954da43bfe06b2de0da5f55a795034a9c979db56054c4cb70e764"
+    },
+    {
+      "path": "backend/pdf/metadata.py",
+      "name": "metadata.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 490,
+      "sha256": "21d918ad91103bd012ae07b5a99dc3d54037ddd2bfd3c2fbf44e1c618e8f24c1"
+    },
+    {
+      "path": "backend/pdf/ocr.py",
+      "name": "ocr.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 388,
+      "sha256": "f9df6ba70afd74d6e2ca6ef09cd66eaf24be26256e88234d9ab527a4c46f0f23"
+    },
+    {
+      "path": "backend/pdf/pdf_to_images.py",
+      "name": "pdf_to_images.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 24,
+      "sha256": "9e5a42abb1332ac95b114fc00795c8227526f65b07551e87c0d92e9a11bc2669"
+    },
+    {
+      "path": "backend/pdf/render.py",
+      "name": "render.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 533,
+      "sha256": "d513f6d4c02170f1a050c85a2223a10c29b48ca5af545acadf3ca93c58a6f951"
+    },
+    {
+      "path": "backend/pdf/rotate.py",
+      "name": "rotate.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 653,
+      "sha256": "ac7757d28c89c5eebcff5810d205d5823e3e059a00969e46590901c6bfdc8869"
+    },
+    {
+      "path": "backend/pdf/searchable.py",
+      "name": "searchable.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 21,
+      "sha256": "6b8ef562b6328efd04d8c153b0388d786c2f52766055c436c63ef878ed28522c"
+    },
+    {
+      "path": "backend/pdf/split.py",
+      "name": "split.py",
+      "directory": "backend/pdf",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 2,
+      "size": 504,
+      "sha256": "8a2ff0d9a8f66878622a75473fb23b75e06b4781d5b8b090460f9484c11d3491"
+    },
+    {
+      "path": "backend/runner.py",
+      "name": "runner.py",
+      "directory": "backend",
+      "extension": "py",
+      "language": "python",
+      "category": "general",
+      "depth": 1,
+      "size": 2610,
+      "sha256": "1ec823ef862193d306867b947a7f78e29f6454ba6e1f09646451502385484a02"
     },
     {
       "path": "contracts/agent.contract.yaml",
@@ -392,6 +664,17 @@
       "depth": 1,
       "size": 940,
       "sha256": "18faa72eb98f27ef5d3e88722cb6a240f14f5db46c1158465d0ddcc711087c1b"
+    },
+    {
+      "path": "docs/github-actions-backend.md",
+      "name": "github-actions-backend.md",
+      "directory": "docs",
+      "extension": "md",
+      "language": "markdown",
+      "category": "knowledge",
+      "depth": 1,
+      "size": 2052,
+      "sha256": "87a04adf4774e2ef1089ef0dfa861a3a7434b617bc3a47ae926aabc003b7ec94"
     },
     {
       "path": "docs/migration-runtime-core-v2.md",
@@ -721,7 +1004,18 @@
       "category": "config",
       "depth": 0,
       "size": 41003,
-      "sha256": "e67f6a76511c08f97f1396884a624efbf051a611689ea27a8b7c1302043ae2fd"
+      "sha256": "67453ec4157c1243179610d084e7a7ebd8150344425968ef84adbf269170cae9"
+    },
+    {
+      "path": "requirements-backend.txt",
+      "name": "requirements-backend.txt",
+      "directory": "",
+      "extension": "txt",
+      "language": "text",
+      "category": "general",
+      "depth": 0,
+      "size": 62,
+      "sha256": "8cc6ea932085a51312413c86e89c6f1115a9502e4cbce0e2e9a2c710aa0809bf"
     },
     {
       "path": "scripts/update-server.ts",
@@ -1314,8 +1608,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 1,
-      "size": 710,
-      "sha256": "5dad802458f43fae1741abe47ee1976872d6bab9a927243f061e072d90f5655d"
+      "size": 822,
+      "sha256": "bb486884739ad0a453a4234716c58a1ff3bce2994c0e162cc59951715ab80fdd"
     },
     {
       "path": "src/tools/agent/index.ts",
@@ -1327,6 +1621,17 @@
       "depth": 3,
       "size": 1756,
       "sha256": "2a8234991488b463bcb790f4a5923c7e7ba9c23029dc778c731dab94b6c61ee9"
+    },
+    {
+      "path": "src/tools/github-actions/index.ts",
+      "name": "index.ts",
+      "directory": "src/tools/github-actions",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 3,
+      "size": 9752,
+      "sha256": "57dae2c153c13e177b47c108fdebf868c7104e35eff62aeb81b3fc768ff9c97a"
     },
     {
       "path": "src/tools/memory/index.ts",
