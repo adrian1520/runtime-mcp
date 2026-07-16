@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-15T15:38:30.297550+00:00",
+  "generated_at": "2026-07-16T13:33:34.785739+00:00",
   "summary": {
-    "files": 108,
-    "directories": 30
+    "files": 109,
+    "directories": 32
   },
   "directories": [
     {
@@ -64,6 +64,16 @@
     {
       "path": "scripts",
       "depth": 1,
+      "category": "general"
+    },
+    {
+      "path": "skills",
+      "depth": 1,
+      "category": "general"
+    },
+    {
+      "path": "skills/github-actions-python-backend",
+      "depth": 2,
       "category": "general"
     },
     {
@@ -706,7 +716,7 @@
       "category": "config",
       "depth": 0,
       "size": 41003,
-      "sha256": "bb465f7e958d08094201d530280394e52b094af0373fe5a5e1ddf9889d1f15d4"
+      "sha256": "c530c314dfe0100d6390d3cfee68d1b53cda8b5b89767e74073beea392106d40"
     },
     {
       "path": "scripts/update-server.ts",
@@ -718,6 +728,17 @@
       "depth": 1,
       "size": 2789,
       "sha256": "15ef74e45b43e02c26f8072899c26940607bb63b2038811ae2eec095aa60a9ee"
+    },
+    {
+      "path": "skills/github-actions-python-backend/SKILL.md",
+      "name": "SKILL.md",
+      "directory": "skills/github-actions-python-backend",
+      "extension": "md",
+      "language": "markdown",
+      "category": "general",
+      "depth": 2,
+      "size": 3887,
+      "sha256": "59ea69a35d6faa7ae14fe1a979ca74fba744573d1c2132554447b5c473e787bb"
     },
     {
       "path": "src/agents/context-builder.ts",
