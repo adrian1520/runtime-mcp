@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-16T13:58:32.750362+00:00",
+  "generated_at": "2026-07-16T14:28:51.386111+00:00",
   "summary": {
-    "files": 136,
+    "files": 137,
     "directories": 40
   },
   "directories": [
@@ -715,6 +715,17 @@
       "sha256": "8cc35ac1e04609c1c32cfaf6456fab01e510d2c42eb9776714ef886d56beb524"
     },
     {
+      "path": "input.pdf",
+      "name": "input.pdf",
+      "directory": "",
+      "extension": "pdf",
+      "language": "unknown",
+      "category": "general",
+      "depth": 0,
+      "size": 8093943,
+      "sha256": "988e6592ddb4d73f1f4e192fcb1e5ad5b99f085ce9f9ae478dc0282452d23b84"
+    },
+    {
       "path": "memory/README.md",
       "name": "README.md",
       "directory": "memory",
@@ -1008,8 +1019,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 44314,
-      "sha256": "2a5e62a50b122d6bfe606d601e25152c1e7dc83a97e992794f88fff60986e31c"
+      "size": 45531,
+      "sha256": "fe92b444e4c18bbd6c595c501a8cd9553ea202400e3b54bc1e1fc734e2e6e92b"
     },
     {
       "path": "requirements-backend.txt",
@@ -1635,8 +1646,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 15135,
-      "sha256": "394ab4d78542c989e88c861c38dd4c2711ffd4dd37e7c10db5586c30344feeb2"
+      "size": 15221,
+      "sha256": "e3674f05855eab4257d162fbbc156cf43c36665f1e745123144658a84b09653c"
     },
     {
       "path": "src/tools/memory/index.ts",
