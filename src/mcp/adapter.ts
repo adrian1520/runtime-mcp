@@ -258,7 +258,7 @@ function createMcpServer(env: Env, requestId: string): Server {
       },
       instructions: [
         "This MCP is a project environment for a production PDF framework.",
-        "It never executes framework code; ChatGPT must copy resources into Python Tool and run them there.",
+        "It exposes PDF upload and processing tools backed by GitHub Actions for heavy PDF operations.",
         `Project context: ${JSON.stringify(pdfProjectContext)}`,
         "Start by reading pdf-framework://skills/build_pdf_framework, pdf-framework://skills/process_pdf, or pdf-framework://skills/extend_framework as appropriate.",
         "Use repository.query to read a repository memory file by path, or call any registered worker tool directly.",
@@ -336,7 +336,7 @@ function createMcpServer(env: Env, requestId: string): Server {
         title: name.replaceAll("_", " "),
         description: tool.description,
         inputSchema: tool.inputSchema,
-        outputSchema: genericObjectOutputSchema,
+        outputSchema: tool.outputSchema ?? genericObjectOutputSchema,
         annotations: toolAnnotations[name] ?? {
           readOnlyHint: false,
           destructiveHint: false,

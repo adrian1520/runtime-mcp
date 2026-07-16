@@ -257,3 +257,56 @@ Repository tools exposed through `/mcp`:
 `repository.query`, `raw_read`, and `raw_save` remain available for compatibility.
 See `docs/architecture-runtime-core-v2.md`, `docs/migration-runtime-core-v2.md`,
 `docs/refactor-summary-runtime-core-v2.md`, and `docs/adr/ADR-004-runtime-core-v2.md`.
+
+## ChatGPT PDF upload and MCP tool flow
+
+The MCP server exposes stable, ChatGPT-facing PDF tools from the central runtime registry in `src/server.ts`. Discovery through `tools/list` includes `upload_pdf`, `render_pdf`, `ocr_pdf`, `split_pdf`, `merge_pdfs`, `rotate_pdf`, `crop_pdf`, `searchable_pdf`, `pdf_metadata`, `pdf_to_images`, and `images_to_pdf`.
+
+Request flow:
+
+```text
+ChatGPT / MCP client
+  -> /mcp Streamable HTTP transport
+  -> src/mcp/adapter.ts tools/list or tools/call
+  -> src/server.ts tool registry
+  -> src/tools/github-actions/index.ts PDF tool facade
+  -> src/files/uploaded-file.ts single upload normalization and validation pipeline
+  -> GitHub Actions workflow runtime-pdf-backend.yml for processing tools
+```
+
+Upload flow:
+
+1. Call `upload_pdf` with a ChatGPT `input_file`, MCP file object, base64 object, readable path, `file://` URI, or HTTPS `download_url`.
+2. The server normalizes the file into the internal `UploadedFile` model: `id`, `filename`, `mimeType`, `bytes`, `size`, and `source`.
+3. The shared validator rejects empty, oversized, wrong-MIME, corrupt, or unsupported file references.
+4. `upload_pdf` returns a normalized base64 PDF payload that can be supplied directly to processing tools via their `files` array.
+
+Example MCP tool arguments:
+
+```json
+{
+  "file": {
+    "type": "input_file",
+    "id": "file_abc123",
+    "filename": "source.pdf",
+    "mime_type": "application/pdf",
+    "data": "JVBERi0xLjQK..."
+  }
+}
+```
+
+Example processing call:
+
+```json
+{
+  "files": [
+    {
+      "name": "source.pdf",
+      "mimeType": "application/pdf",
+      "base64": "JVBERi0xLjQK..."
+    }
+  ],
+  "options": { "pages": "1-3" },
+  "timeoutSeconds": 300
+}
+```

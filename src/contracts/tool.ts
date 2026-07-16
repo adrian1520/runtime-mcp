@@ -26,6 +26,8 @@ export type ToolDefinition<Env, TArgs = unknown, TResult = unknown> = {
 
   readonly inputSchema: JsonSchema;
 
+  readonly outputSchema?: JsonSchema;
+
   readonly validate: (args: unknown) => TArgs;
 
   readonly execute: (args: TArgs, ctx: ToolContext<Env>) => Promise<TResult>;
