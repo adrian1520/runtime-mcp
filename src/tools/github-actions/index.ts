@@ -51,6 +51,25 @@ class GitHubActionsError extends Error {
   }
 }
 
+const fileObjectSchema = z
+  .object({
+    name: z.string().optional(),
+    mimeType: z.string().optional(),
+    base64: z.string().optional(),
+    sizeBytes: z.number().int().min(1).max(MAX_FILE_BYTES).optional(),
+    path: z.string().optional(),
+    filePath: z.string().optional(),
+    uri: z.string().optional(),
+    url: z.string().optional(),
+    download_url: z.string().optional(),
+    downloadUrl: z.string().optional(),
+    file_id: z.string().optional(),
+    fileId: z.string().optional(),
+  })
+  .passthrough();
+
+const rawInputFileSchema = z.union([z.string().min(1), fileObjectSchema]);
+
 const inputFileSchema = z.object({
   name: z
     .string()
@@ -63,7 +82,7 @@ const inputFileSchema = z.object({
 });
 
 const actionRequestSchema = z.object({
-  files: z.array(inputFileSchema).min(1).max(20),
+  files: z.array(rawInputFileSchema).min(1).max(20),
   options: z.record(z.unknown()).optional().default({}),
   timeoutSeconds: z
     .number()
@@ -74,7 +93,11 @@ const actionRequestSchema = z.object({
     .default(300),
 });
 
-type ActionRequest = z.infer<typeof actionRequestSchema>;
+type RawActionRequest = z.infer<typeof actionRequestSchema>;
+type ActionRequest = Omit<RawActionRequest, "files"> & {
+  files: Array<z.infer<typeof inputFileSchema>>;
+};
+type RawInputFile = z.infer<typeof rawInputFileSchema>;
 
 type GitHubContent = { sha?: string };
 type WorkflowRun = {
@@ -92,6 +115,120 @@ type Artifact = {
   archive_download_url: string;
   expired: boolean;
 };
+
+
+function safeFileName(input: string, fallback: string): string {
+  const normalized = input.replace(/\\/g, "/").split("/").filter(Boolean).pop() ?? fallback;
+  const stripped = normalized.replace(/[^A-Za-z0-9._-]/g, "_").slice(0, 160);
+  return stripped || fallback;
+}
+
+function inferMimeType(name: string, fallback?: string): string {
+  if (fallback) return fallback;
+  const lower = name.toLowerCase();
+  if (lower.endsWith(".png")) return "image/png";
+  if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
+  if (lower.endsWith(".tif") || lower.endsWith(".tiff")) return "image/tiff";
+  if (lower.endsWith(".webp")) return "image/webp";
+  return "application/pdf";
+}
+
+function bytesToBase64(bytes: Uint8Array): string {
+  let binary = "";
+  for (let i = 0; i < bytes.length; i += 0x8000)
+    binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(binary);
+}
+
+async function readLocalFile(path: string): Promise<Uint8Array> {
+  try {
+    const dynamicImport = new Function("specifier", "return import(specifier)") as (
+      specifier: string,
+    ) => Promise<{ readFile: (path: string) => Promise<Uint8Array> }>;
+    const fs = await dynamicImport("node:fs/promises");
+    return await fs.readFile(path);
+  } catch (error) {
+    throw new GitHubActionsError(
+      "FILE_REFERENCE_UNREADABLE",
+      `Unable to read file path ${path}. Pass an uploaded file as { name, mimeType, base64 } or provide a readable local path/download_url that the MCP server can access.`,
+      400,
+    );
+  }
+}
+
+function extractReference(file: Exclude<RawInputFile, string>): string | undefined {
+  return (
+    file.path ??
+    file.filePath ??
+    file.uri ??
+    file.download_url ??
+    file.downloadUrl ??
+    file.url
+  );
+}
+
+async function normalizeInputFile(
+  file: RawInputFile,
+  index: number,
+): Promise<z.infer<typeof inputFileSchema>> {
+  if (typeof file === "object" && file.base64) {
+    const name = safeFileName(file.name ?? `input-${index + 1}.pdf`, `input-${index + 1}.pdf`);
+    return inputFileSchema.parse({
+      name,
+      mimeType: inferMimeType(name, file.mimeType),
+      base64: file.base64,
+      sizeBytes: file.sizeBytes,
+    });
+  }
+
+  const ref = typeof file === "string" ? file : extractReference(file);
+  const name = safeFileName(
+    typeof file === "object" ? file.name ?? ref ?? "" : file,
+    `input-${index + 1}.pdf`,
+  );
+  const mimeType = inferMimeType(name, typeof file === "object" ? file.mimeType : undefined);
+
+  if (!ref) {
+    const id = typeof file === "object" ? file.file_id ?? file.fileId : undefined;
+    throw new GitHubActionsError(
+      "FILE_REFERENCE_UNSUPPORTED",
+      `Unable to resolve uploaded file${id ? ` ${id}` : ""}. Expected each file to be { name, mimeType, base64 }, a readable /mnt/data/... path, a file:// URI, or an https download_url.`,
+      400,
+    );
+  }
+
+  let bytes: Uint8Array;
+  if (/^https?:\/\//i.test(ref)) {
+    const response = await fetch(ref);
+    if (!response.ok) {
+      throw new GitHubActionsError(
+        "FILE_REFERENCE_UNREADABLE",
+        `Unable to download ${ref}: HTTP ${response.status}. Expected an accessible https download_url or a readable local path.`,
+        400,
+      );
+    }
+    bytes = new Uint8Array(await response.arrayBuffer());
+  } else {
+    const path = ref.startsWith("file://") ? new URL(ref).pathname : ref;
+    bytes = await readLocalFile(path);
+  }
+
+  return inputFileSchema.parse({
+    name,
+    mimeType,
+    base64: bytesToBase64(bytes),
+    sizeBytes: bytes.byteLength,
+  });
+}
+
+export async function normalizeActionRequest(
+  args: RawActionRequest,
+): Promise<ActionRequest> {
+  return {
+    ...args,
+    files: await Promise.all(args.files.map(normalizeInputFile)),
+  };
+}
 
 function validateBase64(input: string): number {
   if (!/^[A-Za-z0-9+/]+={0,2}$/.test(input.replace(/\s/g, ""))) {
@@ -307,20 +444,21 @@ async function downloadArtifactZip(
 
 async function executeOperation(
   operation: Operation,
-  args: ActionRequest,
+  args: RawActionRequest,
   env: Env,
   requestId: string,
 ) {
-  validateFiles(args, operation);
+  const normalizedArgs = await normalizeActionRequest(args);
+  validateFiles(normalizedArgs, operation);
   const actionRequestId = `${requestId}-${crypto.randomUUID()}`;
   const requestPath = await putRequest(env, actionRequestId, {
     operation,
     requestId: actionRequestId,
-    files: args.files,
-    options: args.options,
+    files: normalizedArgs.files,
+    options: normalizedArgs.options,
   });
   await dispatch(env, operation, requestPath, actionRequestId);
-  const run = await pollRun(env, actionRequestId, args.timeoutSeconds);
+  const run = await pollRun(env, actionRequestId, normalizedArgs.timeoutSeconds);
   const foundArtifacts = await artifacts(env, run.id);
   const resultArtifact =
     foundArtifacts.find(
@@ -348,7 +486,15 @@ async function executeOperation(
 const schema = {
   type: "object",
   properties: {
-    files: { type: "array", items: { type: "object" } },
+    files: {
+      type: "array",
+      items: {
+        anyOf: [
+          { type: "string" },
+          { type: "object", additionalProperties: true },
+        ],
+      },
+    },
     options: { type: "object", additionalProperties: true },
     timeoutSeconds: { type: "integer" },
   },
