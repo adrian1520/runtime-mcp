@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-16T14:28:51.386111+00:00",
+  "generated_at": "2026-07-16T18:52:42.918171+00:00",
   "summary": {
-    "files": 137,
-    "directories": 40
+    "files": 138,
+    "directories": 41
   },
   "directories": [
     {
@@ -123,6 +123,11 @@
     },
     {
       "path": "src/contracts",
+      "depth": 2,
+      "category": "general"
+    },
+    {
+      "path": "src/files",
       "depth": 2,
       "category": "general"
     },
@@ -348,8 +353,8 @@
       "language": "markdown",
       "category": "general",
       "depth": 0,
-      "size": 7582,
-      "sha256": "f62e4db1d92ee4973fbd3b37bfbb4d67f06cc226687423aecf42360bcbebd916"
+      "size": 9277,
+      "sha256": "4e4088f11904657124d312e3dc927d202369912f0bdb7f3245ba5527048d77f5"
     },
     {
       "path": "agents/runtime-mcp/agent.json",
@@ -1020,7 +1025,7 @@
       "category": "config",
       "depth": 0,
       "size": 45531,
-      "sha256": "fe92b444e4c18bbd6c595c501a8cd9553ea202400e3b54bc1e1fc734e2e6e92b"
+      "sha256": "ce961957382959b1f362490df95f6403059b6bbcf0c3e74b8d94ab115e8b6ab9"
     },
     {
       "path": "requirements-backend.txt",
@@ -1151,8 +1156,19 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 768,
-      "sha256": "22cb4e3d6d24cfdc49700aa3949fdf74242f346aee49d57c267c427a2fbd82d6"
+      "size": 807,
+      "sha256": "d8f3081ed2f6c30955066fc85ee7a40973a6e0b71107c65c2cc8562d007d7671"
+    },
+    {
+      "path": "src/files/uploaded-file.ts",
+      "name": "uploaded-file.ts",
+      "directory": "src/files",
+      "extension": "ts",
+      "language": "typescript",
+      "category": "general",
+      "depth": 2,
+      "size": 7203,
+      "sha256": "4b2b6ba81035f706745c92d98e94b06f663ed17e0e1f3be7b722b644450a372e"
     },
     {
       "path": "src/index.ts",
@@ -1173,8 +1189,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 10414,
-      "sha256": "03cf5e42134f316fc591d00aa7bfbfb1f58214b6fe93952f34c8d718147c9bb0"
+      "size": 10430,
+      "sha256": "a0e4dfc2c961bcf93adc90c1cb54a13982313b718e99ff0e85f4f1b585867b98"
     },
     {
       "path": "src/mcps/index.ts",
@@ -1646,8 +1662,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 15221,
-      "sha256": "e3674f05855eab4257d162fbbc156cf43c36665f1e745123144658a84b09653c"
+      "size": 11994,
+      "sha256": "54ba828673b2d291c04dc2620c5438f4737ef85950fe5b56d6c0d323f5e860ce"
     },
     {
       "path": "src/tools/memory/index.ts",
@@ -1690,8 +1706,8 @@
       "language": "javascript",
       "category": "tests",
       "depth": 1,
-      "size": 3512,
-      "sha256": "b35b64fea8d8abd6a4c010d4c969e573cb52e2ce732e669863c8f1652264ae2e"
+      "size": 5576,
+      "sha256": "3ff92c2b831606d3852780b6373426e643684612916234af719f02be47b3a6db"
     },
     {
       "path": "tsconfig.json",
