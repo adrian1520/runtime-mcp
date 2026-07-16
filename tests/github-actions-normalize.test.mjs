@@ -81,7 +81,7 @@ test("preserves mixed proxied path and existing base64 inputs", async () => {
 test("reports the expected file formats for invalid file references", async () => {
   await assert.rejects(
     normalizeActionRequest({ files: [{ file_id: "file_abc" }], timeoutSeconds: 60, options: {} }),
-    /Expected each file to be \{ name, mimeType, base64 \}, a readable \/mnt\/data\/\.\.\. path, a file:\/\/ URI, or an https download_url/,
+    /Unsupported file reference/,
   );
 });
 
@@ -96,4 +96,73 @@ test("normalizes platform-specific path separators in filenames", async () => {
 
 test.after(async () => {
   await rm(outDir, { recursive: true, force: true });
+});
+
+test("registers stable ChatGPT-facing PDF tool names", async () => {
+  const { registerGitHubActionsTools } = await import(
+    `file://${join(outDir, "src/tools/github-actions/index.js")}`
+  );
+  const registry = {};
+  registerGitHubActionsTools(registry);
+  const expected = [
+    "upload_pdf",
+    "render_pdf",
+    "ocr_pdf",
+    "split_pdf",
+    "merge_pdfs",
+    "rotate_pdf",
+    "crop_pdf",
+    "searchable_pdf",
+    "pdf_metadata",
+    "pdf_to_images",
+    "images_to_pdf",
+  ];
+  assert.deepEqual(Object.keys(registry), expected);
+  for (const name of expected) {
+    assert.equal(typeof registry[name].description, "string");
+    assert.ok(registry[name].description.length > 20);
+    assert.ok(registry[name].inputSchema);
+    assert.ok(registry[name].outputSchema);
+  }
+});
+
+test("upload_pdf normalizes a ChatGPT input_file PDF", async () => {
+  const { normalizePdfUpload } = await import(
+    `file://${join(outDir, "src/tools/github-actions/index.js")}`
+  );
+  const uploaded = await normalizePdfUpload({
+    file: {
+      type: "input_file",
+      id: "file_123",
+      filename: "chatgpt.pdf",
+      mime_type: "application/pdf",
+      data: PDF_BASE64,
+      size: PDF_BYTES.byteLength,
+    },
+  });
+  assert.equal(uploaded.id, "file_123");
+  assert.equal(uploaded.filename, "chatgpt.pdf");
+  assert.equal(uploaded.mimeType, "application/pdf");
+  assert.equal(uploaded.base64, PDF_BASE64);
+  assert.equal(uploaded.source, "input_file");
+});
+
+test("rejects invalid MIME for PDF upload", async () => {
+  const { normalizePdfUpload } = await import(
+    `file://${join(outDir, "src/tools/github-actions/index.js")}`
+  );
+  await assert.rejects(
+    normalizePdfUpload({ file: { filename: "not.pdf", mime_type: "text/plain", data: PDF_BASE64 } }),
+    /must be one of: application\/pdf/,
+  );
+});
+
+test("rejects corrupt PDF bytes", async () => {
+  const { normalizePdfUpload } = await import(
+    `file://${join(outDir, "src/tools/github-actions/index.js")}`
+  );
+  await assert.rejects(
+    normalizePdfUpload({ file: { filename: "bad.pdf", mime_type: "application/pdf", data: Buffer.from("nope").toString("base64") } }),
+    /not a valid PDF/,
+  );
 });
