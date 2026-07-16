@@ -1,12 +1,12 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-07-16T13:43:31.487889+00:00",
+  "generated_at": "2026-07-16T13:59:48.878784+00:00",
   "summary": {
     "classes": 31,
     "interfaces": 31,
-    "types": 34,
+    "types": 36,
     "enums": 0,
-    "functions": 164,
+    "functions": 172,
     "exports": 68,
     "imports": 107
   },
@@ -439,6 +439,16 @@
       "name": "PdfResource",
       "file": "src/pdf-project/catalog.ts",
       "exported": true
+    },
+    {
+      "name": "RawActionRequest",
+      "file": "src/tools/github-actions/index.ts",
+      "exported": false
+    },
+    {
+      "name": "RawInputFile",
+      "file": "src/tools/github-actions/index.ts",
+      "exported": false
     },
     {
       "name": "ReadArgs",
@@ -1119,6 +1129,11 @@
       "file": "src/tools/github-actions/index.ts"
     },
     {
+      "name": "bytesToBase64",
+      "kind": "function",
+      "file": "src/tools/github-actions/index.ts"
+    },
+    {
       "name": "config",
       "kind": "function",
       "file": "src/tools/github-actions/index.ts"
@@ -1144,6 +1159,16 @@
       "file": "src/tools/github-actions/index.ts"
     },
     {
+      "name": "executeOperation",
+      "kind": "method",
+      "file": "src/tools/github-actions/index.ts"
+    },
+    {
+      "name": "extractReference",
+      "kind": "function",
+      "file": "src/tools/github-actions/index.ts"
+    },
+    {
       "name": "github",
       "kind": "function",
       "file": "src/tools/github-actions/index.ts"
@@ -1159,6 +1184,21 @@
       "file": "src/tools/github-actions/index.ts"
     },
     {
+      "name": "inferMimeType",
+      "kind": "function",
+      "file": "src/tools/github-actions/index.ts"
+    },
+    {
+      "name": "normalizeActionRequest",
+      "kind": "function",
+      "file": "src/tools/github-actions/index.ts"
+    },
+    {
+      "name": "normalizeInputFile",
+      "kind": "function",
+      "file": "src/tools/github-actions/index.ts"
+    },
+    {
       "name": "pollRun",
       "kind": "function",
       "file": "src/tools/github-actions/index.ts"
@@ -1169,7 +1209,17 @@
       "file": "src/tools/github-actions/index.ts"
     },
     {
+      "name": "readLocalFile",
+      "kind": "function",
+      "file": "src/tools/github-actions/index.ts"
+    },
+    {
       "name": "registerGitHubActionsTools",
+      "kind": "function",
+      "file": "src/tools/github-actions/index.ts"
+    },
+    {
+      "name": "safeFileName",
       "kind": "function",
       "file": "src/tools/github-actions/index.ts"
     },
