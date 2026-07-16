@@ -116,9 +116,9 @@ type Artifact = {
   expired: boolean;
 };
 
-
 function safeFileName(input: string, fallback: string): string {
-  const normalized = input.replace(/\\/g, "/").split("/").filter(Boolean).pop() ?? fallback;
+  const normalized =
+    input.replace(/\\/g, "/").split("/").filter(Boolean).pop() ?? fallback;
   const stripped = normalized.replace(/[^A-Za-z0-9._-]/g, "_").slice(0, 160);
   return stripped || fallback;
 }
@@ -142,7 +142,10 @@ function bytesToBase64(bytes: Uint8Array): string {
 
 async function readLocalFile(path: string): Promise<Uint8Array> {
   try {
-    const dynamicImport = new Function("specifier", "return import(specifier)") as (
+    const dynamicImport = new Function(
+      "specifier",
+      "return import(specifier)",
+    ) as (
       specifier: string,
     ) => Promise<{ readFile: (path: string) => Promise<Uint8Array> }>;
     const fs = await dynamicImport("node:fs/promises");
@@ -156,7 +159,9 @@ async function readLocalFile(path: string): Promise<Uint8Array> {
   }
 }
 
-function extractReference(file: Exclude<RawInputFile, string>): string | undefined {
+function extractReference(
+  file: Exclude<RawInputFile, string>,
+): string | undefined {
   return (
     file.path ??
     file.filePath ??
@@ -172,7 +177,10 @@ async function normalizeInputFile(
   index: number,
 ): Promise<z.infer<typeof inputFileSchema>> {
   if (typeof file === "object" && file.base64) {
-    const name = safeFileName(file.name ?? `input-${index + 1}.pdf`, `input-${index + 1}.pdf`);
+    const name = safeFileName(
+      file.name ?? `input-${index + 1}.pdf`,
+      `input-${index + 1}.pdf`,
+    );
     return inputFileSchema.parse({
       name,
       mimeType: inferMimeType(name, file.mimeType),
@@ -183,13 +191,17 @@ async function normalizeInputFile(
 
   const ref = typeof file === "string" ? file : extractReference(file);
   const name = safeFileName(
-    typeof file === "object" ? file.name ?? ref ?? "" : file,
+    typeof file === "object" ? (file.name ?? ref ?? "") : file,
     `input-${index + 1}.pdf`,
   );
-  const mimeType = inferMimeType(name, typeof file === "object" ? file.mimeType : undefined);
+  const mimeType = inferMimeType(
+    name,
+    typeof file === "object" ? file.mimeType : undefined,
+  );
 
   if (!ref) {
-    const id = typeof file === "object" ? file.file_id ?? file.fileId : undefined;
+    const id =
+      typeof file === "object" ? (file.file_id ?? file.fileId) : undefined;
     throw new GitHubActionsError(
       "FILE_REFERENCE_UNSUPPORTED",
       `Unable to resolve uploaded file${id ? ` ${id}` : ""}. Expected each file to be { name, mimeType, base64 }, a readable /mnt/data/... path, a file:// URI, or an https download_url.`,
@@ -458,7 +470,11 @@ async function executeOperation(
     options: normalizedArgs.options,
   });
   await dispatch(env, operation, requestPath, actionRequestId);
-  const run = await pollRun(env, actionRequestId, normalizedArgs.timeoutSeconds);
+  const run = await pollRun(
+    env,
+    actionRequestId,
+    normalizedArgs.timeoutSeconds,
+  );
   const foundArtifacts = await artifacts(env, run.id);
   const resultArtifact =
     foundArtifacts.find(
