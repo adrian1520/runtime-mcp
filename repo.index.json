@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-07-16T14:28:52.586346+00:00",
+  "generated_at": "2026-07-16T18:52:44.399303+00:00",
   "summary": {
-    "classes": 31,
+    "classes": 32,
     "interfaces": 31,
-    "types": 36,
+    "types": 39,
     "enums": 0,
-    "functions": 172,
-    "exports": 68,
-    "imports": 107
+    "functions": 176,
+    "exports": 75,
+    "imports": 109
   },
   "classes": [
     {
@@ -39,6 +39,11 @@
     {
       "name": "Executor",
       "file": "src/runtime/executor.ts",
+      "exported": true
+    },
+    {
+      "name": "FileValidationError",
+      "file": "src/files/uploaded-file.ts",
       "exported": true
     },
     {
@@ -326,6 +331,11 @@
   ],
   "types": [
     {
+      "name": "ActionFile",
+      "file": "src/tools/github-actions/index.ts",
+      "exported": false
+    },
+    {
       "name": "ActionRequest",
       "file": "src/tools/github-actions/index.ts",
       "exported": false
@@ -396,9 +406,9 @@
       "exported": true
     },
     {
-      "name": "GitHubContent",
-      "file": "src/tools/github-actions/index.ts",
-      "exported": false
+      "name": "FileReference",
+      "file": "src/files/uploaded-file.ts",
+      "exported": true
     },
     {
       "name": "GitHubContent",
@@ -446,11 +456,6 @@
       "exported": false
     },
     {
-      "name": "RawInputFile",
-      "file": "src/tools/github-actions/index.ts",
-      "exported": false
-    },
-    {
       "name": "ReadArgs",
       "file": "src/tools/repository/index.ts",
       "exported": false
@@ -493,6 +498,21 @@
     {
       "name": "ToolRegistry",
       "file": "src/contracts/tool.ts",
+      "exported": true
+    },
+    {
+      "name": "UploadedFile",
+      "file": "src/tools/github-actions/index.ts",
+      "exported": false
+    },
+    {
+      "name": "UploadedFile",
+      "file": "src/files/uploaded-file.ts",
+      "exported": true
+    },
+    {
+      "name": "UploadedFileSource",
+      "file": "src/files/uploaded-file.ts",
       "exported": true
     },
     {
@@ -587,6 +607,61 @@
       "name": "verifyBearer",
       "kind": "function",
       "file": "src/auth/bearer.ts"
+    },
+    {
+      "name": "base64ToBytes",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "bytesToBase64",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "idOf",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "inferMimeType",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "normalizeUploadedFile",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "readLocalFile",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "referenceOf",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "safeFileName",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "super",
+      "kind": "method",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "validateUploadedFile",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "validateUploadedFile",
+      "kind": "method",
+      "file": "src/files/uploaded-file.ts"
     },
     {
       "name": "fetch",
@@ -1129,11 +1204,6 @@
       "file": "src/tools/github-actions/index.ts"
     },
     {
-      "name": "bytesToBase64",
-      "kind": "function",
-      "file": "src/tools/github-actions/index.ts"
-    },
-    {
       "name": "config",
       "kind": "function",
       "file": "src/tools/github-actions/index.ts"
@@ -1159,16 +1229,6 @@
       "file": "src/tools/github-actions/index.ts"
     },
     {
-      "name": "executeOperation",
-      "kind": "method",
-      "file": "src/tools/github-actions/index.ts"
-    },
-    {
-      "name": "extractReference",
-      "kind": "function",
-      "file": "src/tools/github-actions/index.ts"
-    },
-    {
       "name": "github",
       "kind": "function",
       "file": "src/tools/github-actions/index.ts"
@@ -1184,17 +1244,12 @@
       "file": "src/tools/github-actions/index.ts"
     },
     {
-      "name": "inferMimeType",
-      "kind": "function",
-      "file": "src/tools/github-actions/index.ts"
-    },
-    {
       "name": "normalizeActionRequest",
       "kind": "function",
       "file": "src/tools/github-actions/index.ts"
     },
     {
-      "name": "normalizeInputFile",
+      "name": "normalizePdfUpload",
       "kind": "function",
       "file": "src/tools/github-actions/index.ts"
     },
@@ -1209,17 +1264,7 @@
       "file": "src/tools/github-actions/index.ts"
     },
     {
-      "name": "readLocalFile",
-      "kind": "function",
-      "file": "src/tools/github-actions/index.ts"
-    },
-    {
       "name": "registerGitHubActionsTools",
-      "kind": "function",
-      "file": "src/tools/github-actions/index.ts"
-    },
-    {
-      "name": "safeFileName",
       "kind": "function",
       "file": "src/tools/github-actions/index.ts"
     },
@@ -1229,22 +1274,17 @@
       "file": "src/tools/github-actions/index.ts"
     },
     {
+      "name": "toActionFile",
+      "kind": "function",
+      "file": "src/tools/github-actions/index.ts"
+    },
+    {
       "name": "utf8Base64",
       "kind": "function",
       "file": "src/tools/github-actions/index.ts"
     },
     {
-      "name": "validateBase64",
-      "kind": "function",
-      "file": "src/tools/github-actions/index.ts"
-    },
-    {
-      "name": "validateFiles",
-      "kind": "function",
-      "file": "src/tools/github-actions/index.ts"
-    },
-    {
-      "name": "validateFiles",
+      "name": "validateUploadedFile",
       "kind": "method",
       "file": "src/tools/github-actions/index.ts"
     },
@@ -1425,6 +1465,34 @@
     {
       "name": "ToolRegistry",
       "file": "src/contracts/tool.ts"
+    },
+    {
+      "name": "FileReference",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "FileValidationError",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "UploadedFile",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "UploadedFileSource",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "base64ToBytes",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "bytesToBase64",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "validateUploadedFile",
+      "file": "src/files/uploaded-file.ts"
     },
     {
       "name": "McpManifest",
@@ -1667,6 +1735,10 @@
     {
       "file": "src/agents/tool-catalog.ts",
       "from": "./types"
+    },
+    {
+      "file": "src/files/uploaded-file.ts",
+      "from": "zod"
     },
     {
       "file": "src/index.ts",
@@ -2035,6 +2107,10 @@
     {
       "file": "src/tools/github-actions/index.ts",
       "from": "../../contracts/tool"
+    },
+    {
+      "file": "src/tools/github-actions/index.ts",
+      "from": "../../files/uploaded-file.js"
     },
     {
       "file": "src/tools/github-actions/index.ts",
