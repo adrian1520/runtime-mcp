@@ -1,0 +1,4 @@
+pypdf==5.7.0
+PyMuPDF==1.26.3
+Pillow==11.3.0
+ocrmypdf==16.10.4

@@ -1,0 +1,20 @@
+name: Example PDF Render Reusable Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      request_path:
+        required: true
+        type: string
+      request_id:
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+jobs:
+  render:
+    uses: ./.github/workflows/runtime-pdf-backend.yml
+    with:
+      operation: render
+      request_path: ${{ inputs.request_path }}
+      request_id: ${{ inputs.request_id }}
