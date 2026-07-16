@@ -1,9 +1,9 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-16T13:43:29.705454+00:00",
+  "generated_at": "2026-07-16T13:58:32.750362+00:00",
   "summary": {
-    "files": 135,
-    "directories": 39
+    "files": 136,
+    "directories": 40
   },
   "directories": [
     {
@@ -200,6 +200,11 @@
       "path": "src/tools/repository",
       "depth": 3,
       "category": "general"
+    },
+    {
+      "path": "tests",
+      "depth": 1,
+      "category": "tests"
     }
   ],
   "files": [
@@ -332,8 +337,8 @@
       "language": "unknown",
       "category": "general",
       "depth": 0,
-      "size": 31,
-      "sha256": "3efa4e0ff2bc97281b01466654cca1eb47bf53d327d5d6b9b8f95435e57417c6"
+      "size": 51,
+      "sha256": "b2e096d90fc13b7c64c64e297a2dd860ed66e976afbf9915588d08dec7def7bc"
     },
     {
       "path": "README.md",
@@ -1003,8 +1008,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 41003,
-      "sha256": "67453ec4157c1243179610d084e7a7ebd8150344425968ef84adbf269170cae9"
+      "size": 44314,
+      "sha256": "2a5e62a50b122d6bfe606d601e25152c1e7dc83a97e992794f88fff60986e31c"
     },
     {
       "path": "requirements-backend.txt",
@@ -1630,8 +1635,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 9752,
-      "sha256": "57dae2c153c13e177b47c108fdebf868c7104e35eff62aeb81b3fc768ff9c97a"
+      "size": 15135,
+      "sha256": "394ab4d78542c989e88c861c38dd4c2711ffd4dd37e7c10db5586c30344feeb2"
     },
     {
       "path": "src/tools/memory/index.ts",
@@ -1665,6 +1670,17 @@
       "depth": 3,
       "size": 14287,
       "sha256": "13cc687a675788ac1b69b4738b1b42cd682f99f3bf1b26d922a66573890e4e09"
+    },
+    {
+      "path": "tests/github-actions-normalize.test.mjs",
+      "name": "github-actions-normalize.test.mjs",
+      "directory": "tests",
+      "extension": "mjs",
+      "language": "javascript",
+      "category": "tests",
+      "depth": 1,
+      "size": 3512,
+      "sha256": "b35b64fea8d8abd6a4c010d4c969e573cb52e2ce732e669863c8f1652264ae2e"
     },
     {
       "path": "tsconfig.json",
