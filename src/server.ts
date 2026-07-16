@@ -4,6 +4,7 @@ import { registerMemoryTools } from "./tools/memory";
 import { registerProvenanceTools } from "./tools/provenance";
 import { registerRepositoryTools } from "./tools/repository";
 import { registerAgentTools } from "./tools/agent";
+import { registerGitHubActionsTools } from "./tools/github-actions";
 
 export type Env = {
   STATE_KV: KVNamespace;
@@ -36,3 +37,5 @@ registerProvenanceTools(server.tools);
 registerRepositoryTools(server.tools);
 
 registerAgentTools(server.tools);
+
+registerGitHubActionsTools(server.tools);

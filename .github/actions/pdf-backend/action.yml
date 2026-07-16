@@ -1,0 +1,37 @@
+name: Runtime MCP PDF backend
+description: Install dependencies and execute one deterministic PDF backend operation.
+inputs:
+  operation:
+    required: true
+    description: Backend operation name.
+  request_path:
+    required: true
+    description: Repository path to request JSON.
+  workdir:
+    required: false
+    default: runtime-work
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Install system OCR dependencies
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends tesseract-ocr ghostscript
+    - name: Install Python dependencies
+      shell: bash
+      run: python -m pip install --upgrade pip && python -m pip install -r requirements-backend.txt
+    - name: Prepare workspace
+      shell: bash
+      run: mkdir -p "${{ inputs.workdir }}/output"
+    - name: Execute backend
+      shell: bash
+      run: python -m backend.runner --operation "${{ inputs.operation }}" --request "${{ inputs.request_path }}" --workdir "${{ inputs.workdir }}"
+    - name: Validate outputs
+      if: always()
+      shell: bash
+      run: test -s "${{ inputs.workdir }}/output/execution.json" && test -s "${{ inputs.workdir }}/output/artifacts.json"

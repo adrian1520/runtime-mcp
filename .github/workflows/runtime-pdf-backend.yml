@@ -1,0 +1,79 @@
+name: Runtime MCP PDF Backend
+run-name: runtime-mcp ${{ inputs.operation }} ${{ inputs.request_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: PDF backend operation.
+        required: true
+        type: choice
+        options: [render, ocr, split, merge, metadata, image_to_pdf, pdf_to_images, searchable, rotate, crop]
+      request_path:
+        description: Repository path containing request JSON.
+        required: true
+        type: string
+      request_id:
+        description: Runtime MCP request id.
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      operation:
+        required: true
+        type: string
+      request_path:
+        required: true
+        type: string
+      request_id:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  execute:
+    name: Execute Python backend
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate request path
+        shell: bash
+        run: |
+          case "${{ inputs.request_path }}" in
+            .github/runtime-mcp/requests/*.json) test -f "${{ inputs.request_path }}" ;;
+            *) echo "Invalid request_path" >&2; exit 64 ;;
+          esac
+      - name: Run PDF backend
+        id: backend
+        uses: ./.github/actions/pdf-backend
+        with:
+          operation: ${{ inputs.operation }}
+          request_path: ${{ inputs.request_path }}
+          workdir: runtime-work
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: runtime-mcp-${{ inputs.request_id }}
+          path: runtime-work/output
+          if-no-files-found: error
+          retention-days: 7
+      - name: Generate workflow summary
+        if: always()
+        shell: bash
+        run: |
+          echo "## Runtime MCP PDF Backend" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Request: ${{ inputs.request_id }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Operation: ${{ inputs.operation }}" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f runtime-work/output/execution.json ]; then
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat runtime-work/output/execution.json >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
