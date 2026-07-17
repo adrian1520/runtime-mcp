@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       pdf_file:
-        description: "PDF file path (e.g. input.pdf or files/document.pdf)"
+        description: "Path to PDF file"
         required: true
         default: "input.pdf"
         type: string
@@ -14,157 +14,129 @@ on:
         required: true
         type: choice
         options:
-          - high-dpi
           - vector
+          - high-dpi
 
       dpi:
-        description: "DPI for raster output (ignored for vector format)"
+        description: "Raster DPI"
         required: false
         default: "2400"
         type: string
 
 jobs:
-  export-pdf-pages:
+  export:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify PDF file exists
-        shell: bash
+      - name: Install PDF tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ghostscript \
+            qpdf \
+            poppler-utils
+
+      - name: Verify tools
+        run: |
+          set -e
+
+          gs --version
+          qpdf --version
+          pdfinfo -v
+
+      - name: Verify input PDF
         run: |
           set -euo pipefail
 
-          if [ ! -f "${{ inputs.pdf_file }}" ]; then
-            echo "❌ File not found: ${{ inputs.pdf_file }}"
-            ls -la
+          FILE="${{ inputs.pdf_file }}"
+
+          if [ ! -f "$FILE" ]; then
+            echo "ERROR: PDF not found."
             exit 1
           fi
 
-          echo "✅ PDF found"
-          file "${{ inputs.pdf_file }}"
-          ls -lh "${{ inputs.pdf_file }}"
-
-      - name: Validate PDF
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          if ! file "${{ inputs.pdf_file }}" | grep -q "PDF"; then
-            echo "❌ Invalid PDF"
+          if ! file "$FILE" | grep -q PDF; then
+            echo "ERROR: Invalid PDF."
             exit 1
           fi
 
-          PAGES=$(pdfinfo "${{ inputs.pdf_file }}" | awk '/Pages:/ {print $2}')
+          PAGES=$(pdfinfo "$FILE" | awk '/Pages:/ {print $2}')
 
           echo "Pages: $PAGES"
 
           if [ "$PAGES" -lt 40 ]; then
-            echo "❌ PDF must contain at least 40 pages."
+            echo "ERROR: PDF must contain at least 40 pages."
             exit 1
           fi
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      - name: Create output directory
+        run: mkdir -p output
 
-      - name: Install Node dependencies
-        run: npm ci
+      ###################################################################
+      # VECTOR PDF
+      ###################################################################
 
-      - name: Install PDF tools
-        run: |
-          sudo apt-get update
-
-          sudo apt-get install -y \
-            ghostscript \
-            poppler-utils \
-            qpdf \
-            img2pdf
-
-      ####################################################################
-      # HIGH DPI
-      ####################################################################
-
-      - name: Export pages 30-40 (High DPI)
-        if: ${{ inputs.output_format == 'high-dpi' }}
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          mkdir -p output/high-dpi
-
-          echo "Rendering pages 30-40 at ${{ inputs.dpi }} DPI..."
-
-          gs \
-            -q \
-            -dNOPAUSE \
-            -dBATCH \
-            -dFirstPage=30 \
-            -dLastPage=40 \
-            -sDEVICE=pngalpha \
-            -r${{ inputs.dpi }} \
-            -sOutputFile=output/high-dpi/page-%03d.png \
-            "${{ inputs.pdf_file }}"
-
-          echo "Creating PDF..."
-
-          img2pdf \
-            output/high-dpi/page-*.png \
-            -o output/pages-30-40-${{ inputs.dpi }}dpi.pdf
-
-          ls -lah output/high-dpi
-          ls -lah output/pages-30-40-${{ inputs.dpi }}dpi.pdf
-
-      ####################################################################
-      # VECTOR
-      ####################################################################
-
-      - name: Export pages 30-40 (Vector)
+      - name: Export vector PDF
         if: ${{ inputs.output_format == 'vector' }}
-        shell: bash
         run: |
           set -euo pipefail
-
-          mkdir -p output
-
-          echo "Extracting vector pages..."
 
           qpdf \
             "${{ inputs.pdf_file }}" \
             --pages "${{ inputs.pdf_file }}" 30-40 -- \
             output/pages-30-40-vector.pdf
 
-          ls -lah output/pages-30-40-vector.pdf
+          ls -lh output
 
-      ####################################################################
-      # METADATA
-      ####################################################################
+      ###################################################################
+      # HIGH DPI PNG
+      ###################################################################
 
-      - name: Generate metadata
-        shell: bash
+      - name: Export high DPI PNG
+        if: ${{ inputs.output_format == 'high-dpi' }}
         run: |
           set -euo pipefail
 
-          mkdir -p output
+          mkdir -p output/high-dpi
 
+          gs \
+            -dSAFER \
+            -dBATCH \
+            -dNOPAUSE \
+            -sDEVICE=pngalpha \
+            -r${{ inputs.dpi }} \
+            -dFirstPage=30 \
+            -dLastPage=40 \
+            -sOutputFile=output/high-dpi/page-%03d.png \
+            "${{ inputs.pdf_file }}"
+
+          ls -lh output/high-dpi
+
+      ###################################################################
+      # METADATA
+      ###################################################################
+
+      - name: Generate metadata
+        run: |
           cat > output/metadata.json <<EOF
           {
-            "source_file": "${{ inputs.pdf_file }}",
-            "pages_extracted": "30-40",
-            "output_format": "${{ inputs.output_format }}",
-            "dpi": "${{ inputs.dpi }}",
-            "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "workflow_run": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            "source_file":"${{ inputs.pdf_file }}",
+            "pages":"30-40",
+            "format":"${{ inputs.output_format }}",
+            "dpi":"${{ inputs.dpi }}",
+            "generated":"$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "workflow":"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           }
           EOF
 
           cat output/metadata.json
 
-      ####################################################################
-      # ARTIFACT
-      ####################################################################
+      ###################################################################
+      # UPLOAD
+      ###################################################################
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -172,28 +144,3 @@ jobs:
           name: pdf-pages-30-40-${{ inputs.output_format }}
           path: output/
           retention-days: 30
-
-      ####################################################################
-      # OPTIONAL RELEASE
-      ####################################################################
-
-      - name: Create GitHub Release
-        if: github.ref == 'refs/heads/main'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: pdf-export-${{ github.run_number }}
-          files: |
-            output/*.pdf
-            output/metadata.json
-          body: |
-            ## PDF Export
-
-            Source: ${{ inputs.pdf_file }}
-            Pages: 30-40
-            Format: ${{ inputs.output_format }}
-            DPI: ${{ inputs.dpi }}
-
-            Workflow:
-            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
