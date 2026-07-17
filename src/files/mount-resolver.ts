@@ -1,9 +1,9 @@
 /**
  * Mount Path Resolver
- * 
+ *
  * Handles rewriting paths from proxied mounts (e.g., /mnt/data) to normalized file objects.
  * This layer bridges the gap between mount-based file access and the UploadedFile model.
- * 
+ *
  * Problem: "File arg rewrite paths are required when proxied mounts are present"
  * Solution: Resolve mount paths through a configured mount map that transforms:
  *   /mnt/data/Lubicz.pdf -> { mount: "data", path: "Lubicz.pdf" } -> normalized UploadedFile
@@ -66,7 +66,9 @@ export class MountPathResolver {
 
     for (const mount of this.sortedMounts) {
       const mountPath = mount.mountPath.replace(/\\/g, "/");
-      const normalizedMount = mountPath.endsWith("/") ? mountPath : `${mountPath}/`;
+      const normalizedMount = mountPath.endsWith("/")
+        ? mountPath
+        : `${mountPath}/`;
 
       if (normalized.startsWith(normalizedMount)) {
         const relativePath = normalized.slice(normalizedMount.length);
@@ -75,7 +77,10 @@ export class MountPathResolver {
         // Apply rewrite rules
         if (mount.rewriteRules) {
           for (const rule of mount.rewriteRules) {
-            rewrittenPath = rewrittenPath.replace(rule.pattern, rule.replacement);
+            rewrittenPath = rewrittenPath.replace(
+              rule.pattern,
+              rule.replacement,
+            );
           }
         }
 
