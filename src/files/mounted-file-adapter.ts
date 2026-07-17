@@ -1,9 +1,9 @@
 /**
  * Mounted File Adapter
- * 
+ *
  * Integrates MountPathResolver with UploadedFile normalization.
  * Converts mounted file paths into normalized UploadedFile objects.
- * 
+ *
  * Flow:
  *   Mounted path (/mnt/data/Lubicz.pdf)
  *   -> MountPathResolver (resolve mount, rewrite path)
@@ -62,16 +62,14 @@ export class MountedFileAdapter {
   private throwOnUnmounted: boolean;
 
   constructor(context: MountedFileContext = {}) {
-    this.resolver =
-      context.resolver || createDefaultMountResolver();
-    this.pathNormalizer =
-      context.pathNormalizer || ((p: string) => p);
+    this.resolver = context.resolver || createDefaultMountResolver();
+    this.pathNormalizer = context.pathNormalizer || ((p: string) => p);
     this.throwOnUnmounted = context.throwOnUnmounted ?? false;
   }
 
   /**
    * Normalize a mounted file path into an UploadedFile
-   * 
+   *
    * @param filePath - Path to the mounted file (e.g., /mnt/data/Lubicz.pdf)
    * @param index - Index for multi-file operations
    * @returns Promise resolving to MountedFileResult
@@ -85,7 +83,10 @@ export class MountedFileAdapter {
     if (!resolution.matched) {
       const error =
         `File path ${filePath} does not match any configured mount. ` +
-        `Registered mounts: ${this.resolver.listMounts().map((m) => m.name).join(", ")}`;
+        `Registered mounts: ${this.resolver
+          .listMounts()
+          .map((m) => m.name)
+          .join(", ")}`;
 
       if (this.throwOnUnmounted) {
         throw new FileValidationError(
@@ -128,8 +129,7 @@ export class MountedFileAdapter {
 
       return { success: true, file, resolution };
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : String(error);
+      const message = error instanceof Error ? error.message : String(error);
       return {
         success: false,
         resolution,
@@ -145,9 +145,7 @@ export class MountedFileAdapter {
     filePaths: string[],
   ): Promise<MountedFileResult[]> {
     return Promise.all(
-      filePaths.map((path, index) =>
-        this.normalizeMountedFile(path, index),
-      ),
+      filePaths.map((path, index) => this.normalizeMountedFile(path, index)),
     );
   }
 
@@ -202,10 +200,8 @@ export class MountedFileAdapter {
   private inferMimeType(name: string): string {
     const lower = name.toLowerCase();
     if (lower.endsWith(".png")) return "image/png";
-    if (lower.endsWith(".jpg") || lower.endsWith(".jpeg"))
-      return "image/jpeg";
-    if (lower.endsWith(".tif") || lower.endsWith(".tiff"))
-      return "image/tiff";
+    if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
+    if (lower.endsWith(".tif") || lower.endsWith(".tiff")) return "image/tiff";
     if (lower.endsWith(".webp")) return "image/webp";
     return "application/pdf";
   }
