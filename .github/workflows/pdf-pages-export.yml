@@ -1,0 +1,135 @@
+name: PDF Pages Export (30-40)
+
+on:
+  workflow_dispatch:
+    inputs:
+      pdf_url:
+        description: 'URL to PDF file or path in repository'
+        required: true
+        type: string
+      output_format:
+        description: 'Output format'
+        required: true
+        type: choice
+        options:
+          - 'high-dpi'
+          - 'vector'
+      dpi:
+        description: 'DPI for raster output (ignored for vector format)'
+        required: false
+        default: '2400'
+        type: string
+
+jobs:
+  export-pdf-pages:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install PDF processing tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ghostscript pdftk-java poppler-utils
+
+      - name: Download PDF
+        run: |
+          if [[ "${{ inputs.pdf_url }}" == http* ]]; then
+            curl -L "${{ inputs.pdf_url }}" -o input.pdf
+          else
+            cp "${{ inputs.pdf_url }}" input.pdf
+          fi
+          file input.pdf
+          pdfinfo input.pdf || echo "PDF info tool not available"
+
+      - name: Extract pages 30-40 (High DPI - Raster)
+        if: ${{ inputs.output_format == 'high-dpi' }}
+        run: |
+          mkdir -p output/high-dpi
+          
+          # Extract pages 30-40 to high-resolution images using Ghostscript
+          gs -q -dNOPAUSE -dBATCH \
+            -dFirstPage=30 -dLastPage=40 \
+            -sDEVICE=pngalpha \
+            -r${{ inputs.dpi }} \
+            -sOutputFile=output/high-dpi/page-%03d.png \
+            input.pdf
+          
+          # Create merged high-DPI PDF from extracted pages
+          echo "Creating high-DPI PDF from extracted pages..."
+          convert output/high-dpi/page-*.png \
+            -quality 95 \
+            -compress jpeg \
+            output/pages-30-40-${{ inputs.dpi }}dpi.pdf
+          
+          ls -lah output/
+
+      - name: Extract pages 30-40 (Vector PDF)
+        if: ${{ inputs.output_format == 'vector' }}
+        run: |
+          mkdir -p output/vector
+          
+          # Extract pages 30-40 as vector PDF using qpdf
+          # First, extract the range
+          pdfseparate -f 30 -l 40 input.pdf output/vector/page-%d.pdf
+          
+          # Merge extracted pages back into single PDF
+          pdfunite output/vector/page-*.pdf output/pages-30-40-vector.pdf 2>/dev/null || \
+          gs -q -dNOPAUSE -dBATCH \
+            -sDEVICE=pdfwrite \
+            -sOutputFile=output/pages-30-40-vector.pdf \
+            -dFirstPage=30 -dLastPage=40 \
+            input.pdf
+          
+          ls -lah output/
+
+      - name: Generate metadata
+        run: |
+          cat > output/metadata.json << 'EOF'
+          {
+            "source_pdf": "${{ inputs.pdf_url }}",
+            "pages_extracted": "30-40",
+            "output_format": "${{ inputs.output_format }}",
+            "dpi": "${{ inputs.dpi }}",
+            "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "workflow_run": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          }
+          EOF
+          cat output/metadata.json
+
+      - name: Upload output artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-pages-30-40-${{ inputs.output_format }}
+          path: output/
+          retention-days: 30
+
+      - name: Create release
+        if: success()
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            output/pages-30-40-*.pdf
+            output/metadata.json
+          tag_name: pdf-export-${{ github.run_number }}
+          body: |
+            ## PDF Pages Export Report
+            
+            - **Source**: ${{ inputs.pdf_url }}
+            - **Pages**: 30-40
+            - **Format**: ${{ inputs.output_format }}
+            - **DPI**: ${{ inputs.dpi }}
+            - **Generated**: ${{ github.event.repository.updated_at }}
+            
+            [View full workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
