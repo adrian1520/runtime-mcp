@@ -1,9 +1,9 @@
 /**
  * Mounted PDF Tool
- * 
+ *
  * Extends PDF tool capabilities to handle files from proxied mounts.
  * Resolves mounted paths and normalizes them for OCR and PDF processing.
- * 
+ *
  * Usage:
  *   - Call `upload_pdf_mounted` with a path like /mnt/data/Lubicz.pdf
  *   - Returns normalized UploadedFile ready for OCR/PDF tools
@@ -65,7 +65,10 @@ export function initializeMountedFileAdapter(
 // Zod schemas for mount-based operations
 
 const mountedPdfUploadSchema = z.object({
-  path: z.string().min(1).describe("Mounted file path (e.g., /mnt/data/Lubicz.pdf)"),
+  path: z
+    .string()
+    .min(1)
+    .describe("Mounted file path (e.g., /mnt/data/Lubicz.pdf)"),
   normalizePath: z
     .boolean()
     .optional()
