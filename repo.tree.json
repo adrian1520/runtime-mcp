@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-17T08:33:42.705544+00:00",
+  "generated_at": "2026-07-17T08:40:13.411829+00:00",
   "summary": {
-    "files": 142,
+    "files": 143,
     "directories": 41
   },
   "directories": [
@@ -311,6 +311,17 @@
       "depth": 2,
       "size": 1317,
       "sha256": "02f9e8ad83515f4cab895eb304a34929064d11c932dea3c192f9e670a6d6d083"
+    },
+    {
+      "path": ".github/workflows/pdf-advanced-processing.yml",
+      "name": "pdf-advanced-processing.yml",
+      "directory": ".github/workflows",
+      "extension": "yml",
+      "language": "yaml",
+      "category": "workflow",
+      "depth": 2,
+      "size": 10615,
+      "sha256": "82c6655bdaae0f77c18eea36703a3c40f28a561210c6d0a1069e4a2c5f726d87"
     },
     {
       "path": ".github/workflows/pdf-converter.yml",
@@ -1036,7 +1047,7 @@
       "category": "config",
       "depth": 0,
       "size": 54171,
-      "sha256": "2e3bc034fb0727442cff41f2cc2fcb8ef94399e5d5183b52219b7193d5b40b72"
+      "sha256": "3ae9496371e63639aa83c57a357c63b7764913252890df7ed81cca851ad43d04"
     },
     {
       "path": "requirements-backend.txt",
