@@ -1,0 +1,305 @@
+name: PDF Advanced Processing
+
+on:
+  workflow_dispatch:
+    inputs:
+      pdf_file:
+        description: 'PDF file path in repository'
+        required: true
+        default: 'input.pdf'
+        type: string
+      operations:
+        description: 'Comma-separated operations: ocr,extract_tables,extract_text,convert_dpi'
+        required: true
+        type: string
+      pages:
+        description: 'Page range (all, 1-5, 10, 1,3,5)'
+        required: false
+        default: 'all'
+        type: string
+      dpi:
+        description: 'Target DPI (300, 600, 1200, 2400)'
+        required: false
+        default: '2400'
+        type: string
+      output_format:
+        description: 'Output format: markdown, json, html'
+        required: false
+        default: 'markdown'
+        type: choice
+        options:
+          - 'markdown'
+          - 'json'
+          - 'html'
+      task_id:
+        description: 'Task ID for tracking'
+        required: false
+        type: string
+
+jobs:
+  process-pdf:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Verify PDF file exists
+        run: |
+          if [ ! -f "${{ inputs.pdf_file }}" ]; then
+            echo "❌ Error: File not found: ${{ inputs.pdf_file }}"
+            exit 1
+          fi
+          echo "✅ PDF file found: ${{ inputs.pdf_file }}"
+          file "${{ inputs.pdf_file }}"
+          ls -lh "${{ inputs.pdf_file }}"
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ghostscript \
+            poppler-utils \
+            tesseract-ocr \
+            imagemagick \
+            python3-pip \
+            python3-pdf2image \
+            python3-pytesseract
+          
+          pip3 install pdf2image pytesseract opencv-python numpy pandas openpyxl
+
+      - name: Setup output directories
+        run: |
+          mkdir -p output/ocr
+          mkdir -p output/tables
+          mkdir -p output/text
+          mkdir -p output/images
+          mkdir -p output/results
+
+      - name: Get PDF info
+        run: |
+          echo "=== PDF Information ==="
+          pdfinfo "${{ inputs.pdf_file }}"
+          PAGES=$(pdfinfo "${{ inputs.pdf_file }}" | grep Pages | awk '{print $2}')
+          echo "Total pages: $PAGES"
+          echo "TOTAL_PAGES=$PAGES" >> $GITHUB_ENV
+
+      - name: Parse pages range
+        run: |
+          PAGES_INPUT="${{ inputs.pages }}"
+          TOTAL_PAGES=${{ env.TOTAL_PAGES }}
+          
+          if [ "$PAGES_INPUT" = "all" ]; then
+            PAGES="1-$TOTAL_PAGES"
+          else
+            PAGES="$PAGES_INPUT"
+          fi
+          
+          echo "Processing pages: $PAGES"
+          echo "PAGES_TO_PROCESS=$PAGES" >> $GITHUB_ENV
+
+      - name: Extract pages to images (2400 DPI)
+        if: contains(inputs.operations, 'ocr') || contains(inputs.operations, 'extract_tables') || contains(inputs.operations, 'convert_dpi')
+        run: |
+          echo "Extracting pages at ${{ inputs.dpi }} DPI..."
+          
+          IFS='-' read -r START END <<< "${{ env.PAGES_TO_PROCESS }}"
+          if [ -z "$END" ]; then
+            END=$START
+          fi
+          
+          gs -q -dNOPAUSE -dBATCH \
+            -dFirstPage=$START -dLastPage=$END \
+            -sDEVICE=png16m \
+            -r${{ inputs.dpi }} \
+            -sOutputFile=output/images/page-%04d.png \
+            "${{ inputs.pdf_file }}"
+          
+          echo "✅ Pages extracted to images"
+          ls -lh output/images/
+
+      - name: Run OCR on images
+        if: contains(inputs.operations, 'ocr')
+        run: |
+          echo "Running OCR on extracted images..."
+          
+          for img in output/images/*.png; do
+            page_num=$(basename "$img" .png | sed 's/page-//')
+            
+            echo "Processing page $page_num..."
+            
+            # OCR with tesseract
+            tesseract "$img" "output/ocr/page-$page_num" \
+              -l pol \
+              --psm 1 \
+              -c preserve_interword_spaces=1
+            
+            # Generate markdown
+            cat "output/ocr/page-$page_num.txt" >> "output/results/ocr_full.md"
+            echo "" >> "output/results/ocr_full.md"
+            echo "---" >> "output/results/ocr_full.md"
+            echo "" >> "output/results/ocr_full.md"
+          done
+          
+          echo "✅ OCR completed"
+          wc -l output/results/ocr_full.md
+
+      - name: Extract text from PDF
+        if: contains(inputs.operations, 'extract_text')
+        run: |
+          echo "Extracting text from PDF..."
+          
+          pdftotext \
+            -layout \
+            "${{ inputs.pdf_file }}" \
+            "output/results/text_extraction.txt"
+          
+          echo "✅ Text extracted"
+          wc -l output/results/text_extraction.txt
+
+      - name: Extract tables
+        if: contains(inputs.operations, 'extract_tables')
+        run: |
+          python3 << 'EOF'
+          import sys
+          import json
+          from pathlib import Path
+          
+          # Try to extract tables using pdfplumber if available
+          try:
+              import pdfplumber
+              
+              pdf_file = "${{ inputs.pdf_file }}"
+              output_file = "output/results/tables_extraction.json"
+              
+              tables_data = []
+              
+              with pdfplumber.open(pdf_file) as pdf:
+                  for page_num, page in enumerate(pdf.pages, 1):
+                      tables = page.extract_tables()
+                      if tables:
+                          for table_idx, table in enumerate(tables):
+                              tables_data.append({
+                                  "page": page_num,
+                                  "table_index": table_idx,
+                                  "data": table
+                              })
+              
+              with open(output_file, 'w') as f:
+                  json.dump(tables_data, f, indent=2, ensure_ascii=False)
+              
+              print(f"✅ Found {len(tables_data)} tables")
+              
+          except ImportError:
+              print("pdfplumber not available, trying alternative method...")
+              
+              # Fallback: document that tables extraction requires pdfplumber
+              with open("output/results/tables_extraction.json", 'w') as f:
+                  json.dump({
+                      "status": "pdfplumber not installed",
+                      "message": "Install pdfplumber for table extraction: pip install pdfplumber"
+                  }, f)
+          
+          EOF
+
+      - name: Convert to markdown format
+        if: ${{ inputs.output_format == 'markdown' }}
+        run: |
+          echo "Converting results to Markdown format..."
+          
+          cat > "output/results/final_report.md" << 'EOF'
+          # PDF Processing Report
+          
+          **Generated at:** $(date)
+          **Task ID:** ${{ inputs.task_id }}
+          **Operations:** ${{ inputs.operations }}
+          **Pages:** ${{ env.PAGES_TO_PROCESS }}
+          **DPI:** ${{ inputs.dpi }}
+          
+          ## Content
+          
+          EOF
+          
+          if [ -f "output/results/ocr_full.md" ]; then
+            echo "### OCR Content" >> "output/results/final_report.md"
+            echo "" >> "output/results/final_report.md"
+            cat "output/results/ocr_full.md" >> "output/results/final_report.md"
+            echo "" >> "output/results/final_report.md"
+          fi
+          
+          if [ -f "output/results/text_extraction.txt" ]; then
+            echo "### Extracted Text" >> "output/results/final_report.md"
+            echo '```' >> "output/results/final_report.md"
+            head -100 "output/results/text_extraction.txt" >> "output/results/final_report.md"
+            echo '```' >> "output/results/final_report.md"
+            echo "" >> "output/results/final_report.md"
+          fi
+          
+          echo "✅ Markdown report created"
+
+      - name: Convert to JSON format
+        if: ${{ inputs.output_format == 'json' }}
+        run: |
+          python3 << 'EOF'
+          import json
+          from pathlib import Path
+          
+          result = {
+              "task_id": "${{ inputs.task_id }}",
+              "operations": "${{ inputs.operations }}".split(","),
+              "pages": "${{ env.PAGES_TO_PROCESS }}",
+              "dpi": ${{ inputs.dpi }},
+              "timestamp": "$(date -Iseconds)",
+              "content": {
+                  "ocr": None,
+                  "text": None,
+                  "tables": None
+              }
+          }
+          
+          # Load OCR results
+          if Path("output/results/ocr_full.md").exists():
+              with open("output/results/ocr_full.md") as f:
+                  result["content"]["ocr"] = f.read()
+          
+          # Load text extraction
+          if Path("output/results/text_extraction.txt").exists():
+              with open("output/results/text_extraction.txt") as f:
+                  result["content"]["text"] = f.read()
+          
+          # Load tables
+          if Path("output/results/tables_extraction.json").exists():
+              with open("output/results/tables_extraction.json") as f:
+                  result["content"]["tables"] = json.load(f)
+          
+          with open("output/results/final_report.json", "w") as f:
+              json.dump(result, f, indent=2, ensure_ascii=False)
+          
+          print("✅ JSON report created")
+          
+          EOF
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pdf-processing-results-${{ inputs.task_id }}
+          path: output/
+          retention-days: 30
+
+      - name: Create summary
+        run: |
+          echo "## PDF Processing Complete ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Task ID:** ${{ inputs.task_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Operations:** ${{ inputs.operations }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Pages Processed:** ${{ env.PAGES_TO_PROCESS }}" >> $GITHUB_STEP_SUMMARY
+          echo "**DPI:** ${{ inputs.dpi }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Output Format:** ${{ inputs.output_format }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Generated Files" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          ls -lh output/results/ >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
