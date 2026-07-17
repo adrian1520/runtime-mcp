@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-07-16T18:52:44.399303+00:00",
+  "generated_at": "2026-07-17T04:50:21.596355+00:00",
   "summary": {
-    "classes": 32,
+    "classes": 33,
     "interfaces": 31,
-    "types": 39,
+    "types": 47,
     "enums": 0,
-    "functions": 176,
-    "exports": 75,
-    "imports": 109
+    "functions": 189,
+    "exports": 82,
+    "imports": 114
   },
   "classes": [
     {
@@ -70,6 +70,11 @@
       "name": "MetadataPlugin",
       "file": "src/pdf-project/catalog.ts",
       "exported": false
+    },
+    {
+      "name": "MountPathResolver",
+      "file": "src/files/mount-resolver.ts",
+      "exported": true
     },
     {
       "name": "PdfFramework",
@@ -392,6 +397,11 @@
     },
     {
       "name": "Env",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
+      "exported": false
+    },
+    {
+      "name": "Env",
       "file": "src/tools/memory/index.ts",
       "exported": false
     },
@@ -419,6 +429,36 @@
       "name": "JsonSchema",
       "file": "src/contracts/tool.ts",
       "exported": true
+    },
+    {
+      "name": "MountConfig",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
+      "exported": false
+    },
+    {
+      "name": "MountConfig",
+      "file": "src/files/mount-resolver.ts",
+      "exported": true
+    },
+    {
+      "name": "MountInfoQueryArgs",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
+      "exported": false
+    },
+    {
+      "name": "MountResolution",
+      "file": "src/files/mount-resolver.ts",
+      "exported": true
+    },
+    {
+      "name": "MountedFileResult",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
+      "exported": false
+    },
+    {
+      "name": "MountedPdfUploadArgs",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
+      "exported": false
     },
     {
       "name": "OpenApiOperation",
@@ -503,6 +543,11 @@
     {
       "name": "UploadedFile",
       "file": "src/tools/github-actions/index.ts",
+      "exported": false
+    },
+    {
+      "name": "UploadedFile",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
       "exported": false
     },
     {
@@ -607,6 +652,36 @@
       "name": "verifyBearer",
       "kind": "function",
       "file": "src/auth/bearer.ts"
+    },
+    {
+      "name": "createDefaultMountResolver",
+      "kind": "function",
+      "file": "src/files/mount-resolver.ts"
+    },
+    {
+      "name": "getMount",
+      "kind": "method",
+      "file": "src/files/mount-resolver.ts"
+    },
+    {
+      "name": "isMounted",
+      "kind": "method",
+      "file": "src/files/mount-resolver.ts"
+    },
+    {
+      "name": "listMounts",
+      "kind": "method",
+      "file": "src/files/mount-resolver.ts"
+    },
+    {
+      "name": "registerMount",
+      "kind": "method",
+      "file": "src/files/mount-resolver.ts"
+    },
+    {
+      "name": "resolve",
+      "kind": "method",
+      "file": "src/files/mount-resolver.ts"
     },
     {
       "name": "base64ToBytes",
@@ -1229,6 +1304,11 @@
       "file": "src/tools/github-actions/index.ts"
     },
     {
+      "name": "executeOperation",
+      "kind": "method",
+      "file": "src/tools/github-actions/index.ts"
+    },
+    {
       "name": "github",
       "kind": "function",
       "file": "src/tools/github-actions/index.ts"
@@ -1287,6 +1367,36 @@
       "name": "validateUploadedFile",
       "kind": "method",
       "file": "src/tools/github-actions/index.ts"
+    },
+    {
+      "name": "getMountedFileAdapter",
+      "kind": "function",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts"
+    },
+    {
+      "name": "initializeMountedFileAdapter",
+      "kind": "function",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts"
+    },
+    {
+      "name": "initializeMountedFileAdapter",
+      "kind": "method",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts"
+    },
+    {
+      "name": "normalizeMountedPdfUpload",
+      "kind": "function",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts"
+    },
+    {
+      "name": "queryMountInfo",
+      "kind": "function",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts"
+    },
+    {
+      "name": "registerMountedPdfTools",
+      "kind": "function",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts"
     },
     {
       "name": "keyOf",
@@ -1465,6 +1575,22 @@
     {
       "name": "ToolRegistry",
       "file": "src/contracts/tool.ts"
+    },
+    {
+      "name": "MountConfig",
+      "file": "src/files/mount-resolver.ts"
+    },
+    {
+      "name": "MountPathResolver",
+      "file": "src/files/mount-resolver.ts"
+    },
+    {
+      "name": "MountResolution",
+      "file": "src/files/mount-resolver.ts"
+    },
+    {
+      "name": "createDefaultMountResolver",
+      "file": "src/files/mount-resolver.ts"
     },
     {
       "name": "FileReference",
@@ -1697,6 +1823,18 @@
     {
       "name": "registerGitHubActionsTools",
       "file": "src/tools/github-actions/index.ts"
+    },
+    {
+      "name": "initializeMountedFileAdapter",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts"
+    },
+    {
+      "name": "queryMountInfo",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts"
+    },
+    {
+      "name": "registerMountedPdfTools",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts"
     },
     {
       "name": "registerMemoryTools",
@@ -2114,6 +2252,26 @@
     },
     {
       "file": "src/tools/github-actions/index.ts",
+      "from": "zod"
+    },
+    {
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
+      "from": "../../contracts/tool"
+    },
+    {
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
+      "from": "../../files/mount-resolver.js"
+    },
+    {
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
+      "from": "../../files/mounted-file-adapter.js"
+    },
+    {
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
+      "from": "../../files/uploaded-file.js"
+    },
+    {
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
       "from": "zod"
     },
     {
