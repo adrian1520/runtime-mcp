@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-07-17T04:50:21.596355+00:00",
+  "generated_at": "2026-07-17T08:20:31.031964+00:00",
   "summary": {
-    "classes": 33,
+    "classes": 34,
     "interfaces": 31,
-    "types": 47,
+    "types": 54,
     "enums": 0,
-    "functions": 189,
-    "exports": 82,
-    "imports": 114
+    "functions": 199,
+    "exports": 87,
+    "imports": 116
   },
   "classes": [
     {
@@ -74,6 +74,11 @@
     {
       "name": "MountPathResolver",
       "file": "src/files/mount-resolver.ts",
+      "exported": true
+    },
+    {
+      "name": "MountedFileAdapter",
+      "file": "src/files/mounted-file-adapter.ts",
       "exported": true
     },
     {
@@ -417,6 +422,11 @@
     },
     {
       "name": "FileReference",
+      "file": "src/files/mounted-file-adapter.ts",
+      "exported": false
+    },
+    {
+      "name": "FileReference",
       "file": "src/files/uploaded-file.ts",
       "exported": true
     },
@@ -437,6 +447,11 @@
     },
     {
       "name": "MountConfig",
+      "file": "src/files/mounted-file-adapter.ts",
+      "exported": false
+    },
+    {
+      "name": "MountConfig",
       "file": "src/files/mount-resolver.ts",
       "exported": true
     },
@@ -447,13 +462,28 @@
     },
     {
       "name": "MountResolution",
+      "file": "src/files/mounted-file-adapter.ts",
+      "exported": false
+    },
+    {
+      "name": "MountResolution",
       "file": "src/files/mount-resolver.ts",
+      "exported": true
+    },
+    {
+      "name": "MountedFileContext",
+      "file": "src/files/mounted-file-adapter.ts",
       "exported": true
     },
     {
       "name": "MountedFileResult",
       "file": "src/tools/github-actions/mounted-pdf-tool.ts",
       "exported": false
+    },
+    {
+      "name": "MountedFileResult",
+      "file": "src/files/mounted-file-adapter.ts",
+      "exported": true
     },
     {
       "name": "MountedPdfUploadArgs",
@@ -552,6 +582,11 @@
     },
     {
       "name": "UploadedFile",
+      "file": "src/files/mounted-file-adapter.ts",
+      "exported": false
+    },
+    {
+      "name": "UploadedFile",
       "file": "src/files/uploaded-file.ts",
       "exported": true
     },
@@ -563,6 +598,11 @@
     {
       "name": "WorkflowRun",
       "file": "src/tools/github-actions/index.ts",
+      "exported": false
+    },
+    {
+      "name": "from",
+      "file": "src/files/mounted-file-adapter.ts",
       "exported": false
     },
     {
@@ -682,6 +722,56 @@
       "name": "resolve",
       "kind": "method",
       "file": "src/files/mount-resolver.ts"
+    },
+    {
+      "name": "createDefaultMountedFileAdapter",
+      "kind": "function",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "getResolver",
+      "kind": "method",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "inferMimeType",
+      "kind": "method",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "mountedFileResultToToolResponse",
+      "kind": "function",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "normalizeFileWithMountFallback",
+      "kind": "method",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "normalizeMountedFile",
+      "kind": "method",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "normalizeMountedFiles",
+      "kind": "method",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "readMountedFile",
+      "kind": "method",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "registerMount",
+      "kind": "method",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "validateUploadedFile",
+      "kind": "method",
+      "file": "src/files/mounted-file-adapter.ts"
     },
     {
       "name": "base64ToBytes",
@@ -1593,6 +1683,26 @@
       "file": "src/files/mount-resolver.ts"
     },
     {
+      "name": "MountedFileAdapter",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "MountedFileContext",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "MountedFileResult",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "createDefaultMountedFileAdapter",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
+      "name": "mountedFileResultToToolResponse",
+      "file": "src/files/mounted-file-adapter.ts"
+    },
+    {
       "name": "FileReference",
       "file": "src/files/uploaded-file.ts"
     },
@@ -1873,6 +1983,14 @@
     {
       "file": "src/agents/tool-catalog.ts",
       "from": "./types"
+    },
+    {
+      "file": "src/files/mounted-file-adapter.ts",
+      "from": "./mount-resolver.js"
+    },
+    {
+      "file": "src/files/mounted-file-adapter.ts",
+      "from": "./uploaded-file.js"
     },
     {
       "file": "src/files/uploaded-file.ts",
