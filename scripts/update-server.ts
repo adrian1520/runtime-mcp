@@ -82,6 +82,10 @@ export type Env = {
 
   API_KEY?: string;
 
+  ALLOW_INSECURE_DEV_AUTH?: string;
+
+  FILE_DOWNLOAD_ALLOWED_HOSTS?: string;
+
   GITHUB_OWNER?: string;
 
   GITHUB_REPO?: string;
