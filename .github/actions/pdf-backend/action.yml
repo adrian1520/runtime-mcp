@@ -28,14 +28,14 @@ runs:
     - name: Prepare workspace
       shell: bash
       env:
-        BACKEND_WORKDIR: \${{ inputs.workdir }}
+        BACKEND_WORKDIR: ${{ inputs.workdir }}
       run: mkdir -p "$BACKEND_WORKDIR/output"
     - name: Execute backend
       shell: bash
       env:
-        BACKEND_OPERATION: \${{ inputs.operation }}
-        BACKEND_REQUEST_PATH: \${{ inputs.request_path }}
-        BACKEND_WORKDIR: \${{ inputs.workdir }}
+        BACKEND_OPERATION: ${{ inputs.operation }}
+        BACKEND_REQUEST_PATH: ${{ inputs.request_path }}
+        BACKEND_WORKDIR: ${{ inputs.workdir }}
       run: |
         python -m backend.runner \
           --operation "$BACKEND_OPERATION" \
@@ -45,7 +45,7 @@ runs:
       if: always()
       shell: bash
       env:
-        BACKEND_WORKDIR: \${{ inputs.workdir }}
+        BACKEND_WORKDIR: ${{ inputs.workdir }}
       run: |
         test -s "$BACKEND_WORKDIR/output/execution.json" &&
         test -s "$BACKEND_WORKDIR/output/artifacts.json"

@@ -1,5 +1,5 @@
 name: Runtime MCP PDF Backend
-run-name: runtime-mcp \${{ inputs.operation }} \${{ inputs.request_id }}
+run-name: runtime-mcp ${{ inputs.operation }} ${{ inputs.request_id }}
 
 on:
   workflow_dispatch:
@@ -46,9 +46,9 @@ jobs:
       - name: Validate request inputs
         shell: bash
         env:
-          REQUEST_PATH: \${{ inputs.request_path }}
-          REQUEST_ID: \${{ inputs.request_id }}
-          OPERATION: \${{ inputs.operation }}
+          REQUEST_PATH: ${{ inputs.request_path }}
+          REQUEST_ID: ${{ inputs.request_id }}
+          OPERATION: ${{ inputs.operation }}
         run: |
           [[ "$REQUEST_ID" =~ ^[A-Za-z0-9._-]{1,128}$ ]] || {
             echo "Invalid request_id" >&2
@@ -70,14 +70,14 @@ jobs:
         id: backend
         uses: ./.github/actions/pdf-backend
         with:
-          operation: \${{ inputs.operation }}
-          request_path: \${{ inputs.request_path }}
+          operation: ${{ inputs.operation }}
+          request_path: ${{ inputs.request_path }}
           workdir: runtime-work
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: runtime-mcp-\${{ inputs.request_id }}
+          name: runtime-mcp-${{ inputs.request_id }}
           path: runtime-work/output
           if-no-files-found: error
           retention-days: 7
@@ -85,8 +85,8 @@ jobs:
         if: always()
         shell: bash
         env:
-          REQUEST_ID: \${{ inputs.request_id }}
-          OPERATION: \${{ inputs.operation }}
+          REQUEST_ID: ${{ inputs.request_id }}
+          OPERATION: ${{ inputs.operation }}
         run: |
           echo "## Runtime MCP PDF Backend" >> "$GITHUB_STEP_SUMMARY"
           echo "- Request: $REQUEST_ID" >> "$GITHUB_STEP_SUMMARY"

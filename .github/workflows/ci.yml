@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: runtime-mcp-ci-\${{ github.ref }}
+  group: runtime-mcp-ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
