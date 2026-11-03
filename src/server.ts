@@ -1,7 +1,7 @@
 import type { ToolRegistry } from "./contracts/tool";
 
 import { registerAgentTools } from "./tools/agent";
-import { registerGithubActionsTools } from "./tools/github-actions";
+import { registerGitHubActionsTools } from "./tools/github-actions";
 import { registerMemoryTools } from "./tools/memory";
 import { registerProvenanceTools } from "./tools/provenance";
 import { registerRepositoryTools } from "./tools/repository";
@@ -43,7 +43,7 @@ export const server: {
 
 registerAgentTools(server.tools);
 
-registerGithubActionsTools(server.tools);
+registerGitHubActionsTools(server.tools);
 
 registerMemoryTools(server.tools);
 
