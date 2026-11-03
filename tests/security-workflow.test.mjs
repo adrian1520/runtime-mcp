@@ -1,43 +1,44 @@
 import assert from "node:assert/strict";
 import { join } from "node:path";
-import { writeFile } from "node:fs/promises";
+import { mkdir, rm } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
 import test from "node:test";
 
 const outDir = join(process.cwd(), ".tmp-security-test-build-" + process.pid);
-execFileSync(
-  "npx",
-  [
-    "tsc",
-    "--outDir",
-    outDir,
-    "--noEmit",
-    "false",
-    "--declaration",
-    "false",
-    "--module",
-    "commonjs",
-    "--moduleResolution",
-    "node",
-    "--verbatimModuleSyntax",
-    "false",
-  ],
-  { stdio: "inherit" },
-);
+await mkdir(outDir, { recursive: true });
 
-// Production sources are ESM with bundler-style extensionless imports. Compile
-// this isolated test copy to CommonJS so Node resolves those imports natively.
-await writeFile(
-  join(outDir, "package.json"),
-  JSON.stringify({ type: "commonjs" }),
-  "utf8",
-);
+// Bundle each entrypoint as ESM for Node. This resolves the Worker project's
+// bundler-style extensionless imports without changing production sources.
+const bundles = [
+  ["src/auth/bearer.ts", "bearer.mjs"],
+  ["src/files/uploaded-file.ts", "uploaded-file.mjs"],
+  ["src/runtime/task-graph.ts", "task-graph.mjs"],
+  ["src/runtime/workflow-engine.ts", "workflow-engine.mjs"],
+  ["src/runtime/recovery-manager.ts", "recovery-manager.mjs"],
+];
 
-const { verifyBearer } = await import("file://" + join(outDir, "src/auth/bearer.js"));
-const { normalizeUploadedFile } = await import("file://" + join(outDir, "src/files/uploaded-file.js"));
-const { TaskGraph } = await import("file://" + join(outDir, "src/runtime/task-graph.js"));
-const { WorkflowEngine } = await import("file://" + join(outDir, "src/runtime/workflow-engine.js"));
-const { RecoveryManager } = await import("file://" + join(outDir, "src/runtime/recovery-manager.js"));
+for (const [entry, output] of bundles) {
+  execFileSync(
+    "npx",
+    [
+      "esbuild",
+      entry,
+      "--bundle",
+      "--platform=node",
+      "--format=esm",
+      "--outfile=" + join(outDir, output),
+    ],
+    { stdio: "inherit" },
+  );
+}
+
+const importBundle = (name) => import(pathToFileURL(join(outDir, name)).href);
+const { verifyBearer } = await importBundle("bearer.mjs");
+const { normalizeUploadedFile } = await importBundle("uploaded-file.mjs");
+const { TaskGraph } = await importBundle("task-graph.mjs");
+const { WorkflowEngine } = await importBundle("workflow-engine.mjs");
+const { RecoveryManager } = await importBundle("recovery-manager.mjs");
 
 function task(id, dependsOn = [], tool = id) {
   return { id, description: id, tool, input: {}, dependsOn, status: "pending" };
@@ -350,6 +351,5 @@ test("recovery rejects checkpoints containing unknown task ids", async () => {
 });
 
 test.after(async () => {
-  const { rm } = await import("node:fs/promises");
   await rm(outDir, { recursive: true, force: true });
 });
