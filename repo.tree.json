@@ -1,8 +1,8 @@
 {
   "schema": "repo.tree.v2",
-  "generated_at": "2026-07-17T11:19:57.336289+00:00",
+  "generated_at": "2026-11-03T06:31:03.700948+00:00",
   "summary": {
-    "files": 143,
+    "files": 146,
     "directories": 41
   },
   "directories": [
@@ -243,8 +243,8 @@
       "language": "yaml",
       "category": "config",
       "depth": 3,
-      "size": 1302,
-      "sha256": "4c87b3e0e0b8804ed2bb5e86b0e47e70251a10937711aa5db136669839beb20b"
+      "size": 1618,
+      "sha256": "31b407c1a855510cc94a48e3b0e2a8c0a4d10eb1a01f31a633a666c68c5bc5a2"
     },
     {
       "path": ".github/workflows/auto-fix.yml",
@@ -254,8 +254,8 @@
       "language": "yaml",
       "category": "workflow",
       "depth": 2,
-      "size": 2963,
-      "sha256": "c51c35d3327e3c367a7670a41630b9b670d1ad03f129c4951b21bd77292f7af8"
+      "size": 627,
+      "sha256": "95da74c43898a94867623d4b5709b2bb98bddd29040054910e1771106931471f"
     },
     {
       "path": ".github/workflows/build-repo-index.yml",
@@ -278,6 +278,17 @@
       "depth": 2,
       "size": 6591,
       "sha256": "33b2b52297860306f2df4b326b9dd12f4e8634d8a18028b17459857143c52ca3"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "name": "ci.yml",
+      "directory": ".github/workflows",
+      "extension": "yml",
+      "language": "yaml",
+      "category": "workflow",
+      "depth": 2,
+      "size": 1970,
+      "sha256": "7734aad5b0852cfe538c2159be0fc0ea70a4d21543dd965ec40126c0b0b85b7d"
     },
     {
       "path": ".github/workflows/codeql.yml",
@@ -309,8 +320,8 @@
       "language": "yaml",
       "category": "workflow",
       "depth": 2,
-      "size": 1317,
-      "sha256": "02f9e8ad83515f4cab895eb304a34929064d11c932dea3c192f9e670a6d6d083"
+      "size": 1082,
+      "sha256": "3acf4a7f1263beb12e88f3eeb51e3d63a7bfc409a586c8395a8c2201eeaa4f8f"
     },
     {
       "path": ".github/workflows/pdf-advanced-processing.yml",
@@ -331,8 +342,8 @@
       "language": "yaml",
       "category": "workflow",
       "depth": 2,
-      "size": 2971,
-      "sha256": "322dff05a17e02606718362d57c3cb9efec900c857ff3260aeae21562ea0dbb3"
+      "size": 1822,
+      "sha256": "ea014837fb1f2100f9f2d0656b071615e68699aaf62e26f2be7a7b858db10784"
     },
     {
       "path": ".github/workflows/pdf-pages-export.yml",
@@ -353,8 +364,8 @@
       "language": "yaml",
       "category": "workflow",
       "depth": 2,
-      "size": 2425,
-      "sha256": "398734318b5004604bb013e929e95a6254e3a2867e9639ca6a7f32739e9efaf5"
+      "size": 2974,
+      "sha256": "c71fd0fcb03ab4a08fe354b7687896721f8761e988c91e0397d00c565403e071"
     },
     {
       "path": ".gitignore",
@@ -375,8 +386,8 @@
       "language": "markdown",
       "category": "general",
       "depth": 0,
-      "size": 9277,
-      "sha256": "4e4088f11904657124d312e3dc927d202369912f0bdb7f3245ba5527048d77f5"
+      "size": 9400,
+      "sha256": "a7d7e019ec606072f94edaa9eea0dc458b3050ee1c51fe78060a01b68c2bf2a9"
     },
     {
       "path": "agents/runtime-mcp/agent.json",
@@ -742,6 +753,17 @@
       "sha256": "8cc35ac1e04609c1c32cfaf6456fab01e510d2c42eb9776714ef886d56beb524"
     },
     {
+      "path": "docs/security-runtime.md",
+      "name": "security-runtime.md",
+      "directory": "docs",
+      "extension": "md",
+      "language": "markdown",
+      "category": "knowledge",
+      "depth": 1,
+      "size": 2000,
+      "sha256": "85e2ab345929c3bbf36436ebd761a777808cc4276b4bc800122b0ecf6f0251c7"
+    },
+    {
       "path": "input.pdf",
       "name": "input.pdf",
       "directory": "",
@@ -1024,8 +1046,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 90057,
-      "sha256": "df2b14a4fea3ea8717a88492d9d26af5dc9e9cbcfb4fe047bc142ae1cb04065c"
+      "size": 91774,
+      "sha256": "c921145d9202d3cc4de74f51aab0f3787ceca32f00b0b51eab7e76cdb8dcb3a2"
     },
     {
       "path": "package.json",
@@ -1035,8 +1057,8 @@
       "language": "json",
       "category": "config",
       "depth": 0,
-      "size": 1203,
-      "sha256": "f0faa059691eb7cab3c8b1c70953b56b36a18a1b059cc3eded77aab8413aab2b"
+      "size": 1187,
+      "sha256": "d49ee5f057555ad3ff038a393db5c9e7b13501dffde9fd7b70ea66e3acd8adad"
     },
     {
       "path": "repo.index.json",
@@ -1068,8 +1090,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 1,
-      "size": 2789,
-      "sha256": "15ef74e45b43e02c26f8072899c26940607bb63b2038811ae2eec095aa60a9ee"
+      "size": 3166,
+      "sha256": "0e08079114ddd9537cf5b89510cee3227eb9fe36ac8dd2160156eca033891669"
     },
     {
       "path": "skills/github-actions-python-backend/SKILL.md",
@@ -1167,8 +1189,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 699,
-      "sha256": "2ed03c6483f2f6b136ef5282709eb8ceae4cede4ccb2509d08e7b4067d7fcbc2"
+      "size": 1628,
+      "sha256": "bd072816808e193be2ede7ad9359daf175f8e01590cf3b4b061f8de8f02de304"
     },
     {
       "path": "src/contracts/tool.ts",
@@ -1200,8 +1222,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 7398,
-      "sha256": "c8671535e74f8b4576accbf547578c8a69d1de8007726774548c356992d9740c"
+      "size": 7399,
+      "sha256": "8883230bde735a414c9e89140797110ccfdc53c8f822fd6df8112a2db755719d"
     },
     {
       "path": "src/files/uploaded-file.ts",
@@ -1211,8 +1233,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 7636,
-      "sha256": "cc13c95b70c5ac0e779bf42938219209217246f1d3707873f546388c2cad5332"
+      "size": 13161,
+      "sha256": "48d8d9b84ddd2728e91ae027f6c8bb69ae0728b990b1db29d86b5f3cb96cfe4b"
     },
     {
       "path": "src/index.ts",
@@ -1233,8 +1255,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 10430,
-      "sha256": "a0e4dfc2c961bcf93adc90c1cb54a13982313b718e99ff0e85f4f1b585867b98"
+      "size": 10470,
+      "sha256": "b07f89f41e679b7852e8f39b7358bb9913b05fda14b26ad50a973fb2bf0b1b87"
     },
     {
       "path": "src/mcps/index.ts",
@@ -1354,8 +1376,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 2204,
-      "sha256": "a1d75715fa0293d60bc8ee34ec94d35fe9447acb68e3950218cadc24778a2ae1"
+      "size": 2244,
+      "sha256": "0b8bed891da64062b4efa7a54a6f2a36aae16646d30b55ab32196d997d8ce1a7"
     },
     {
       "path": "src/routes/tools.ts",
@@ -1365,8 +1387,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 2,
-      "size": 4078,
-      "sha256": "23acd79347ae879356d63086d21d58a3bc5b497e44c8bba6dd5f85a24cc5eb40"
+      "size": 4118,
+      "sha256": "2257ebbbd94567ccff48bb9d1bef68348b93a590deb8c93e9e6690d59e964dc7"
     },
     {
       "path": "src/routes/ui.html",
@@ -1563,8 +1585,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 1110,
-      "sha256": "cd8da19a11379a471426aae185e810054915315b9ad8072753d876362cfc0a61"
+      "size": 4165,
+      "sha256": "146cf1300ce07ef7420b1e11e50536eccdc3b904686fbd4f7a4b0b8181257f5c"
     },
     {
       "path": "src/runtime/registries/agent-registry.ts",
@@ -1640,8 +1662,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 563,
-      "sha256": "370c3fd7e9286cbbc5d47c9866bd1e46bc3bba2bafa4cb4e58bde07fb30aba26"
+      "size": 2843,
+      "sha256": "55253e1596b00047168e044c181959aaf67dc51c6d185358c0e166dc097187ec"
     },
     {
       "path": "src/runtime/types.ts",
@@ -1651,8 +1673,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 1881,
-      "sha256": "f47be9fb6bc004547d1dc25d0a1ec2a78aadc369d8f21d64234e182eec316c11"
+      "size": 2061,
+      "sha256": "58c4d4c1b85f2f5bd4300034ce7810a2e99c1562fb0008a5954ade8510d076b6"
     },
     {
       "path": "src/runtime/workflow-engine.ts",
@@ -1662,8 +1684,8 @@
       "language": "typescript",
       "category": "runtime",
       "depth": 2,
-      "size": 5736,
-      "sha256": "49533d044dd26353bb3e1c1e9a20083947cb638df5cefd6b8deb472eba275781"
+      "size": 6868,
+      "sha256": "54881b8b6dfa117f22f2235177348ed51b4f3e28bea7435340c3ba63693cdbee"
     },
     {
       "path": "src/runtime/workflow.ts",
@@ -1684,8 +1706,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 1,
-      "size": 822,
-      "sha256": "bb486884739ad0a453a4234716c58a1ff3bce2994c0e162cc59951715ab80fdd"
+      "size": 1132,
+      "sha256": "56ac666994a41232905bbaf27a6379325427bc2bd8204ecffb16e346366914a7"
     },
     {
       "path": "src/tools/agent/index.ts",
@@ -1695,8 +1717,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 1756,
-      "sha256": "2a8234991488b463bcb790f4a5923c7e7ba9c23029dc778c731dab94b6c61ee9"
+      "size": 1768,
+      "sha256": "7f28961b7e7fcfa3d3df40414f116e16df3a00bbbfe79bb08fbe798c0fe8795c"
     },
     {
       "path": "src/tools/github-actions/index.ts",
@@ -1706,8 +1728,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 13105,
-      "sha256": "3511b631730fa16a527b1e6878892d9c47226052c638132e7585f87a77992e20"
+      "size": 15620,
+      "sha256": "70d82e378b70936fb313aca2e69393f53620fc301c9418e2574df8227aab8bdf"
     },
     {
       "path": "src/tools/github-actions/mounted-pdf-tool.ts",
@@ -1717,8 +1739,8 @@
       "language": "typescript",
       "category": "general",
       "depth": 3,
-      "size": 6951,
-      "sha256": "0f46ac42944bdc99ae3f8bf6ed07ab6eb930c397a3ad7592dc0b4e4543a79680"
+      "size": 6957,
+      "sha256": "12e85fa0bc8b8972d5723f5a9ff395319633a0090601dfced92cf90de959a3d9"
     },
     {
       "path": "src/tools/memory/index.ts",
@@ -1763,6 +1785,17 @@
       "depth": 1,
       "size": 5576,
       "sha256": "3ff92c2b831606d3852780b6373426e643684612916234af719f02be47b3a6db"
+    },
+    {
+      "path": "tests/security-workflow.test.mjs",
+      "name": "security-workflow.test.mjs",
+      "directory": "tests",
+      "extension": "mjs",
+      "language": "javascript",
+      "category": "tests",
+      "depth": 1,
+      "size": 11013,
+      "sha256": "d23ec0957efa17bee356c930b3e78654440484fa9b6e285757a85f5a61d8df50"
     },
     {
       "path": "tsconfig.json",
