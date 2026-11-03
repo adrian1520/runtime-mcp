@@ -110,7 +110,7 @@ class GitHubActionsError extends Error {
 
 const actionRequestSchema = z.object({
   files: z.array(fileReferenceSchema).min(1).max(20),
-  options: z.record(z.unknown()).optional().default({}),
+  options: z.record(z.string(), z.unknown()).optional().default({}),
   timeoutSeconds: z
     .number()
     .int()
