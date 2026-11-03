@@ -1,14 +1,14 @@
 {
   "schema": "repo.index.v2",
-  "generated_at": "2026-07-17T11:17:24.989868+00:00",
+  "generated_at": "2026-11-03T06:31:02.166773+00:00",
   "summary": {
     "classes": 34,
     "interfaces": 31,
-    "types": 54,
+    "types": 56,
     "enums": 0,
-    "functions": 199,
-    "exports": 87,
-    "imports": 116
+    "functions": 209,
+    "exports": 88,
+    "imports": 117
   },
   "classes": [
     {
@@ -255,12 +255,12 @@
     },
     {
       "name": "RegistryRecord",
-      "file": "src/runtime/types.ts",
+      "file": "src/runtime/registry.ts",
       "exported": true
     },
     {
       "name": "RegistryRecord",
-      "file": "src/runtime/registry.ts",
+      "file": "src/runtime/types.ts",
       "exported": true
     },
     {
@@ -372,12 +372,7 @@
     },
     {
       "name": "Env",
-      "file": "src/runtime/executor.ts",
-      "exported": false
-    },
-    {
-      "name": "Env",
-      "file": "src/mcp/adapter.ts",
+      "file": "src/routes/tools.ts",
       "exported": false
     },
     {
@@ -387,7 +382,17 @@
     },
     {
       "name": "Env",
-      "file": "src/routes/tools.ts",
+      "file": "src/mcp/adapter.ts",
+      "exported": false
+    },
+    {
+      "name": "Env",
+      "file": "src/runtime/executor.ts",
+      "exported": false
+    },
+    {
+      "name": "Env",
+      "file": "src/tools/repository/index.ts",
       "exported": false
     },
     {
@@ -412,23 +417,18 @@
     },
     {
       "name": "Env",
-      "file": "src/tools/repository/index.ts",
-      "exported": false
+      "file": "scripts/update-server.ts",
+      "exported": true
     },
     {
-      "name": "Env",
-      "file": "scripts/update-server.ts",
+      "name": "FileReference",
+      "file": "src/files/uploaded-file.ts",
       "exported": true
     },
     {
       "name": "FileReference",
       "file": "src/files/mounted-file-adapter.ts",
       "exported": false
-    },
-    {
-      "name": "FileReference",
-      "file": "src/files/uploaded-file.ts",
-      "exported": true
     },
     {
       "name": "GitHubContent",
@@ -442,11 +442,6 @@
     },
     {
       "name": "MountConfig",
-      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
-      "exported": false
-    },
-    {
-      "name": "MountConfig",
       "file": "src/files/mounted-file-adapter.ts",
       "exported": false
     },
@@ -454,6 +449,11 @@
       "name": "MountConfig",
       "file": "src/files/mount-resolver.ts",
       "exported": true
+    },
+    {
+      "name": "MountConfig",
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
+      "exported": false
     },
     {
       "name": "MountInfoQueryArgs",
@@ -477,13 +477,13 @@
     },
     {
       "name": "MountedFileResult",
-      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
-      "exported": false
+      "file": "src/files/mounted-file-adapter.ts",
+      "exported": true
     },
     {
       "name": "MountedFileResult",
-      "file": "src/files/mounted-file-adapter.ts",
-      "exported": true
+      "file": "src/tools/github-actions/mounted-pdf-tool.ts",
+      "exported": false
     },
     {
       "name": "MountedPdfUploadArgs",
@@ -519,6 +519,11 @@
       "name": "PdfResource",
       "file": "src/pdf-project/catalog.ts",
       "exported": true
+    },
+    {
+      "name": "PriorResult",
+      "file": "src/runtime/recovery-manager.ts",
+      "exported": false
     },
     {
       "name": "RawActionRequest",
@@ -572,6 +577,16 @@
     },
     {
       "name": "UploadedFile",
+      "file": "src/files/uploaded-file.ts",
+      "exported": true
+    },
+    {
+      "name": "UploadedFile",
+      "file": "src/files/mounted-file-adapter.ts",
+      "exported": false
+    },
+    {
+      "name": "UploadedFile",
       "file": "src/tools/github-actions/index.ts",
       "exported": false
     },
@@ -581,12 +596,7 @@
       "exported": false
     },
     {
-      "name": "UploadedFile",
-      "file": "src/files/mounted-file-adapter.ts",
-      "exported": false
-    },
-    {
-      "name": "UploadedFile",
+      "name": "UploadedFileOptions",
       "file": "src/files/uploaded-file.ts",
       "exported": true
     },
@@ -689,6 +699,11 @@
       "file": "src/agents/tool-catalog.ts"
     },
     {
+      "name": "constantTimeEqual",
+      "kind": "function",
+      "file": "src/auth/bearer.ts"
+    },
+    {
       "name": "verifyBearer",
       "kind": "function",
       "file": "src/auth/bearer.ts"
@@ -774,6 +789,11 @@
       "file": "src/files/mounted-file-adapter.ts"
     },
     {
+      "name": "allowedHostsOf",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
       "name": "base64ToBytes",
       "kind": "function",
       "file": "src/files/uploaded-file.ts"
@@ -781,6 +801,11 @@
     {
       "name": "bytesToBase64",
       "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "clearTimeout",
+      "kind": "method",
       "file": "src/files/uploaded-file.ts"
     },
     {
@@ -804,6 +829,16 @@
       "file": "src/files/uploaded-file.ts"
     },
     {
+      "name": "readRemoteFile",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "readResponseBytes",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
       "name": "referenceOf",
       "kind": "function",
       "file": "src/files/uploaded-file.ts"
@@ -815,6 +850,16 @@
     },
     {
       "name": "super",
+      "kind": "method",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "validateDownloadUrl",
+      "kind": "function",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "validateDownloadUrl",
       "kind": "method",
       "file": "src/files/uploaded-file.ts"
     },
@@ -1134,6 +1179,11 @@
       "file": "src/runtime/provenance-recorder.ts"
     },
     {
+      "name": "assertKnownUniqueIds",
+      "kind": "method",
+      "file": "src/runtime/recovery-manager.ts"
+    },
+    {
       "name": "resume",
       "kind": "method",
       "file": "src/runtime/recovery-manager.ts"
@@ -1299,6 +1349,11 @@
       "file": "src/runtime/task-graph.ts"
     },
     {
+      "name": "validate",
+      "kind": "method",
+      "file": "src/runtime/task-graph.ts"
+    },
+    {
       "name": "executeGraph",
       "kind": "method",
       "file": "src/runtime/workflow-engine.ts"
@@ -1421,6 +1476,11 @@
     {
       "name": "normalizePdfUpload",
       "kind": "function",
+      "file": "src/tools/github-actions/index.ts"
+    },
+    {
+      "name": "normalizeUploadedFile",
+      "kind": "method",
       "file": "src/tools/github-actions/index.ts"
     },
     {
@@ -1712,6 +1772,10 @@
     },
     {
       "name": "UploadedFile",
+      "file": "src/files/uploaded-file.ts"
+    },
+    {
+      "name": "UploadedFileOptions",
       "file": "src/files/uploaded-file.ts"
     },
     {
@@ -2223,6 +2287,10 @@
     {
       "file": "src/runtime/recovery-manager.ts",
       "from": "./memory-store"
+    },
+    {
+      "file": "src/runtime/recovery-manager.ts",
+      "from": "./task-graph"
     },
     {
       "file": "src/runtime/recovery-manager.ts",
