@@ -11,6 +11,12 @@ export type Env = {
 
   API_KEY?: string;
 
+  /** Set to "true" only for isolated local development. */
+  ALLOW_INSECURE_DEV_AUTH?: string;
+
+  /** Comma-separated exact hostnames allowed for HTTPS file downloads. */
+  FILE_DOWNLOAD_ALLOWED_HOSTS?: string;
+
   GITHUB_OWNER?: string;
 
   GITHUB_REPO?: string;

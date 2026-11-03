@@ -15,6 +15,7 @@ type Env = {
   GITHUB_REPO?: string;
   GITHUB_BRANCH?: string;
   GITHUB_TOKEN?: string;
+  FILE_DOWNLOAD_ALLOWED_HOSTS?: string;
 };
 
 type Operation =
@@ -93,6 +94,8 @@ const MAX_POLL_SECONDS = 540;
 const WORKFLOW_ID = "runtime-pdf-backend.yml";
 const REQUEST_ROOT = ".github/runtime-mcp/requests";
 const POLL_INTERVAL_MS = 3_000;
+const MAX_ARTIFACT_SIZE_BYTES = 100 * 1024 * 1024;
+const MAX_ARTIFACT_ZIP_BYTES = 50 * 1024 * 1024;
 
 class GitHubActionsError extends Error {
   constructor(
@@ -137,6 +140,9 @@ type WorkflowRun = {
   html_url?: string;
   display_title?: string;
   name?: string;
+  event?: string;
+  head_branch?: string;
+  created_at?: string;
 };
 type Artifact = {
   id: number;
@@ -158,9 +164,12 @@ function toActionFile(file: UploadedFile): ActionFile {
 export async function normalizeActionRequest(
   args: RawActionRequest,
   allowedMimeTypes = ["application/pdf"],
+  allowedDownloadHosts?: string,
 ): Promise<ActionRequest> {
   const files = await Promise.all(
-    args.files.map((file, index) => normalizeUploadedFile(file, index)),
+    args.files.map((file, index) =>
+      normalizeUploadedFile(file, index, allowedDownloadHosts ? { allowedDownloadHosts } : {}),
+    ),
   );
   for (const file of files)
     validateUploadedFile(
@@ -177,8 +186,9 @@ export async function normalizeActionRequest(
 
 export async function normalizePdfUpload(
   args: z.infer<typeof uploadPdfRequestSchema>,
+  allowedDownloadHosts?: string,
 ) {
-  const file = await normalizeUploadedFile(args.file, 0);
+  const file = await normalizeUploadedFile(args.file, 0, allowedDownloadHosts ? { allowedDownloadHosts } : {});
   validateUploadedFile({
     filename: file.filename,
     mimeType: file.mimeType,
@@ -302,18 +312,27 @@ async function pollRun(
   env: Env,
   requestId: string,
   timeoutSeconds: number,
+  dispatchedAt: number,
 ): Promise<WorkflowRun> {
   const deadline = Date.now() + timeoutSeconds * 1000;
   let run: WorkflowRun | null = null;
   while (Date.now() < deadline) {
     const runs = await githubJson<{ workflow_runs: WorkflowRun[] }>(
       env,
-      `/actions/workflows/${encodeURIComponent(WORKFLOW_ID)}/runs?event=workflow_dispatch&per_page=30`,
+      `/actions/workflows/${encodeURIComponent(WORKFLOW_ID)}/runs?event=workflow_dispatch&per_page=100`,
     );
+    const cfg = config(env);
     run =
-      runs.workflow_runs.find((candidate) =>
-        candidate.display_title?.includes(requestId),
-      ) ?? run;
+      runs.workflow_runs.find((candidate) => {
+        const createdAt = candidate.created_at ? Date.parse(candidate.created_at) : NaN;
+        return (
+          candidate.event === "workflow_dispatch" &&
+          candidate.head_branch === cfg.branch &&
+          candidate.display_title?.endsWith(" " + requestId) === true &&
+          Number.isFinite(createdAt) &&
+          createdAt >= dispatchedAt - 30_000
+        );
+      }) ?? run;
     if (run?.status === "completed") return run;
     await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
   }
@@ -336,15 +355,52 @@ async function downloadArtifactZip(
   env: Env,
   artifact: Artifact,
 ): Promise<string> {
-  const response = await github(env, `/actions/artifacts/${artifact.id}/zip`);
+  const response = await github(env, "/actions/artifacts/" + artifact.id + "/zip");
   if (!response.ok)
-    throw await githubError(
-      response,
-      `Failed to download artifact ${artifact.name}`,
-    );
-  return bytesToBase64(new Uint8Array(await response.arrayBuffer()));
-}
+    throw await githubError(response, "Failed to download artifact " + artifact.name);
 
+  const contentLength = Number(response.headers.get("content-length"));
+  if (Number.isFinite(contentLength) && contentLength > MAX_ARTIFACT_ZIP_BYTES) {
+    await response.body?.cancel();
+    throw new GitHubActionsError("ARTIFACT_TOO_LARGE", "Artifact ZIP exceeds limit", 413);
+  }
+
+  if (!response.body) {
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    if (bytes.byteLength > MAX_ARTIFACT_ZIP_BYTES) {
+      throw new GitHubActionsError("ARTIFACT_TOO_LARGE", "Artifact ZIP exceeds limit", 413);
+    }
+    return bytesToBase64(bytes);
+  }
+
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  try {
+    while (true) {
+      const result = await reader.read();
+      if (result.done) break;
+      const value = result.value;
+      if (!value) continue;
+      total += value.byteLength;
+      if (total > MAX_ARTIFACT_ZIP_BYTES) {
+        await reader.cancel();
+        throw new GitHubActionsError("ARTIFACT_TOO_LARGE", "Artifact ZIP exceeds limit", 413);
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return bytesToBase64(bytes);
+}
 async function executeOperation(
   operation: Operation,
   args: RawActionRequest,
@@ -353,7 +409,7 @@ async function executeOperation(
   allowedMimeTypes: string[],
   minFiles: number,
 ) {
-  const normalizedArgs = await normalizeActionRequest(args, allowedMimeTypes);
+  const normalizedArgs = await normalizeActionRequest(args, allowedMimeTypes, env.FILE_DOWNLOAD_ALLOWED_HOSTS);
   if (normalizedArgs.files.length < minFiles)
     throw new GitHubActionsError(
       "INVALID_INPUT",
@@ -367,22 +423,37 @@ async function executeOperation(
     files: normalizedArgs.files,
     options: normalizedArgs.options,
   });
+  const dispatchedAt = Date.now();
   await dispatch(env, operation, requestPath, actionRequestId);
   const run = await pollRun(
     env,
     actionRequestId,
     normalizedArgs.timeoutSeconds,
+    dispatchedAt,
   );
+  if (run.conclusion !== "success") {
+    throw new GitHubActionsError(
+      "WORKFLOW_FAILED",
+      "PDF backend workflow failed with conclusion: " + (run.conclusion ?? "unknown"),
+      502,
+    );
+  }
   const foundArtifacts = await artifacts(env, run.id);
-  const resultArtifact =
-    foundArtifacts.find(
-      (artifact) => artifact.name === `runtime-mcp-${actionRequestId}`,
-    ) ?? foundArtifacts[0];
+  const resultArtifact = foundArtifacts.find(
+    (artifact) => artifact.name === `runtime-mcp-${actionRequestId}`,
+  );
   if (!resultArtifact)
     throw new GitHubActionsError(
       "ARTIFACT_NOT_FOUND",
-      "Workflow completed but did not publish artifacts",
+      "Workflow completed but did not publish the request-specific artifact",
     );
+  if (resultArtifact.size_in_bytes > MAX_ARTIFACT_SIZE_BYTES) {
+    throw new GitHubActionsError(
+      "ARTIFACT_TOO_LARGE",
+      "Artifact exceeds configured size limit",
+      413,
+    );
+  }
   const artifactZipBase64 = await downloadArtifactZip(env, resultArtifact);
   return {
     ok: run.conclusion === "success",
@@ -451,7 +522,7 @@ export function registerGitHubActionsTools(registry: ToolRegistry<Env>) {
     inputSchema: uploadInputSchema,
     outputSchema: uploadOutputSchema,
     validate: (args) => uploadPdfRequestSchema.parse(args),
-    execute: (args) => normalizePdfUpload(args),
+    execute: (args, { env }) => normalizePdfUpload(args, env.FILE_DOWNLOAD_ALLOWED_HOSTS),
   };
 
   for (const [name, definition] of Object.entries(TOOL_OPERATIONS)) {

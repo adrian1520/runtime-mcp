@@ -19,13 +19,13 @@ import type { Env } from "../server";
 
 export class WorkflowEngine {
   readonly workflow: Workflow;
-  readonly recovery = new RecoveryManager();
 
   constructor(
     planner = new Planner(),
     readonly executor = new Executor(),
     readonly memory = new MemoryStore(executor),
     readonly provenance = new ProvenanceRecorder(executor),
+    readonly recovery = new RecoveryManager(),
   ) {
     this.workflow = new Workflow(planner);
   }
@@ -47,7 +47,7 @@ export class WorkflowEngine {
     await this.memory.put(
       env,
       requestId,
-      `workflow/${workflowId}/status`,
+      "workflow/" + workflowId + "/status",
       status,
     );
   }
@@ -61,16 +61,15 @@ export class WorkflowEngine {
   ): Promise<{
     results: TaskResult[];
     hasFailures: boolean;
+    failed: string[];
+    blocked: string[];
   }> {
     const results: TaskResult[] = [];
-    let hasFailures = false;
+    const failed = new Set<string>();
 
     while (true) {
-      const nextTasks = graph.next(completed);
-
-      if (nextTasks.length === 0) {
-        break;
-      }
+      const nextTasks = graph.next(completed, failed);
+      if (nextTasks.length === 0) break;
 
       for (const task of nextTasks) {
         let result: TaskResult = {
@@ -88,14 +87,12 @@ export class WorkflowEngine {
             );
           }
         } catch (error) {
-          hasFailures = true;
-
           result = {
             taskId: task.id,
             success: false,
             error: error instanceof Error ? error.message : "Unknown error",
           };
-
+          failed.add(task.id);
           await this.updateStatus(
             workflowId,
             "FAILED",
@@ -103,47 +100,54 @@ export class WorkflowEngine {
             requestId,
             task.id,
           );
-
-          await this.provenance.append(env, requestId, "task_failed", {
-            workflowId,
-            taskId: task.id,
-            error: result.error,
-          });
         }
 
-        completed.add(task.id);
-
+        if (result.success) completed.add(task.id);
         results.push(result);
 
         const checkpoint: Checkpoint = {
           workflowId,
           completed: [...completed],
+          failed: [...failed],
           lastTask: task.id,
         };
 
         await this.memory.put(
           env,
           requestId,
-          `workflow/${workflowId}/checkpoint`,
+          "workflow/" + workflowId + "/checkpoint",
           checkpoint,
         );
 
-        await this.provenance.append(env, requestId, "task_completed", {
-          workflowId,
-          taskId: task.id,
-          success: result.success,
-        });
+        await this.provenance.append(
+          env,
+          requestId,
+          result.success ? "task_completed" : "task_failed",
+          {
+            workflowId,
+            taskId: task.id,
+            success: result.success,
+            ...(result.error ? { error: result.error } : {}),
+          },
+        );
       }
     }
 
+    const blocked = graph.tasks
+      .filter((task) => !completed.has(task.id) && !failed.has(task.id))
+      .map((task) => task.id);
+
     return {
       results,
-      hasFailures,
+      hasFailures: failed.size > 0,
+      failed: [...failed],
+      blocked,
     };
   }
 
   async run(goal: Goal, env: Env, requestId: string) {
     const tasks = this.workflow.planner.build(goal);
+    const graph = new TaskGraph(tasks);
 
     const definition: WorkflowDefinition = {
       workflowId: goal.id,
@@ -154,13 +158,19 @@ export class WorkflowEngine {
     await this.memory.put(
       env,
       requestId,
-      `workflow/${goal.id}/definition`,
+      "workflow/" + goal.id + "/definition",
       definition,
     );
 
     await this.updateStatus(goal.id, "EXECUTION", env, requestId);
 
-    const graph = new TaskGraph(tasks);
+    // Start a fresh attempt so a prior result cannot contaminate recovery.
+    await this.memory.put(
+      env,
+      requestId,
+      "workflow/" + goal.id + "/checkpoint",
+      { workflowId: goal.id, completed: [], failed: [] } satisfies Checkpoint,
+    );
 
     const completed = new Set<string>();
 
@@ -176,27 +186,34 @@ export class WorkflowEngine {
       requestId,
     );
 
+    const success = !execution.hasFailures && execution.blocked.length === 0;
     const finalResult = {
       workflowId: goal.id,
       completed: [...completed],
+      failed: execution.failed,
+      blocked: execution.blocked,
+      success,
       results: execution.results,
     };
 
     await this.memory.put(
       env,
       requestId,
-      `workflow/${goal.id}/result`,
+      "workflow/" + goal.id + "/result",
       finalResult,
     );
 
     await this.provenance.append(env, requestId, "workflow_completed", {
       workflowId: goal.id,
       completed: completed.size,
+      failed: execution.failed,
+      blocked: execution.blocked,
+      success,
     });
 
     await this.updateStatus(
       goal.id,
-      execution.hasFailures ? "FAILED" : "COMPLETE",
+      success ? "COMPLETE" : "FAILED",
       env,
       requestId,
     );
@@ -208,11 +225,10 @@ export class WorkflowEngine {
     const state = await this.recovery.resume(env, requestId, workflowId);
 
     if (!state.definition) {
-      throw new Error(`Workflow definition not found: ${workflowId}`);
+      throw new Error("Workflow definition not found: " + workflowId);
     }
 
     const graph = new TaskGraph(state.definition.tasks);
-
     const completed = new Set<string>(state.completed);
 
     await this.updateStatus(workflowId, "RECOVERY", env, requestId);
@@ -220,9 +236,11 @@ export class WorkflowEngine {
     await this.provenance.append(env, requestId, "workflow_resumed", {
       workflowId,
       completed: completed.size,
+      failedToRetry: state.failed.length,
       remaining: state.remaining.length,
     });
 
+    // Failed tasks are retried on resume; successful tasks remain checkpointed.
     const execution = await this.executeGraph(
       workflowId,
       graph,
@@ -231,27 +249,34 @@ export class WorkflowEngine {
       requestId,
     );
 
+    const success = !execution.hasFailures && execution.blocked.length === 0;
     const finalResult = {
       workflowId,
       completed: [...completed],
+      failed: execution.failed,
+      blocked: execution.blocked,
+      success,
       results: execution.results,
     };
 
     await this.memory.put(
       env,
       requestId,
-      `workflow/${workflowId}/result`,
+      "workflow/" + workflowId + "/result",
       finalResult,
     );
 
     await this.provenance.append(env, requestId, "workflow_completed", {
       workflowId,
       completed: completed.size,
+      failed: execution.failed,
+      blocked: execution.blocked,
+      success,
     });
 
     await this.updateStatus(
       workflowId,
-      execution.hasFailures ? "FAILED" : "COMPLETE",
+      success ? "COMPLETE" : "FAILED",
       env,
       requestId,
     );

@@ -11,7 +11,7 @@ export async function handleRpcRoute(
   if (request.method !== "POST")
     return Response.json({ ok: false }, { status: 405 });
 
-  const auth = verifyBearer(request, env.API_KEY);
+  const auth = verifyBearer(request, env.API_KEY, env.ALLOW_INSECURE_DEV_AUTH === "true");
   if (!auth.ok) {
     return Response.json(
       { ok: false, error: auth, requestId },

@@ -1,6 +1,14 @@
 import { z } from "zod";
 
 export const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+const MAX_DOWNLOAD_REDIRECTS = 3;
+const DEFAULT_DOWNLOAD_TIMEOUT_MS = 15_000;
+
+export type UploadedFileOptions = {
+  /** Exact allowlisted HTTPS hostnames; wildcards are not supported. */
+  allowedDownloadHosts?: string | string[];
+  downloadTimeoutMs?: number;
+};
 
 export type UploadedFileSource =
   "base64" | "path" | "url" | "mcp_file" | "input_file";
@@ -116,6 +124,13 @@ export function base64ToBytes(input: string): Uint8Array {
       "INVALID_BASE64",
       "File content must be base64 encoded",
     );
+  if (clean.length > Math.ceil(MAX_UPLOAD_BYTES / 3) * 4 + 4) {
+    throw new FileValidationError(
+      "FILE_TOO_LARGE",
+      `Base64 file content exceeds ${MAX_UPLOAD_BYTES} bytes`,
+      413,
+    );
+  }
   const binary = atob(clean);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
@@ -140,6 +155,197 @@ async function readLocalFile(path: string): Promise<Uint8Array> {
   }
 }
 
+function allowedHostsOf(value: string | string[] | undefined): Set<string> {
+  const entries = Array.isArray(value) ? value : (value ?? "").split(",");
+  return new Set(
+    entries
+      .map((entry) => entry.trim().toLowerCase().replace(/\.$/, ""))
+      .filter(Boolean),
+  );
+}
+
+function validateDownloadUrl(url: URL, allowedHosts: Set<string>): void {
+  const hostname = url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+
+  if (
+    url.protocol !== "https:" ||
+    url.username ||
+    url.password ||
+    (url.port !== "" && url.port !== "443")
+  ) {
+    throw new FileValidationError(
+      "INVALID_DOWNLOAD_URL",
+      "Remote file downloads require HTTPS without credentials or a custom port",
+    );
+  }
+
+  if (
+    hostname.includes(":") ||
+    /^\d{1,3}(?:\.\d{1,3}){3}$/.test(hostname) ||
+    !hostname.includes(".") ||
+    hostname === "localhost" ||
+    hostname.endsWith(".localhost") ||
+    hostname.endsWith(".local") ||
+    hostname.endsWith(".internal")
+  ) {
+    throw new FileValidationError(
+      "REMOTE_HOST_NOT_ALLOWED",
+      "Remote file host is not permitted",
+      403,
+    );
+  }
+
+  if (!allowedHosts.has(hostname)) {
+    throw new FileValidationError(
+      "REMOTE_HOST_NOT_ALLOWED",
+      "Remote file host is not allowlisted: " + hostname,
+      403,
+    );
+  }
+}
+
+async function readResponseBytes(response: Response): Promise<Uint8Array> {
+  const contentLength = Number(response.headers.get("content-length"));
+  if (Number.isFinite(contentLength) && contentLength > MAX_UPLOAD_BYTES) {
+    await response.body?.cancel();
+    throw new FileValidationError(
+      "FILE_TOO_LARGE",
+      "Remote file exceeds " + MAX_UPLOAD_BYTES + " bytes",
+      413,
+    );
+  }
+
+  if (!response.body) {
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    if (bytes.byteLength > MAX_UPLOAD_BYTES) {
+      throw new FileValidationError(
+        "FILE_TOO_LARGE",
+        "Remote file exceeds " + MAX_UPLOAD_BYTES + " bytes",
+        413,
+      );
+    }
+    return bytes;
+  }
+
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+
+  try {
+    while (true) {
+      const result = await reader.read();
+      if (result.done) break;
+      const chunk = result.value;
+      if (!chunk) continue;
+
+      total += chunk.byteLength;
+      if (total > MAX_UPLOAD_BYTES) {
+        await reader.cancel();
+        throw new FileValidationError(
+          "FILE_TOO_LARGE",
+          "Remote file exceeds " + MAX_UPLOAD_BYTES + " bytes",
+          413,
+        );
+      }
+      chunks.push(chunk);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return bytes;
+}
+
+async function readRemoteFile(
+  input: string,
+  options: UploadedFileOptions,
+): Promise<Uint8Array> {
+  const allowedHosts = allowedHostsOf(options.allowedDownloadHosts);
+  if (allowedHosts.size === 0) {
+    throw new FileValidationError(
+      "REMOTE_DOWNLOAD_DISABLED",
+      "HTTPS downloads are disabled until FILE_DOWNLOAD_ALLOWED_HOSTS is configured",
+      403,
+    );
+  }
+
+  const timeoutMs = Math.max(
+    1_000,
+    Math.min(options.downloadTimeoutMs ?? DEFAULT_DOWNLOAD_TIMEOUT_MS, 60_000),
+  );
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    let url: URL;
+    try {
+      url = new URL(input);
+    } catch {
+      throw new FileValidationError("INVALID_DOWNLOAD_URL", "Invalid download URL");
+    }
+
+    for (let redirect = 0; redirect <= MAX_DOWNLOAD_REDIRECTS; redirect += 1) {
+      validateDownloadUrl(url, allowedHosts);
+      const response = await fetch(url.toString(), {
+        redirect: "manual",
+        signal: controller.signal,
+      });
+
+      if (response.status >= 300 && response.status < 400) {
+        const location = response.headers.get("location");
+        await response.body?.cancel();
+        if (!location || redirect === MAX_DOWNLOAD_REDIRECTS) {
+          throw new FileValidationError(
+            "TOO_MANY_REDIRECTS",
+            "Remote file download exceeded the redirect limit",
+          );
+        }
+        url = new URL(location, url);
+        continue;
+      }
+
+      if (!response.ok) {
+        await response.body?.cancel();
+        throw new FileValidationError(
+          "FILE_REFERENCE_UNREADABLE",
+          "Unable to download remote file: HTTP " + response.status,
+          502,
+        );
+      }
+
+      return await readResponseBytes(response);
+    }
+
+    throw new FileValidationError(
+      "TOO_MANY_REDIRECTS",
+      "Remote file download exceeded the redirect limit",
+    );
+  } catch (error) {
+    if (error instanceof FileValidationError) throw error;
+    if (controller.signal.aborted) {
+      throw new FileValidationError(
+        "DOWNLOAD_TIMEOUT",
+        "Remote file download timed out after " + timeoutMs + " ms",
+        504,
+      );
+    }
+    throw new FileValidationError(
+      "FILE_REFERENCE_UNREADABLE",
+      "Unable to download remote file: " +
+        (error instanceof Error ? error.message : String(error)),
+      502,
+    );
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 function referenceOf(file: Exclude<FileReference, string>): string | undefined {
   return (
     file.path ??
@@ -160,6 +366,7 @@ function idOf(file: FileReference, index: number): string {
 export async function normalizeUploadedFile(
   file: FileReference,
   index = 0,
+  options: UploadedFileOptions = {},
 ): Promise<UploadedFile> {
   const obj = typeof file === "object" ? file : undefined;
   const initialRef =
@@ -189,13 +396,7 @@ export async function normalizeUploadedFile(
         "Unsupported file reference. Provide a ChatGPT input_file/MCP file object with base64 data, a readable path, file:// URI, or an HTTPS download_url.",
       );
     if (/^https?:\/\//i.test(ref)) {
-      const response = await fetch(ref);
-      if (!response.ok)
-        throw new FileValidationError(
-          "FILE_REFERENCE_UNREADABLE",
-          `Unable to download ${ref}: HTTP ${response.status}`,
-        );
-      bytes = new Uint8Array(await response.arrayBuffer());
+      bytes = await readRemoteFile(ref, options);
       source = "url";
     } else {
       bytes = await readLocalFile(

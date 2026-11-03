@@ -44,6 +44,8 @@ export interface ExecutionContext {
 export interface Checkpoint {
   workflowId: string;
   completed: string[];
+  /** Tasks that failed in the most recent execution attempt. */
+  failed?: string[];
   lastTask?: string;
 }
 
@@ -74,6 +76,8 @@ export interface RecoveryState {
   definition: WorkflowDefinition | null;
   completed: string[];
   remaining: string[];
+  /** Failed tasks are retried on resume; this field is informational. */
+  failed: string[];
 }
 
 export interface WorkflowStatus {

@@ -310,3 +310,5 @@ Example processing call:
   "timeoutSeconds": 300
 }
 ```
+
+See [docs/security-runtime.md](docs/security-runtime.md) for the security configuration and operational trust boundaries.

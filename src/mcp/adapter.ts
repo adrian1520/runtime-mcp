@@ -408,7 +408,7 @@ export async function handleMcpRoute(
     return errorResponse(405, -32000, "Method not allowed");
   }
 
-  const auth = verifyBearer(request, env.API_KEY);
+  const auth = verifyBearer(request, env.API_KEY, env.ALLOW_INSECURE_DEV_AUTH === "true");
   if (!auth.ok) {
     return errorResponse(auth.status, -32001, auth.message);
   }
