@@ -46,7 +46,7 @@ export type MountedFileResult = {
  */
 export type MountedFileContext = {
   /** Mount resolver instance */
-  resolver: MountPathResolver;
+  resolver?: MountPathResolver;
   /** Optional custom path normalizer */
   pathNormalizer?: (path: string) => string;
   /** Whether to throw on mount not found */

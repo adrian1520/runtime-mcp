@@ -8,7 +8,7 @@ const GoalSchema = z.object({
   id: z.string().min(1, "Goal.id is required"),
   objective: z.string().min(1, "Goal.objective is required"),
   constraints: z.array(z.string()).default([]),
-  context: z.record(z.unknown()).default({}),
+  context: z.record(z.string(), z.unknown()).default({}),
 });
 
 const Validator = z.object({

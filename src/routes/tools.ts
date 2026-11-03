@@ -84,7 +84,7 @@ export async function handleToolsRoute(
    * Bearer auth
    */
 
-  const auth = verifyBearer(request, env.API_KEY);
+  const auth = verifyBearer(request, env.API_KEY, env.ALLOW_INSECURE_DEV_AUTH === "true");
 
   if (!auth.ok) {
     return json(

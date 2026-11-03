@@ -45,12 +45,21 @@ async function discoverTools(): Promise<ToolModule[]> {
 
     if (!(await exists(indexFile))) continue;
 
-    const name = capitalize(entry.name);
+    const moduleSource = await fs.readFile(indexFile, "utf8");
+    const registerFunction = moduleSource.match(
+      /export\s+(?:async\s+)?function\s+(register[A-Za-z0-9_]*Tools)\s*\(/,
+    )?.[1];
+
+    if (!registerFunction) {
+      throw new Error(
+        `Tool module "${entry.name}" must export a register*Tools function.`,
+      );
+    }
 
     tools.push({
       name: entry.name,
       importPath: `./tools/${entry.name}`,
-      registerFn: `register${name}Tools`,
+      registerFn: registerFunction,
     });
   }
 
@@ -81,6 +90,10 @@ export type Env = {
   STATE_KV: KVNamespace;
 
   API_KEY?: string;
+
+  ALLOW_INSECURE_DEV_AUTH?: string;
+
+  FILE_DOWNLOAD_ALLOWED_HOSTS?: string;
 
   GITHUB_OWNER?: string;
 

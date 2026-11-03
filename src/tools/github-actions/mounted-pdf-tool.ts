@@ -248,6 +248,6 @@ export function registerMountedPdfTools(
     } as const,
     outputSchema: mountInfoOutputSchema,
     validate: (args) => mountInfoQuerySchema.parse(args),
-    execute: (args) => queryMountInfo(args),
+    execute: async (args) => queryMountInfo(args),
   };
 }

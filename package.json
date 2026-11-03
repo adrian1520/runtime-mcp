@@ -5,10 +5,8 @@
   "private": true,
   "type": "module",
   "main": "src/index.ts",
-
   "author": "Adrian",
   "license": "MIT",
-
   "keywords": [
     "mcp",
     "cloudflare",
@@ -21,65 +19,31 @@
     "serverless",
     "typescript"
   ],
-
   "engines": {
     "node": ">=20"
   },
-
   "scripts": {
-
-    "dev":
-      "wrangler dev",
-
-    "deploy":
-      "wrangler deploy",
-
-    "check":
-      "tsc --noEmit",
-
-    "typecheck":
-      "tsc --noEmit",
-
-    "cf-typegen":
-      "wrangler types",
-
-    "lint":
-      "tsc --noEmit --pretty",
-
-    "start":
-      "wrangler dev",
-
-    "tail":
-      "wrangler tail",
-
-    "clean":
-      "rm -rf dist .wrangler",
-
-    "predeploy":
-      "npm run typecheck"
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "cf-typegen": "wrangler types",
+    "lint": "tsc --noEmit --pretty",
+    "start": "wrangler dev",
+    "tail": "wrangler tail",
+    "clean": "rm -rf dist .wrangler",
+    "predeploy": "npm run typecheck",
+    "test": "node --test tests/*.test.mjs",
+    "server:generate": "node scripts/update-server.ts"
   },
-
   "dependencies": {
-
-    "@modelcontextprotocol/sdk":
-      "^1.29.0",
-
-    "zod":
-      "^3.25.76"
+    "@modelcontextprotocol/sdk": "^1.32.0",
+    "zod": "^4.6.7"
   },
-
   "devDependencies": {
-
-    "@cloudflare/workers-types":
-      "^4.20250501.0",
-
-    "typescript":
-      "^5.8.3",
-
-    "wrangler":
-      "^4.15.2"
+    "@cloudflare/workers-types": "^5.20261103.1",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.156.2"
   },
-
-  "packageManager":
-    "npm@10.8.2"
+  "packageManager": "npm@10.8.2"
 }
