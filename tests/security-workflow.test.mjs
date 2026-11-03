@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { join } from "node:path";
+import { writeFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import test from "node:test";
 
@@ -14,8 +15,22 @@ execFileSync(
     "false",
     "--declaration",
     "false",
+    "--module",
+    "commonjs",
+    "--moduleResolution",
+    "node",
+    "--verbatimModuleSyntax",
+    "false",
   ],
   { stdio: "inherit" },
+);
+
+// Production sources are ESM with bundler-style extensionless imports. Compile
+// this isolated test copy to CommonJS so Node resolves those imports natively.
+await writeFile(
+  join(outDir, "package.json"),
+  JSON.stringify({ type: "commonjs" }),
+  "utf8",
 );
 
 const { verifyBearer } = await import("file://" + join(outDir, "src/auth/bearer.js"));
